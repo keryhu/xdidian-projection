@@ -1,0 +1,29 @@
+server:
+  port: 9999
+  context-path: /uaa
+  
+  
+        
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
+    org.springframework.cloud: 'DEBUG'
+    org:
+      springframework:
+         security: DEBUG
+ 
+
+ # custom jwt varietes 
+jwtOfReadAndWrite:
+  clientId: kksdi2388wmkwe
+  clientSecret: kksd23isdmsisdi2
+  autoApproval: true
+  scopes: 
+     - read
+     - write
+  grantTypes: 
+     - authorization_code 
+     - refresh_token 
+     - password
+  resourceIds:
+     - ReadAndWriteResource

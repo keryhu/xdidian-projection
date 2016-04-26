@@ -1,0 +1,26 @@
+server:
+  port: 8002
+    
+security:
+  oauth2:
+    resource:
+      jwt:
+        keyValue: |
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApVuOPKLwgnZxosn1zUH35nHq0bTxbcky8y9VgYg+1/XAWj6hPftDyUIXcH2vaRauoJxCf6QtpID3kcQCGVFvzkrQrNT1+2y+OjqKMmgZPe6EF6qd+1djqgfSzOSQuyIrFfhmMO84KMhyuL6wZnq0fqgqIZIXmzzyd5j12JL3jIHxsv8m5b7Crk+XuQToKCId1rTXB17t+ZmNjc6TXkmdcsCqiBRbKZ7N//VH33nNIxbFHF1uFEDrdLI2ziG/iGt9cS9dVvecgLgmPaE45ALgbv8WQycEMjCD/jopfhb2u+ybcOAEoH1pzjX4WHEVoGjVadyBE8hq9U4aH1x+Cji0kwIDAQAB
+          -----END PUBLIC KEY----- 
+
+spring:
+  mail:
+  #上线时候，需要重新设置
+    host: smtp.qq.com
+    username: 948747450@qq.com
+    # 需要加密
+    password: '{cipher}AQBJcp8DJpqtScM6Te3bZKGs5zvwtkjenZ24cFfUpkdUapLC5PrZXM0vSZ4LebLAjhqUDGNMf95hLEmj1gWVFXRpjuETB2DT8dYGMoKCDa6duXI7Vz2vPjeKFl9AWWxw7M3poCcUiV9B65Y+0LbQka8cWLE06o9EvTpEGiZCaLyi2zy3wBwTMWyfKNwwSOYBecHO6naLIrOQCMz4PcyGM0RHyu9kRJKt1tGEkJT3MgPTcW5HOLsCPWn7LkLuEHY9tjdqDuZovrr+lGZavNqI/RiQZK4E3zegjotM/Su5wPzR+AdlH31uzeGjYSiKVptxFMamedRlo7IA002oofJ3gYuCZzIWabNeichy1eaXXZP24L4xX9qmlILGLnqXyCdwMy0='
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.socketFactory.port: 465    
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+      mail.smtp.socketFactory.fallback: false
+     

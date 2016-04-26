@@ -1,0 +1,10 @@
+
+spring:
+  application:
+    name: auth-server
+  cloud:  
+    config:
+       uri: http://15900455491:skdjf7782c@${domain.name:localhost}:8888
+  
+ 
+      
