@@ -2,6 +2,7 @@ package com.xdidian.keryhu.useraccount.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,7 +48,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		                .authorizeRequests()
 		                .and().authorizeRequests().expressionHandler(webExpressionHandler())  //权限排序
 		                .antMatchers("/favicon.ico","/users/**").permitAll()
-		                //.antMatchers(HttpMethod.GET, "/users/findByIdentity/**").permitAll()
+		                .antMatchers(HttpMethod.GET, "/users/findByIdentity/**").permitAll()
 		                .anyRequest().authenticated()
 		                ;
 		               

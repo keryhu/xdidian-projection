@@ -10,6 +10,13 @@ import com.xdidian.keryhu.useraccount.domain.User;
 import com.xdidian.keryhu.useraccount.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 
+* @ClassName: UserServiceImpl
+* @Description: TODO(继承自userService 的方法实现)
+* @author keryhu  keryhu@hotmail.com
+* @date 2016年4月26日 下午5:17:39
+ */
 @Component("userService")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements UserService  {
@@ -41,6 +48,15 @@ public class UserServiceImpl implements UserService  {
 		return Optional.empty();
 	}
 
+	
+	/**
+	 * 
+	* <p>Title: save</p>
+	* <p>Description: 保存需要被保存的user 对象到mongo数据库 </p>
+	* @param user
+	* @return  刚刚保存的user 对象
+	* @see com.xdidian.keryhu.useraccount.service.UserService#save(com.xdidian.keryhu.useraccount.domain.User)
+	 */
 	@Override
 	@Transactional
 	public User save(User user) {
@@ -49,9 +65,35 @@ public class UserServiceImpl implements UserService  {
 	return	repository.save(user);
 		
 	}
+
+	/**
+	 *
+	* <p>Title: EmailIsExist</p>
+	* <p>Description: 查看数据库中是否有此email </p>
+	* @param email 传入需要被查询的email参数
+	* @return  返回是否有此email，如果有，返回true，否则false
+	* @see com.xdidian.keryhu.useraccount.service.UserService#EmailIsExist(java.lang.String)
+	 */
+	@Override
+	public boolean emailIsExist(String email) {
+		// TODO Auto-generated method stub
+		return repository.findByEmail(email).isPresent();
+	}
+
+	/**
+	 * 
+	* <p>Title: phoneIsExist</p>
+	* <p>Description: 查询数据库中是否有此phone对象</p>
+	* @param phone  需要被查询的phone对象
+	* @return  如果数据库中存在此phone，则返回true，否则false
+	* @see com.xdidian.keryhu.useraccount.service.UserService#phoneIsExist(java.lang.String)
+	 */
+	@Override
+	public boolean phoneIsExist(String phone) {
+		// TODO Auto-generated method stub
+		return repository.findByPhone(phone).isPresent();
+	}
 	
-	
-	//只是初略的验证用户的输入格式是否正确。
 	
 
 }
