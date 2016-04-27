@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 
@@ -25,6 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	 @Autowired
 	 private  UserDetailsService userDetailsService;
+	 
+	 @Autowired
+	 private CustomAuthSuccessHandler customAuthSuccessHandler;
 
 	
 	 @Override
@@ -45,12 +49,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			// @formatter:off
 			http
 				.formLogin().loginPage("/login").permitAll()
+				.successHandler(customAuthSuccessHandler)
 			.and()
 			    .csrf().disable()
 				.requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
 			.and()
 				.authorizeRequests()
-				.anyRequest().authenticated();
+				.anyRequest().authenticated()
+			.and()
+			    .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
 			// @formatter:on
 		}
 	 
