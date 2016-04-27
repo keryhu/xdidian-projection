@@ -8,3 +8,9 @@ admin拥有其它所有权限。就是权限的层级关系。
 此是spring cloud 的用户查询的service
 
 提供user的两种DTO 类，方便auth service 验证的 AuthUserDto ， 方便物业公司注册的 propertyregisterDto，方便其它接口无缝调用user服务。
+
+
+对外提供CRUD接口
+
+1 ： property register save 接口  /users/property/save   （只能未登陆用户post，否则报错）
+2:   根据identity（uuid，email，phone任何一种） 查询数据库是否存在AuthUser对象，此对象

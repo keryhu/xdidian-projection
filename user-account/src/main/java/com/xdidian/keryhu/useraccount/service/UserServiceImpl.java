@@ -93,6 +93,20 @@ public class UserServiceImpl implements UserService  {
 		// TODO Auto-generated method stub
 		return repository.findByPhone(phone).isPresent();
 	}
+
+
+	/**
+	* <p>Title: companyNameIsExist</p>
+	* <p>Description:  查询数据库中是否有此公司名字</p>
+	* @param companyName  需要被查询的公司名字
+	* @return   如果存在则返回true，否则false
+	* @see com.xdidian.keryhu.useraccount.service.UserService#companyNameIsExist(java.lang.String)
+	*/ 
+	@Override
+	public boolean companyNameIsExist(String companyName) {
+		// TODO Auto-generated method stub
+		return repository.findByCompanyName(companyName).isPresent();
+	}
 	
 	
 

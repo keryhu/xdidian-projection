@@ -13,36 +13,72 @@ import com.xdidian.keryhu.useraccount.domain.User;
  */
 public interface UserService {
 	
+	
+	
 	/**
 	 * 
-	 * @param identity uuid，email phone的一种
-	 * @return 返回是否存在的user
+	* @Title: findByIdentity
+	* @Description: TODO(查看数据库中是否存在指定的identity)
+	* @param @param identity  identity uuid，email phone的一种
+	* @param @return    设定文件 返回是否存在的user
+	* @return Optional<User>    返回类型  返回是否存在的user Optional类型
+	* @throws
 	 */
 	public Optional<User> findByIdentity(String identity);
 
 	
+	
+	
 	/**
 	 * 
-	 * @param user  需要被保存到数据库的user 对象
-	 * @return  返回刚刚创建的user对象
+	* @Title: save
+	* @Description: TODO(将用户保存于数据库)
+	* @param @param user  需要被保存到数据库的user 对象
+	* @param @return    设定文件  返回刚刚创建的user对象
+	* @return User    返回类型   返回刚刚创建的user对象
+	* @throws
 	 */
 	public User save(User user);
 	
-	/**
-	 * 
-	 * @param email  传入需要被查询的参数email
-	 * @return  查看user-account接口数据库中是否存在此email
-	 */
-	public boolean emailIsExist(String email);
+	
 	
 	/**
 	 * 
-	 * @param phone  传入需要被查询的参数phone
-	 * @return  查看user-account接口数据库中是否存在此phone
+	* @Title: emailIsExist
+	* @Description: TODO(查看email是否存在于数据库)
+	* @param @param email  传入需要被查询的参数email
+	* @param @return    设定文件  查看user-account接口数据库中是否存在此email
+	* @return boolean    返回类型  如果存在则返回true，否则false
+	* @throws
+	 */
+	public boolean emailIsExist(String email);
+	
+	
+	
+	
+	/**
+	 * 
+	* @Title: phoneIsExist
+	* @Description: TODO(查看手机号是否存在于数据库)
+	* @param @param phone  传入需要被查询的参数phone
+	* @param @return    设定文件  查看user-account接口数据库中是否存在此phone
+	* @return boolean    返回类型  如果存在则返回true，否则false
+	* @throws
 	 */
 	public boolean phoneIsExist(String phone);
 	
 	
+	
+	/**
+	 * 
+	* @Title: companyNameIsExist
+	* @Description: TODO(查看公司名字是否存在于数据库)
+	* @param @param companyName  需要被查询的公司名字
+	* @param @return    设定文件  返回是否存在
+	* @return boolean    返回类型   如果存在则返回true，否则false
+	* @throws
+	 */
+	public boolean companyNameIsExist(String companyName);
 	
 
 }

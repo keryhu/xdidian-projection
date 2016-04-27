@@ -49,6 +49,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		                .and().authorizeRequests().expressionHandler(webExpressionHandler())  //权限排序
 		                .antMatchers("/favicon.ico","/users/**").permitAll()
 		                .antMatchers(HttpMethod.GET, "/users/findByIdentity/**").permitAll()
+		                .antMatchers(HttpMethod.GET,"/users/isEmailExist/**").permitAll()
+		                .antMatchers(HttpMethod.GET,"/users/isPhoneExist/**").permitAll()
+		                .antMatchers(HttpMethod.GET,"/users/isPhoneExist").permitAll()
+		                .antMatchers(HttpMethod.POST,"/users/property/save").permitAll()
+		                
 		                .anyRequest().authenticated()
 		                ;
 		               

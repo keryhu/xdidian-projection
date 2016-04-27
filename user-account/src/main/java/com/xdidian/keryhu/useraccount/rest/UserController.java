@@ -126,6 +126,22 @@ public class UserController {
 	}  
 	
 	
+	/**
+	 * 
+	* @Title: isComponyNameExist
+	* @Description: TODO(查询数据库中是否存在此公司名字)
+	* @param @param companyName  需要被查询的公司名字参数
+	* @param @return    设定文件   返回数据库中是否存在此公司名字
+	* @return ResponseEntity<?>    返回类型  ResponseEntity<boolean>
+	* @throws
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="/users/isComponyNameExist")
+    public ResponseEntity<?> isComponyNameExist(@RequestParam("companyName") String companyName){
+		
+		return ResponseEntity.ok(userService.phoneIsExist(companyName));
+	}  
+	
+	
 	
 
 }
