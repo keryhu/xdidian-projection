@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.xdidian.keryhu.domain.AuthUser;
 
-import com.xdidian.keryhu.authserver.client.AuthUserClient;
+import com.xdidian.keryhu.authserver.client.UserAccountClient;
 import lombok.RequiredArgsConstructor;
 
 
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements UserService {
 
-	private final AuthUserClient authUserClient;
+	private final UserAccountClient authUserClient;
 
 	/**
 	 * 

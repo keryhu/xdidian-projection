@@ -13,4 +13,4 @@ admin拥有其它所有权限。就是权限的层级关系。
 对外提供CRUD接口
 
 1 ： property register save 接口  /users/property/save   （只能未登陆用户post，否则报错）
-2:   根据identity（uuid，email，phone任何一种） 查询数据库是否存在AuthUser对象，此对象
+2:   根据identity（uuid，email，phone任何一种） 查询数据库是否存在AuthUser对象，此对象,接口分别为 /users/query/isEmailExist   /users/query/isPhoneExist /users/query/isCompanyNameExist,没有security 限制。

@@ -1,5 +1,7 @@
 package com.xdidian.keryhu.useraccount.rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +29,7 @@ public class UserController {
 	
 	private final ConverterUtil converterUtil;
 	
-	
-	
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	//返回的是spring data HAL rest 带有herf的链接，这个是 auth－service 需要调用的rest get接口
 	//必须使用@RequestParam，如果使用PathVariable，则查询email会有bug
@@ -41,16 +42,17 @@ public class UserController {
 	* @return ResponseEntity<?>    返回类型
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/findByIdentity")
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/findByIdentity")
 	public ResponseEntity<?> findByIdentity(@RequestParam("identity") String identity){
-		System.out.println("identity is : "+identity);
+		logger.info("identity is : "+identity);
 		Assert.notNull(identity,"查询的id不能为空");
 		
 		//如果用户不存在，则抛出错误。
 		User user=userService.findByIdentity(identity)
 			        .orElseThrow(()->new IllegalArgumentException("您查询的用户不存在！！"))
 				;
-		System.out.println("在userAccount中，通过identity查询到的user is ："+user);
+		logger.info("在userAccount中，通过identity查询到的user is ："+user);
+		
 		//将User 转为 AuthUser对象
 		
 		AuthUserDto au=converterUtil.userToAuthUser.apply(user);
@@ -77,7 +79,7 @@ public class UserController {
 	@RequestMapping(method=RequestMethod.POST,value="/users/property/save")
 		public ResponseEntity<PropertyRegisterDto> createUser(@RequestBody PropertyRegisterDto dto){
 		   
-		  System.out.println("提交的dto is : "+dto);
+		logger.info("提交的dto is : "+dto);
 		  
 		  if(SecurityUtils.isAuthenticated()){
 			  //抛出错误，
@@ -102,9 +104,9 @@ public class UserController {
 	* @return ResponseEntity<?>    返回类型 ResponseEntity<boolean>
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/isEmailExist")
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/isEmailExist")
 	public ResponseEntity<?> isEmailExist(@RequestParam("email") String email){
-		
+		logger.info("需要被查询的email是："+email+" , email  是否存在于数据库 ： "+userService.emailIsExist(email));
 		return ResponseEntity.ok(userService.emailIsExist(email));
 	}
 	
@@ -119,9 +121,9 @@ public class UserController {
 	* @return ResponseEntity<?>    返回类型 ResponseEntity<boolean>
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/isPhoneExist")
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/isPhoneExist")
     public ResponseEntity<?> isPhoneExist(@RequestParam("phone") String phone){
-		
+		logger.info("需要被查询的phone是："+phone+" , phone  是否存在于数据库 ： "+userService.phoneIsExist(phone));
 		return ResponseEntity.ok(userService.phoneIsExist(phone));
 	}  
 	
@@ -135,8 +137,9 @@ public class UserController {
 	* @return ResponseEntity<?>    返回类型  ResponseEntity<boolean>
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/isComponyNameExist")
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/isComponyNameExist")
     public ResponseEntity<?> isComponyNameExist(@RequestParam("companyName") String companyName){
+		
 		
 		return ResponseEntity.ok(userService.phoneIsExist(companyName));
 	}  

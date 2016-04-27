@@ -2,6 +2,7 @@ package com.xdidian.keryhu.authserver.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,6 +50,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		                .and().authorizeRequests().expressionHandler(webExpressionHandler())  //权限排序
 		                //对于auth－server里面的url控制，有2种方法，一个是在这个方法里面添加控制，注意不要加到WebSecurityConfig class 里，那个里面没有用。
 		                .antMatchers("/webjars/**","/favicon.ico").permitAll()
+		                .antMatchers(HttpMethod.GET, "/query/**").permitAll()
 		                .anyRequest().authenticated()
 		                ;
 		               

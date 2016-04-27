@@ -19,6 +19,7 @@ public class LoginConfig extends WebSecurityConfigurerAdapter  {
 			 .antMatchers("/","/register","/webjars/**","/favicon.ico","/script/**").permitAll()
 				//只有未登陆用户，才能提交注册。
 			 .antMatchers(HttpMethod.POST,"/property-register/property/register").permitAll()
+			 .antMatchers(HttpMethod.GET, "/user-account/users/query/**").permitAll()
 			 .anyRequest().authenticated()
 			 .and().csrf().disable()
 				;
