@@ -44,8 +44,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		 @Override
 		    public void configure(HttpSecurity http) throws Exception {
 		        http
-		                .csrf().disable()
-		                .httpBasic().disable()
+		               
 		                .authorizeRequests()
 		                .and().authorizeRequests().expressionHandler(webExpressionHandler())  //权限排序
 		                .antMatchers("/favicon.ico").permitAll()

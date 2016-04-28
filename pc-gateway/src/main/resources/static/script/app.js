@@ -1,6 +1,11 @@
 'use strict';
 var app = angular.module('myApp', []);
 
+app.config(['$httpProvider',function($httpProvider) {
+	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+	}
+]);
+
 app.controller('myCtrl',['$scope','$http',function($scope, $http){
 	$scope.credentials = {};
 	$scope.login=function(){
@@ -22,6 +27,15 @@ app.controller('myCtrl',['$scope','$http',function($scope, $http){
 			console.log('data'+data)
 		});
 	}
+	
+	$scope.logout=function(){
+		$http.post('logout',{}).finally(function(){
+			
+			console.log('已经成功退出。。');
+			//前台导到指定页面，后台不负责页面跳转
+		});
+		
+	};
 	
 	
 	

@@ -12,3 +12,5 @@ spring cloud xdidian pc html5 gateway 实现。
 
 
 其它各个需要被导航到的service ，的一些逻辑判断，不在 pc－gateway里面判断，判断都移植到各自的 service执行。
+
+开启了csrf 验证，启用了 logout 前台注销 ，（后台并没有真正注销，这是jwt的一个缺点，但是令牌会刷新，所以后台注销暂时不考虑），另外前台注销后，js 进行导航到新的页面。
