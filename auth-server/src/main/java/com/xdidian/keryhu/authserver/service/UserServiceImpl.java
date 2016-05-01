@@ -1,10 +1,10 @@
 package com.xdidian.keryhu.authserver.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xdidian.keryhu.domain.AuthUser;
-
 import com.xdidian.keryhu.authserver.client.UserAccountClient;
 import lombok.RequiredArgsConstructor;
 
@@ -32,11 +32,8 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public AuthUser findByIdentity(String identity) {
-		
-			AuthUser result=authUserClient.ByIdentity(identity).getBody();
-			System.out.println("auth server service 查到的authUser is ： "+result);
-		
-		return result;
+					
+		return authUserClient.ByIdentity(identity).getBody();
 	}
 
 	/**
@@ -60,5 +57,7 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	
 
 }

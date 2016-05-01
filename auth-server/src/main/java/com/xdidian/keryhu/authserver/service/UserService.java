@@ -1,5 +1,6 @@
 package com.xdidian.keryhu.authserver.service;
 
+
 import com.xdidian.keryhu.domain.AuthUser;
 
 /**
@@ -30,5 +31,8 @@ public interface UserService {
 	 * @return  查看user-account接口数据库中是否存在此phone
 	 */
 	public boolean phoneIsExist(String phone);
+	
+	
+	
 
 }

@@ -12,13 +12,13 @@ user的数据库，必须和这些接口对接，不能直接操作数据库。
 
 > /users/query/findByIdentity get 方法  @RequestParam("identity") ， 无security
 
-四 、 email 接口： 远程查询该email是否存在于数据库
+四 、 email 接口： 远程查询该email是否存在于数据库，返回的是json－map
 > /users/query/isEmailExist  get 方法 @RequestParam("email") ， 无security
 
-五 、 phone 接口： 远程查询phone是否存在于数据库，
+五 、 phone 接口： 远程查询phone是否存在于数据库，返回的是json－map
 > /users/query/isPhoneExist get 方法，@RequestParam("phone") ， 无security
 
-六 、 companyName 接口： 远程查询companyName是否存在于数据库，
+六 、 companyName 接口： 远程查询companyName是否存在于数据库，返回的是json－map
 
 > /users/query/isComponyNameExist get 方法 @RequestParam("phone") ， 无security
 

@@ -10,7 +10,16 @@ logging:
     org:
       springframework:
          security: DEBUG
- 
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://test:123456@${mongo.host:localhost}:27017/test
+      repositories:
+        enabled: true
+    rest:
+      enable-enum-translation: true
+       
 
  # custom jwt varietes 
 jwtOfReadAndWrite:
@@ -26,3 +35,9 @@ jwtOfReadAndWrite:
      - password
   resourceIds:
      - ReadAndWriteResource
+   
+   #设定固定清零时间为6个小时，最大的尝试失败的次数为10次，10次后，锁定ip 24小时。  
+LoginAttempt:
+  maxAttemptTimes: 10
+  timeOfPerid: 6
+  timeOfLock: 24

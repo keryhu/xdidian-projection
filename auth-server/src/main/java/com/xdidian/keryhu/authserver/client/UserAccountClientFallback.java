@@ -1,5 +1,8 @@
 package com.xdidian.keryhu.authserver.client;
 
+
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -27,9 +30,9 @@ public class UserAccountClientFallback implements UserAccountClient {
 	* @see com.xdidian.keryhu.authserver.client.UserAccountClient#isEmailExist(java.lang.String)
 	*/ 
 	@Override
-	public boolean isEmailExist(String email) {
+	public ResponseEntity<Map<String,Boolean>> isEmailExist(String email) {
 		// TODO Auto-generated method stub
-		return  false;	
+		return  ResponseEntity.ok(null);	
 		}
 
 	/**
@@ -40,9 +43,9 @@ public class UserAccountClientFallback implements UserAccountClient {
 	* @see com.xdidian.keryhu.authserver.client.UserAccountClient#isPhoneExist(java.lang.String)
 	*/ 
 	@Override
-	public boolean isPhoneExist(String phone) {
+	public ResponseEntity<Map<String,Boolean>> isPhoneExist(String phone) {
 		// TODO Auto-generated method stub
-		return  false;
+		return   ResponseEntity.ok(null);
 	}
 
 }

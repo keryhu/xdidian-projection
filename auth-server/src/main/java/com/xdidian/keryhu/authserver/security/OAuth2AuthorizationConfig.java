@@ -20,6 +20,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+import com.xdidian.keryhu.authserver.domain.jwtOfReadAndWrite;
+
 
 
 /**

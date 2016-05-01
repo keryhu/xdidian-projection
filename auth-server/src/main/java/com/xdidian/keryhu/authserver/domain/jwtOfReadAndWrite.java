@@ -1,4 +1,4 @@
-package com.xdidian.keryhu.authserver.security;
+package com.xdidian.keryhu.authserver.domain;
 
 import java.io.Serializable;
 

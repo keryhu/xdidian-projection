@@ -25,11 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	 @Autowired
-	 private  UserDetailsService userDetailsService;
-	 
-	 @Autowired
-	 private CustomAuthSuccessHandler customAuthSuccessHandler;
-	 
+	 private  UserDetailsService userDetailsService; 
 	
 	
 	 @Override
@@ -49,12 +45,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		protected void configure(HttpSecurity http) throws Exception {
 			// @formatter:off
 			http
-				.formLogin().loginPage("/login").permitAll()
+				.formLogin().loginPage("/login")
+				.permitAll()
 			.and()
 				.requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
 			.and()
 				.authorizeRequests()
-				.anyRequest().authenticated();
+				.anyRequest().authenticated()
+		        ;
 		 	// @formatter:on
 		}
 	 
