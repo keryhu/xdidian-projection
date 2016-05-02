@@ -47,6 +47,9 @@ public class LoginAttemptUser  implements Serializable {
 	@Indexed(unique = true)
 	private String remoteIp;
 	
+	//如果用户有过成功的登录历史，就纪录用户userId
+	private String userId;
+	
 	//尝试记录客户登陆的的登录名,(就是用户提交给 ／login 时的 username,有可能一个ip地址，尝试了多个username，那么就做成list)
 	private List<String> loginName=new ArrayList<String>();
 	

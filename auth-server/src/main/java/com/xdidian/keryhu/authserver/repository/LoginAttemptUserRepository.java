@@ -55,6 +55,17 @@ public interface LoginAttemptUserRepository extends MongoRepository<LoginAttempt
 	* @throws
 	 */
 	public Optional<LoginAttemptUser> findById(String id);
+	
+	/**
+	 * 
+	* @Title: findByUserId
+	* @Description: TODO(如果userId存在的情况下，通过此参数查询数据库)
+	* @param @param userId
+	* @param @return    设定文件
+	* @return Optional<LoginAttemptUser>    返回类型
+	* @throws
+	 */
+	public Optional<LoginAttemptUser> findByUserId(String userId);
 
 	
 

@@ -10,10 +10,16 @@ package com.xdidian.keryhu.authserver.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
+
+import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
+import com.xdidian.keryhu.util.SecurityUtils;
+
+import lombok.RequiredArgsConstructor;
 
 /**
 * @ClassName: AuthenticationSuccessListener
@@ -22,7 +28,10 @@ import org.springframework.stereotype.Component;
 * @date 2016年4月30日 下午12:37:32
 */
 @Component
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuthenticationSuccessListener  implements ApplicationListener<AuthenticationSuccessEvent>{
+	
+	private final LoginAttemptUserService loginAttemptUserService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticationSuccessListener.class);
 
@@ -37,9 +46,12 @@ public class AuthenticationSuccessListener  implements ApplicationListener<Authe
 		// TODO Auto-generated method stub
 		 WebAuthenticationDetails auth = (WebAuthenticationDetails) 
 		          e.getAuthentication().getDetails();
-		 String uuid=e.getAuthentication().getName();
-		 
-		 logger.info("登陆成功后，远程登陆的ip地址是： "+auth.getRemoteAddress()+"uuid is : "+uuid);
+		 String loginName=e.getAuthentication().getName();
+		 String userId=SecurityUtils.getCurrentLogin();
+		 String ip=auth.getRemoteAddress();
+		 loginAttemptUserService.loginSuccess(ip, userId, loginName);
+		 logger.info("登陆成功后，远程登陆的ip地址是： "+auth.getRemoteAddress()+"uuid is : "+loginName
+				 +" , userId is : "+userId);
 		 
 	}
 

@@ -6,9 +6,12 @@
 </head>
 <body>
 	<div class="container">
-
-		<div th:if="${param.error}"  th:with="errorMsg=${session[SPRING_SECURITY_LAST_EXCEPTION].message}">
-		 <span th:text="${errorMsg}">登陆信息错误提示！</span></div>
+		<!-- 使用 session[SPRING_SECURITY_LAST_EXCEPTION].message 来动态显示 后台登录错误的提示信息。
+		    同时还有一些信息是在message.property里-->
+		    
+		<div th:if="${session[SPRING_SECURITY_LAST_EXCEPTION].message}" 
+		     th:text="${session[SPRING_SECURITY_LAST_EXCEPTION].message}">登录信息有误时显示的后台提示！</div>
+		 
 		<form role="form" th:action="@{/login}" method="post">
 			<div class="form-group">
 				<label for="username">用户名:</label> <input type="text"

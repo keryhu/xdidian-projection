@@ -26,6 +26,7 @@ import com.xdidian.keryhu.authserver.service.UserServiceImpl;
 
 @Component("userDetailsService")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
 	private final UserServiceImpl userService;
@@ -38,18 +39,18 @@ public class UserDetailsService implements org.springframework.security.core.use
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserDetailsService.class);
 
-
-	@Override
-	@Transactional
 	/**
 	 * <p>
 	 * Title: loadUserByUsername
-	 * Description: 根据用户名，查询数据库系统后台(user-account),是否存在此用户
+	 * Description: 根据用户名，查询数据库系统后台(user-account),是否存在此用户,同时增加了一个loginAttempt 的拦截限制，
+	 * 一旦用户被冻结，则锁定账户多少小时
 	 * @param username  包含uuid，email phone 的任何一种
 	 * @return 当前用户的spring security details
 	 * @throws UsernameNotFoundException  当前用户不存在
 	 * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
 	 */
+	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		

@@ -36,28 +36,5 @@ public class UserServiceImpl implements UserService {
 		return authUserClient.ByIdentity(identity).getBody();
 	}
 
-	/**
-	 * 
-	 * @param email  传入需要被查询的参数email
-	 * @return  查看user-account接口数据库中是否存在此email
-	 */
-	@Override
-	public boolean EmailIsExist(String email) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/**
-	 * 
-	 * @param phone  传入需要被查询的参数phone
-	 * @return  查看user-account接口数据库中是否存在此phone
-	 */
-	@Override
-	public boolean phoneIsExist(String phone) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
 
 }

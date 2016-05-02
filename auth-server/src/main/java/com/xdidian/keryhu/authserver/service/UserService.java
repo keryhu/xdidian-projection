@@ -18,19 +18,6 @@ public interface UserService {
 	 */
 	public AuthUser findByIdentity(String identity) ;
 	
-	/**
-	 * 
-	 * @param email  传入需要被查询的参数email
-	 * @return  查看user-account接口数据库中是否存在此email
-	 */
-	public boolean EmailIsExist(String email);
-	
-	/**
-	 * 
-	 * @param phone  传入需要被查询的参数phone
-	 * @return  查看user-account接口数据库中是否存在此phone
-	 */
-	public boolean phoneIsExist(String phone);
 	
 	
 	

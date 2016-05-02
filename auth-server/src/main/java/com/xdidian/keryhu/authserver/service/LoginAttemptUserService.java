@@ -37,7 +37,7 @@ public interface LoginAttemptUserService {
 	* @return void    返回类型
 	* @throws
 	 */
-	public void loginSuccess();
+	public void loginSuccess(String ip,String userId,String loginName);
 	
 	
 	/**

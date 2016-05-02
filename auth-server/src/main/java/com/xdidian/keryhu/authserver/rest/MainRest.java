@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,15 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.authserver.client.UserAccountClient;
 import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
-import com.xdidian.keryhu.authserver.domain.LoginAttemptUser;
-import com.xdidian.keryhu.authserver.exception.LoginAttemptIpNotFoundException;
 import com.xdidian.keryhu.authserver.repository.LoginAttemptUserRepository;
-import com.xdidian.keryhu.authserver.security.UserDetailsService;
-
 import lombok.RequiredArgsConstructor;
 
 
@@ -43,8 +35,6 @@ public class MainRest {
 	
 	private final LoginAttemptProperties loginAttemptProperties;
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserDetailsService.class);
-
 	/**
 	 * 
 	* @Title: user
@@ -100,25 +90,27 @@ public class MainRest {
 	@RequestMapping(value="/query/leftLoginAttemptTimes",method=RequestMethod.GET)
 	public ResponseEntity<?> queryLoginAttemptInfo(HttpServletRequest request){
 		
-	  //获取当前用户的ip地址	
-		String ip;
-		String xfHeader = request.getHeader("X-Forwarded-For");
+	    //获取当前用户的ip地址	
 		
-	    ip=StringUtils.isNullOrEmpty(xfHeader)?request.getRemoteAddr():xfHeader.split(",")[0];
-	    
-	    logger.info("rest 查到的IP 是 ： "+ip);
-	    
-	    //获取到数据库中的loginAttemptUser的信息。
-	  LoginAttemptUser loginAttemptUser= repository.findByRemoteIp(ip)
-			  .orElseThrow(()->new LoginAttemptIpNotFoundException(""));
-	    //目前还剩几此输错的机会
-       int leftLoginAttemptTimes=loginAttemptProperties.getMaxAttemptTimes()-
-    		   loginAttemptUser.getAlreadyAttemptTimes();
-       //将结果转为map对象。
+		String xfHeader = request.getHeader("X-Forwarded-For");
+	    String ip=StringUtils.isNullOrEmpty(xfHeader)?request.getRemoteAddr():xfHeader.split(",")[0];
+	       
+	    //设置一个默认值，只有当ip不存在的时候，返回这个值
 	    Map<String,Integer> result=new HashMap<String,Integer>();
-	    result.put("leftLoginAttemptTimes",leftLoginAttemptTimes);
+	    result.put("leftLoginAttemptTimes", loginAttemptProperties.getMaxAttemptTimes());
 	    
-	    return ResponseEntity.ok(result);
+	   return repository.findByRemoteIp(ip).map(e->{
+		   //目前还剩几此输错的机会
+	       int leftLoginAttemptTimes=loginAttemptProperties.getMaxAttemptTimes()-
+	    		   e.getAlreadyAttemptTimes();
+	       //将结果转为map对象。
+		    Map<String,Integer> result1=new HashMap<String,Integer>();
+		    result1.put("leftLoginAttemptTimes",leftLoginAttemptTimes);
+	       
+		    return ResponseEntity.ok(result1);
+	    }).orElse(ResponseEntity.ok(result));
+	        
+	    
 	}
 	
 	
