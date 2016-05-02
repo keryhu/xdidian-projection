@@ -43,7 +43,7 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 	* <p>Title: loginFail</p>
 	* <p>Description: 用户登陆失败，促发的事件，并且传递参数用户ip，和userid，此种情况是userId不为空</p>
 	* 如果IP不存在于数据库，说明是第一次登陆，那么所有的基本信息都需要新建
-	* 如果IP存在于数据库，
+	* 如果IP存在于数据库，首先判断清零时间是否到
 	* @param ip
 	* @param userId
 	* @see com.xdidian.keryhu.authserver.service.LoginAttemptUserService#loginFail(java.lang.String, java.lang.String)
@@ -55,7 +55,6 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 		if(!repository.findByRemoteIp(ip).isPresent()){
 			
 			LoginAttemptUser loginAttemptUser=new LoginAttemptUser();
-			
 			 Optional.of(loginAttemptUser).ifPresent(e->{
 				    e.setRemoteIp(ip);
 					//loginName不为空，执行存储动作
@@ -69,30 +68,34 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 			 });
 		}
 		
-		//如果IP存在于数据库
+		
 		repository.findByRemoteIp(ip).ifPresent(e->{
-			//loginName不为空，执行存储动作,且系统中并没有记录此loginName的时候，存储，将LoginName 存为数组
-			addLoginName(loginName,e);
 			
-			int alreadyAttemptTimes=e.getAlreadyAttemptTimes();
-			
-			
-			if(isLockedTimeOut(e)){
-				
+			//如果FirstAttemptTime 为null的话，就设置为当前时间
+			if(e.getFirstAttemptTime()==null){
+				e.setFirstAttemptTime(LocalDateTime.now());
 			}
 			
-			//当前状态没有锁定，且失败次数涨到最大限制的时候，将执行锁定账户操作该IP地址，
-			if((!isLockedTimeOut(e))&&alreadyAttemptTimes==loginAttemptProperties.getMaxAttemptTimes()){
-				e.setLocked(true);
-				e.setLockedTime(LocalDateTime.now());
-				e.setAlreadyLockedTimes(e.getAlreadyLockedTimes()+1);
-			}
-			else{
-				//否则只需要单独 alreadyAttemptTimes＋1
-				e.setAlreadyAttemptTimes(alreadyAttemptTimes+1);
-			}
+			//指定的输错自动恢复的周期时间，是否已到(例如设定了3个小时内最多输入10次，就锁定账户，那么只要3个小时内次数没有超过10次，
+			//就可以继续登录平台，过了3个小时，输入次数恢复到0，第一次输错时间恢复为null
 			
-			repository.save(e);
+		    boolean isPeriodExpired=LocalDateTime.now().isAfter(
+		    		e.getFirstAttemptTime().plusHours(loginAttemptProperties.getTimeOfPerid()));
+		    if(isPeriodExpired){
+		    	//如果已经到了恢复时间，那么就恢复到初始值＋第一次输错的时间和次数
+		    	e.setFirstAttemptTime(LocalDateTime.now());
+		    	e.setAlreadyAttemptTimes(1);	
+		    } else {
+		    	//如果输错次数已经等同于规定的最大次数－1
+		    	if(e.getAlreadyAttemptTimes()==loginAttemptProperties.getMaxAttemptTimes()-1){
+		    		e.setLocked(true);
+		    		e.setLockedTime(LocalDateTime.now());    		
+		    	}
+		    	
+		    	e.setAlreadyAttemptTimes(e.getAlreadyAttemptTimes()+1);  	
+		    }
+		    addLoginName(loginName,e);
+		    repository.save(e);
 			
 		});
 		
@@ -105,42 +108,31 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 	 * Title: loginSuccess
 	 * Description: 用户登陆成功后，所做的具体事情，登录成功，肯定能找的用户userId，所以就纪录数据库
 	 * 如果ip不存在，则无需做任何事情，
-	 * ip存在的情况下，分两种情况，
-	 * 一： 用户账户未被锁定的情况： 就是恢复用户的一些数据（差不多是初始化）
-	 * 二： 用户账户锁定的情况下：  如果已经锁定了账户，是没办法登录了，所以无需做任何事情
+	 * ip存在的情况下，恢复默认数据
 	 * @see com.xdidian.keryhu.authserver.service.LoginAttemptUserService#loginSuccess()
 	 */
 	@Override
-	public void loginSuccess(String ip,String userId,String loginName) {
+	public void loginSuccess(String ip,String userId) {
 		// TODO Auto-generated method stub   
 		
 		repository.findByRemoteIp(ip)
-		          .ifPresent(e->{
-		        	  
-		        	//如果ip存在于数据库的 情况下，且未被锁定的情况下
-		        	  if(!e.isLocked()){
-		        		  
-		        		  addLoginName(loginName,e);
-		        		  
+		          .ifPresent(e->{  
+		        	      e.setFirstAttemptTime(null);
+		        	      e.setAlreadyAttemptTimes(0);	        		  
 		        		  //如果userId不存在于数据库的情况下，保存它到数据库
 		  				  if(!repository.findByUserId(userId).isPresent()){
 		  					e.setUserId(userId);
 		  				  }
-		  				  
-		  				  //执行通用的初始化方法
-		  				  initLoginAttemptInfo(e);
-		  				  //保存结果
 		  				  repository.save(e);
-		        	  }
-		          });
-		
+		        	 
+		          });		
 	}
 
 	/**
 	 * 
 	 * @Title: isBlocked @Description: TODO(根据当前ip判断当前远程用户是否处于被锁定24小时状态。)
 	 * 首先如果IP地址不存在于数据库，那么直接返回，就是 orElse 返回的 false
-	 * 如果IP存在于数据库 ，且账户被locked(使用的Optional 的filter实现)，那么就判断第一次输错密码的时间，到现在有没有超过最大的 指定限制时间，
+	 * 如果IP存在于数据库 ，且账户被locked(使用的Optional 的filter实现)，那么就判断锁定的时间，到现在有没有超过最大的 指定限制时间，
 	 * 如果没有超过最大限定时间，则直接返回true，不需要做其他任何事情。
 	 * 否则，执行后续的动作，意思是超时了－－，初始化数据库，增加被锁定的时间＋1，否则就说明账户还是处于被锁定状态
 	 * 
@@ -151,67 +143,45 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 	@Override
 	public boolean isBlocked(String ip) {
 		
-		//如果IP存在的情况下,且锁定的状态下，看是否超时，如果没有超时则直接返回true，如果超时了，且当前处于锁定状态,则执行恢复初始化状态，且返回false，默认返回false
+		//锁定的状态下，看是否超时，如果没有超时则直接返回true，如果超时了，且当前处于锁定状态,则执行恢复初始化状态，且返回false，默认返回false
 		return repository.findByRemoteIp(ip)
-				         .filter(e->e.getLockedTime()!=null)
+				         .filter(e->e.isLocked())
 				         .map(e->{			        	 
-				        	 //获取用户第一次登陆失败的时间点
-				    		 LocalDateTime attemptTime=e.getFirstAttemptTime();
-				   		
-				  				logger.info(new StringBuffer("数据库中ip账户第一次失败时间 : ")
-				  						.append(attemptTime)
+				        	 //获取用户锁定的时间点
+				    		 LocalDateTime lockedTime=e.getLockedTime();
+				  				logger.info(new StringBuffer("数据库中ip账户锁定的时间点是 : ")
+				  						.append(lockedTime)
 				  						.append(" , 目前的ISO时间是 : ")
 				  						.append(LocalDateTime.now())
 				  						.append(" , 预计什么时间点过期 : ")
-				  						.append(attemptTime.plusHours(loginAttemptProperties.getTimeOfLock()))
+				  						.append(lockedTime.plusHours(loginAttemptProperties.getTimeOfLock()))
 				  						.append(" , 目前锁定时间是否过期 : ")
 				  						.append(isLockedTimeOut(e))
-				  						.append(" , 距离第一次登陆失败到现在已经过去了多久 : ")
-				  						.append(Duration.between(attemptTime, LocalDateTime.now()).toMinutes())
+				  						.append(" , 距离上次锁定时间到现在已经过去了多久 : ")
+				  						.append(Duration.between(lockedTime, LocalDateTime.now()).toMinutes())
 				  						.append(" , 距离解锁时间，还有多久 ？ ")
-				  						.append(loginAttemptProperties.getTimeOfLock()*60-Duration.between(attemptTime, LocalDateTime.now()).toMinutes())
+				  						.append(loginAttemptProperties.getTimeOfLock()*60-Duration.between(lockedTime, LocalDateTime.now()).toMinutes())
 				  						.toString());
 				  				
 				  			   // 如果没有超时，且locded为true，那么直接返回true，不需要做其它任何动作
-					 			if ((!isLockedTimeOut(e)) && e.isLocked()) {
+					 			if (!isLockedTimeOut(e)) {
 					 				return true;
+					 			} 
+					 			 //否则就是超时了，那么就执行恢复动作
+					 			else {
+					 				 e.setFirstAttemptTime(null);	
+					 				 e.setAlreadyAttemptTimes(0);
+					 				 e.setLocked(false);
+					 				 e.setLockedTime(null);
+					 				 e.setAlreadyLockedTimes(e.getAlreadyLockedTimes()+1);
+					 				 repository.save(e);
+					 				 return false;
 					 			}
-					 			
-					 			//只要超时了,且当前账户是锁定状态才执行清零恢复动作
-					 			if(isLockedTimeOut(e)&&e.isLocked()){
-					 				 initLoginAttemptInfo(e);
-					 				
-					 			}
-				    			 						 			
-				    		     //默认返回false	        	 
-				        	     return false;
 				         }).orElse(false);
-		
+				
 	}
 
-	/**
-	 * @Title: initLoginAttemptUser
-	 *  @Description: TODO(当LoginAttemptUser从锁定状态，解除的锁定或者登录成功的时候(促发下面的方法)，
-	 *  设置user的初始化信息，并且保存于数据库。)
-	 *  @param 设定文件
-	 *  @return void 返回类型
-	 *  @throws
-	 */
-	private void initLoginAttemptInfo(LoginAttemptUser loginAttemptUser) {
-
-		//恢复第一次登录失败的时间点为null
-		loginAttemptUser.setFirstAttemptTime(null);
-		
-		// 恢复当前ip地址用户的尝试次数为0
-		loginAttemptUser.setAlreadyAttemptTimes(0);
-
-		// 恢复锁定状态为false
-		loginAttemptUser.setLocked(false);
-
-		loginAttemptUser.setLockedTime(null);
-
-	}
-	 
+	
 	 /**
 	  * 
 	 * @Title: addLoginName
@@ -240,7 +210,7 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 	 private boolean isLockedTimeOut(LoginAttemptUser loginAttemptUser){
 		 
 		return  LocalDateTime.now().isAfter(
-				   loginAttemptUser.getFirstAttemptTime().plusHours(loginAttemptProperties.getTimeOfLock()));
+				   loginAttemptUser.getLockedTime().plusHours(loginAttemptProperties.getTimeOfLock()));
 		  
 	 }
 }

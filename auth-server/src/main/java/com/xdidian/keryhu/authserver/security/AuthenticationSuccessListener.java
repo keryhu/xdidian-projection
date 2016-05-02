@@ -46,11 +46,11 @@ public class AuthenticationSuccessListener  implements ApplicationListener<Authe
 		// TODO Auto-generated method stub
 		 WebAuthenticationDetails auth = (WebAuthenticationDetails) 
 		          e.getAuthentication().getDetails();
-		 String loginName=e.getAuthentication().getName();
-		 String userId=SecurityUtils.getCurrentLogin();
+		 //如果登录成功，那么这个就是userId
+		 String userId=e.getAuthentication().getName();
 		 String ip=auth.getRemoteAddress();
-		 loginAttemptUserService.loginSuccess(ip, userId, loginName);
-		 logger.info("登陆成功后，远程登陆的ip地址是： "+auth.getRemoteAddress()+"uuid is : "+loginName
+		 loginAttemptUserService.loginSuccess(ip, userId);
+		 logger.info("登陆成功后，远程登陆的ip地址是： "+auth.getRemoteAddress()
 				 +" , userId is : "+userId);
 		 
 	}
