@@ -40,4 +40,4 @@ jwtOfReadAndWrite:
 LoginAttempt:
   maxAttemptTimes: 10
   timeOfPerid: 6
-  timeOfLock: 24
+  timeOfLock: 8

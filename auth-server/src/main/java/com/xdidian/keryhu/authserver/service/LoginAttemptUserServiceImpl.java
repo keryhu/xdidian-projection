@@ -76,8 +76,13 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 			
 			int alreadyAttemptTimes=e.getAlreadyAttemptTimes();
 			
-			//如果尝试登陆失败的次数，大于等于设定的 最大尝试次数，那么将锁定该ip地址，
-			if(alreadyAttemptTimes>=loginAttemptProperties.getMaxAttemptTimes()){
+			
+			if(isLockedTimeOut(e)){
+				
+			}
+			
+			//当前状态没有锁定，且失败次数涨到最大限制的时候，将执行锁定账户操作该IP地址，
+			if((!isLockedTimeOut(e))&&alreadyAttemptTimes==loginAttemptProperties.getMaxAttemptTimes()){
 				e.setLocked(true);
 				e.setLockedTime(LocalDateTime.now());
 				e.setAlreadyLockedTimes(e.getAlreadyLockedTimes()+1);
@@ -152,11 +157,7 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 				         .map(e->{			        	 
 				        	 //获取用户第一次登陆失败的时间点
 				    		 LocalDateTime attemptTime=e.getFirstAttemptTime();
-				   
-				    		 // 判断现在的时间点，是否已经超过了（上次被系统锁定的开始时间点＋设置的固定锁定时间）
-				  		     boolean isLockedTimeOut = LocalDateTime.now()
-				  					.isAfter(attemptTime.plusHours(loginAttemptProperties.getTimeOfLock()));
-				  					
+				   		
 				  				logger.info(new StringBuffer("数据库中ip账户第一次失败时间 : ")
 				  						.append(attemptTime)
 				  						.append(" , 目前的ISO时间是 : ")
@@ -164,7 +165,7 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 				  						.append(" , 预计什么时间点过期 : ")
 				  						.append(attemptTime.plusHours(loginAttemptProperties.getTimeOfLock()))
 				  						.append(" , 目前锁定时间是否过期 : ")
-				  						.append(isLockedTimeOut)
+				  						.append(isLockedTimeOut(e))
 				  						.append(" , 距离第一次登陆失败到现在已经过去了多久 : ")
 				  						.append(Duration.between(attemptTime, LocalDateTime.now()).toMinutes())
 				  						.append(" , 距离解锁时间，还有多久 ？ ")
@@ -172,16 +173,16 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 				  						.toString());
 				  				
 				  			   // 如果没有超时，且locded为true，那么直接返回true，不需要做其它任何动作
-					 			if ((!isLockedTimeOut) && e.isLocked()) {
+					 			if ((!isLockedTimeOut(e)) && e.isLocked()) {
 					 				return true;
 					 			}
 					 			
-					 			// 否则需要初始化LoginAttemptInfo
-				  				
-				    			 initLoginAttemptInfo(e);			
-				 				// 设置已经被系统锁定24小时的次数，增加1
-				 				 e.setAlreadyLockedTimes(e.getAlreadyLockedTimes()+1);
-				 			
+					 			//只要超时了,且当前账户是锁定状态才执行清零恢复动作
+					 			if(isLockedTimeOut(e)&&e.isLocked()){
+					 				 initLoginAttemptInfo(e);
+					 				
+					 			}
+				    			 						 			
 				    		     //默认返回false	        	 
 				        	     return false;
 				         }).orElse(false);
@@ -225,5 +226,21 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 		 if((!StringUtils.isNullOrEmpty(loginName))&&(!loginAttemptUser.containLoginName(loginName))){
 			 loginAttemptUser.addLoginName(loginName);
    	  }
+	 }
+	 
+	 /**
+	  * 
+	 * @Title: isLockedTimeOut
+	 * @Description: TODO(判断系统中用户,此时锁定状态有没有超时)
+	 * @param @param loginAttemptUser
+	 * @param @return    设定文件
+	 * @return boolean    返回类型
+	 * @throws
+	  */
+	 private boolean isLockedTimeOut(LoginAttemptUser loginAttemptUser){
+		 
+		return  LocalDateTime.now().isAfter(
+				   loginAttemptUser.getFirstAttemptTime().plusHours(loginAttemptProperties.getTimeOfLock()));
+		  
 	 }
 }
