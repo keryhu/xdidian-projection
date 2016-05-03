@@ -2,7 +2,6 @@ package com.xdidian.keryhu.useraccount.service;
 
 import java.util.Optional;
 
-import com.xdidian.keryhu.useraccount.domain.PropertyRegisterDto;
 import com.xdidian.keryhu.useraccount.domain.User;
 
 
@@ -81,15 +80,6 @@ public interface UserService {
 	 */
 	public boolean companyNameIsExist(String companyName);
 	
-	/**
-	 * 
-	* @Title: validatePropertyDtoBeforeSave
-	* @Description: TODO(物业公司注册数据Dto保存之前，验证数据的合法性，就是验证email格式，手机格式，公司名字格式，是否正确)
-	* @param @param dto    设定文件
-	* @return void    返回类型
-	* @throws
-	 */
-	public void validatePropertyDtoBeforeSave(PropertyRegisterDto dto);
 	
 	
 

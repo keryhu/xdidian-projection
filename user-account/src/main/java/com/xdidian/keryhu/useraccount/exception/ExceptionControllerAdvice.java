@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.xdidian.keryhu.useraccount.domain.ErrorMessage;
+import com.xdidian.keryhu.domain.ErrorMessage;
+
 
 /**
 * @ClassName: ExceptionControllerAdvice
@@ -34,21 +35,5 @@ public class ExceptionControllerAdvice {
 	        return new ErrorMessage(HttpStatus.NOT_FOUND.value(),ex.getMessage());
 	    }
 	 
-	 /**
-	  * 
-	 * @Title: handlePropertySaveException
-	 * @Description: TODO(物业公司注册信息，不合法的错误处理)
-	 * @param @param ex
-	 * @param @return    设定文件
-	 * @return ErrorMessage    返回类型
-	 * @throws
-	  */
-	 @ExceptionHandler(PropertySaveException.class)
-	 @ResponseBody
-	 @ResponseStatus(HttpStatus.BAD_REQUEST)
-	 ErrorMessage handlePropertySaveException( Throwable ex) {
-	        
-	        return new ErrorMessage(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
-	    }
 
 }

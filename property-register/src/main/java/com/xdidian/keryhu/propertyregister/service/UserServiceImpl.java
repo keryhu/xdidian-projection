@@ -50,11 +50,11 @@ public class UserServiceImpl implements UserService {
 		boolean allCorrect=isEmailCorrect&&isPhoneCorrect&&isPasswordCorrect&&isCompanyName&&isDirectName;
 		
 		//email，phone，companyName都必须没有注册过，
-		boolean allExist=(!userAccountClient.isEmailExist(propertyForm.getEmail()))&&
+		boolean noExist=(!userAccountClient.isEmailExist(propertyForm.getEmail()))&&
 				(!userAccountClient.isPhoneExist(propertyForm.getPhone()))&&
 				(!userAccountClient.isCompanyNameExist(propertyForm.getCompanyName()));
 		
-		if(!(allCorrect&&allExist)){
+		if(!(allCorrect&&noExist)){
 			throw new PropertySaveException("输入信息不合法，或者提供的手机号，email，公司名字已经注册过!");
 		}
 		

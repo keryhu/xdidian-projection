@@ -17,6 +17,7 @@ import com.xdidian.keryhu.propertyregister.client.UserAccountClient;
 import com.xdidian.keryhu.propertyregister.domain.PropertyForm;
 import com.xdidian.keryhu.propertyregister.domain.PropertyRegisterDto;
 import com.xdidian.keryhu.propertyregister.service.ConverterUtil;
+import com.xdidian.keryhu.propertyregister.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,12 +29,15 @@ public class MainRest {
 	private final ConverterUtil converterUtil;
 
 	private  final UserAccountClient createUserClient;
+	
+	private final UserService userService;
 
 	
 	/**
 	 * 
 	* @Title: createUser
-	* @Description: TODO(输入信息合法性验证，放在user－account 里面，这个里面也需要验证下)
+	* @Description: TODO(验证输入信息的合法性的方法只方法逻辑层，在此，user－account里面不做判断，以为就算黑客恶意注册了，
+	* 那么他也做不了什么事情，因为接下来需要邮件验证，手机验证，营业执照验证等，而且admin会定期检测账户)
 	* @param @param propertyForm
 	* @param @return    设定文件
 	* @return ResponseEntity<?>    返回类型
@@ -42,9 +46,11 @@ public class MainRest {
 	@RequestMapping(method = RequestMethod.POST, value = "/property/register")
 	public  ResponseEntity<?>  createUser(@RequestBody PropertyForm propertyForm) {
 		
+		System.out.println("正在调用property－register service 的 save get方法。");
+		
 		//验证输入信息的合法性
 		
-		System.out.println("正在调用property－register service 的 save get方法。");
+		userService.vlidateBeforSave(propertyForm);
 			
 			//将web 数据转为dto，并远程提交给useraccount service
 			ResponseEntity<PropertyRegisterDto> result=createUserClient.createUser(

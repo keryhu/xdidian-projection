@@ -67,6 +67,8 @@ public class UserController {
 	/**
 	* @Title: createUser
 	* @Description: TODO(将远程提交过来的物业公司注册dto对象转为user 对象，并且保存数据库。)
+	* 物业公司注册信息已经在property－register 里面验证过了，这里无需再验证，假设有黑客通过链接自动post
+	* 提交，也做不了下一步的工作，因为注册完了还需要，验证邮箱，企业营业执照才能做账单等工作，所以无需担心。
 	* @param @param dto
 	* @param @return    设定文件
 	* @return ResponseEntity<Resource<User>>    返回类型
@@ -75,11 +77,7 @@ public class UserController {
 	@RequestMapping(method=RequestMethod.POST,value="/users/property/save")
 		public ResponseEntity<PropertyRegisterDto> createUser(@RequestBody PropertyRegisterDto dto){
 		   
-		logger.info("提交的dto is : "+dto);
-		
-		//验证提交数据的合法性
-		userService.validatePropertyDtoBeforeSave(dto);
-		
+		logger.info("提交的dto is : "+dto);	
 		
 		  //将提交的PropertyRegisterDto 转为User对象。
 		

@@ -30,6 +30,7 @@ public class PropertyRegisterDto implements Serializable {
 		this.password=null;
 		this.companyName=null;
 		this.directName=null;
+		
 	}
 
 }

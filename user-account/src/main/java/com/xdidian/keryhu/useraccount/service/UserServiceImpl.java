@@ -1,13 +1,12 @@
 package com.xdidian.keryhu.useraccount.service;
 
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import com.xdidian.keryhu.util.StringValidate;
-import com.xdidian.keryhu.useraccount.domain.PropertyRegisterDto;
 import com.xdidian.keryhu.useraccount.domain.User;
-import com.xdidian.keryhu.useraccount.exception.PropertySaveException;
 import com.xdidian.keryhu.useraccount.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService  {
 
 	private final UserRepository repository;
-
 	/**
 	 * @Title: findByIdentity
 	 * @Description: TODO(根据User 的 唯一标志符 例如 email，userId ，phone 等查询唯一的数据库用户)
@@ -108,34 +106,5 @@ public class UserServiceImpl implements UserService  {
 		return repository.findByCompanyName(companyName).isPresent();
 	}
 
-
-	/**
-	* <p>Title: validatePropertyDtoBeforeSave</p>
-	* <p>Description: 具体的物业公司验证注册信息Dto</p>
-	* @param dto
-	* @see com.xdidian.keryhu.useraccount.service.UserService#validatePropertyDtoBeforeSave(com.xdidian.keryhu.useraccount.domain.PropertyRegisterDto)
-	*/ 
-	@Override
-	public void validatePropertyDtoBeforeSave(PropertyRegisterDto dto) {
-		// TODO Auto-generated method stub
-		boolean isEmailCorrect=StringValidate.IsEmail(dto.getEmail());
-		boolean isPhoneCorrect=StringValidate.IsPhone(dto.getPhone());
-		boolean isPasswordCorrect=StringValidate.IsPassword(dto.getPassword());
-		boolean isCompanyName=StringValidate.IsCompanyName(dto.getCompanyName());
-		boolean isDirectName=StringValidate.IsPeopleName(dto.getDirectName());
-		
-		//所有的输入信息的合法性  boolean，必须确保他们为true，否则报错。
-		boolean allCorrect=isEmailCorrect&&isPhoneCorrect&&isPasswordCorrect&&isCompanyName&&isDirectName;
-		
-		//email，phone，companyName都必须没有注册过，
-		boolean allExist=(!emailIsExist(dto.getEmail()))&&(!phoneIsExist(dto.getPhone()))&&
-				(!companyNameIsExist(dto.getCompanyName()));
-		
-		if(!(allCorrect&&allExist)){
-			throw new PropertySaveException("输入信息不合法，或者提供的手机号，email，公司名字已经注册过!");
-		}
-	}
-	
-	
 
 }
