@@ -10,7 +10,7 @@ spring micro－service cloud docker domo
 
 
 四 、 更新于 2016-5-2: 接下来需要实现的功能： 
-  
+   物业公司注册，提交的web数据，需要经过合法的验证
   
  
 

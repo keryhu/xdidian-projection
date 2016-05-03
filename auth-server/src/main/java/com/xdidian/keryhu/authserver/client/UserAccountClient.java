@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.xdidian.keryhu.domain.AuthUser;
 
-
-
 /**
  *
 * @ClassName: UserAccountClient
