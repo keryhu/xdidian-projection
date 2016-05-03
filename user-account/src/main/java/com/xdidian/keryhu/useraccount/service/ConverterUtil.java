@@ -31,6 +31,7 @@ public class ConverterUtil {
 		user.setPhone(x.getPhone());
 		user.setPassword(x.getPassword());
 		user.setCompanyName(x.getCompanyName());
+		user.setDirectName(x.getDirectName());
 		user.setRoles(Arrays.asList(Role.ROLE_PROPERTY));
 		user.setRegisterTime(LocalDateTime.now());
 		return user;

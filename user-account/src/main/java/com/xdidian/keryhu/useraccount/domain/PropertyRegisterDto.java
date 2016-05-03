@@ -20,7 +20,8 @@ public class PropertyRegisterDto implements Serializable {
 	private String email;
 	private String phone;
 	private String password;
-	private String companyName;
+	private String companyName;  //公司名字
+	private String directName;  //负责人姓名
 	
 	
 	public PropertyRegisterDto() {
@@ -29,6 +30,7 @@ public class PropertyRegisterDto implements Serializable {
 		this.phone=null;
 		this.password=null;
 		this.companyName=null;
+		this.directName=null;
 	}
 
 }

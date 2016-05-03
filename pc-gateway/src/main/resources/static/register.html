@@ -15,6 +15,12 @@
 		
 		
 		<form role="form" ng-submit="login()">
+		
+		  <div class="form-group">
+		    <label for="companyName">公司名字:</label>
+		    <input type="companyName" class="form-control" id="companyName" name="companyName"  ng-model="credentials.companyName"/>
+		  </div>
+		  
 		  <div class="form-group">
 		    <label for="email">邮箱:</label>
 		    <input type="text" class="form-control" id="email" name="email"  ng-model="credentials.email"/>
@@ -29,6 +35,11 @@
 		  <div class="form-group">
 		    <label for="password">密码:</label>
 		    <input type="password" class="form-control" id="password" name="password"  ng-model="credentials.password"/>
+		  </div>
+		  
+		   <div class="form-group">
+		    <label for="directName">负责人姓名:</label>
+		    <input type="directName" class="form-control" id="directName" name="directName"  ng-model="credentials.directName"/>
 		  </div>
 		  
 		  

@@ -57,9 +57,10 @@ public class User implements Serializable{
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime registerTime; //用户注册时间
 	
-	private String realName; //真实姓名
+	private String directName; //负责人姓名,物业公司更换负责人姓名，手机号，email必须上传公司证明（盖章）
 	
-	private String companyName; //公司名字
+	@Indexed(unique = true)
+	private String companyName; //公司名字,必须和营业执照一致，否则无法通过（如需更换，必须提供营业执照，书面申请盖章证明）
 	
 	
 	private List<Role> roles=new ArrayList<Role>();   //权限
@@ -71,7 +72,7 @@ public class User implements Serializable{
 	this.email=null;
 	this.password=null;
 	this.phone=null;
-	this.realName=null;
+	this.directName=null;
 	this.registerTime=null;
 	//roles 已经设置了默认值。
 	}

@@ -15,10 +15,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import com.xdidian.keryhu.domain.AuthUser;
 import lombok.RequiredArgsConstructor;
 
 import com.amazonaws.util.StringUtils;
+import com.xdidian.keryhu.authserver.domain.AuthUserDto;
 import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
 import com.xdidian.keryhu.authserver.exception.LoginAttemptBlockedException;
 import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
@@ -83,7 +83,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 	 *   @param @return 返回用户当前权限 
 	 *   @return Collection<? extends GrantedAuthority> 返回类型 @throws
 	 */
-	private Collection<? extends GrantedAuthority> getAuthorities(AuthUser user) {
+	private Collection<? extends GrantedAuthority> getAuthorities(AuthUserDto user) {
 
 		if (user.getRoles() == null) {
 			return null;

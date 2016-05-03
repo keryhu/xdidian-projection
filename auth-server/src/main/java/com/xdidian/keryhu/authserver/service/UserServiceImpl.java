@@ -4,8 +4,9 @@ package com.xdidian.keryhu.authserver.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xdidian.keryhu.domain.AuthUser;
 import com.xdidian.keryhu.authserver.client.UserAccountClient;
+import com.xdidian.keryhu.authserver.domain.AuthUserDto;
+
 import lombok.RequiredArgsConstructor;
 
 
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
 	 * @param @return @param 传入的唯一标示符 @return 返回查询到AuthUser结果，如无结果则为null
 	 */
 	@Override
-	public AuthUser findByIdentity(String identity) {
+	public AuthUserDto findByIdentity(String identity) {
 					
 		return authUserClient.ByIdentity(identity).getBody();
 	}

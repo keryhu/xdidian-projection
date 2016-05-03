@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.xdidian.keryhu.domain.AuthUser;
+import com.xdidian.keryhu.authserver.domain.AuthUserDto;
 
 /**
  *
@@ -30,7 +30,7 @@ public interface UserAccountClient {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/findByIdentity",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<AuthUser> ByIdentity(@RequestParam("identity") String identity);
+	public ResponseEntity<AuthUserDto> ByIdentity(@RequestParam("identity") String identity);
 	
 
 	/**

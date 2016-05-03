@@ -6,7 +6,8 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import com.xdidian.keryhu.domain.AuthUser;
+
+import com.xdidian.keryhu.authserver.domain.AuthUserDto;
 
 /**
  * feign 连接失败的一个默认方法。
@@ -17,9 +18,9 @@ import com.xdidian.keryhu.domain.AuthUser;
 public class UserAccountClientFallback implements UserAccountClient {
 	
 	@Override
-	public ResponseEntity<AuthUser> ByIdentity(String identity) {
+	public ResponseEntity<AuthUserDto> ByIdentity(String identity) {
 		// TODO Auto-generated method stub
-		return new ResponseEntity<AuthUser>(new AuthUser(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity<AuthUserDto>(new AuthUserDto(),HttpStatus.NOT_FOUND);
 	}
 
 	/**

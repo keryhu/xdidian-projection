@@ -21,7 +21,6 @@ import com.xdidian.keryhu.useraccount.domain.User;
 import com.xdidian.keryhu.useraccount.exception.UserNotFoundException;
 import com.xdidian.keryhu.useraccount.service.ConverterUtil;
 import com.xdidian.keryhu.useraccount.service.UserService;
-import com.xdidian.keryhu.util.SecurityUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -67,8 +66,7 @@ public class UserController {
 	
 	/**
 	* @Title: createUser
-	* @Description: TODO(将远程提交过来的物业公司注册dto对象转为user 对象，并且保存数据库。
-	* 增加验证，必须是未注册用户才可以使用save)
+	* @Description: TODO(将远程提交过来的物业公司注册dto对象转为user 对象，并且保存数据库。)
 	* @param @param dto
 	* @param @return    设定文件
 	* @return ResponseEntity<Resource<User>>    返回类型
@@ -78,10 +76,10 @@ public class UserController {
 		public ResponseEntity<PropertyRegisterDto> createUser(@RequestBody PropertyRegisterDto dto){
 		   
 		logger.info("提交的dto is : "+dto);
-		  
-		  if(SecurityUtils.isAuthenticated()){
-			  //抛出错误，
-		  }
+		
+		//验证提交数据的合法性
+		userService.validatePropertyDtoBeforeSave(dto);
+		
 		
 		  //将提交的PropertyRegisterDto 转为User对象。
 		

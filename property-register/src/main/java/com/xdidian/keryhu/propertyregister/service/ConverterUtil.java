@@ -25,7 +25,8 @@ public class ConverterUtil {
 		
 		PasswordEncoder passwordEncoder=new BCryptPasswordEncoder(11); 
 		
-		return new PropertyRegisterDto(x.getEmail(),x.getPhone(),passwordEncoder.encode(x.getPassword()),x.getCompanyName());
+		return new PropertyRegisterDto(x.getEmail(),x.getPhone(),passwordEncoder.encode(x.getPassword()),
+				x.getCompanyName(),x.getDirectName());
 	};
 
 }
