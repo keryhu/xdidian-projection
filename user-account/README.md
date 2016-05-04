@@ -31,4 +31,4 @@ user的数据库，必须和这些接口对接，不能直接操作数据库。
 
 九 、 实现了两个Dto（AuthUser 和 propertyRegister ）
 
-
+十 、 通过spring cloud stream 监听message（用户注册成功），接受到userId后，自动更新到该user 的 上次登录成功的时间为当时时间。

@@ -89,6 +89,9 @@ public class UserController {
 		}
 	
 	
+	
+	
+	
 	/**
 	 * 
 	* @Title: isEmailExist

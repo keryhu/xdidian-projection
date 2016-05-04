@@ -57,6 +57,12 @@ public class User implements Serializable{
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime registerTime; //用户注册时间
 	
+	
+	@DateTimeFormat(iso=ISO.DATE_TIME)
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	private LocalDateTime lastLoginTime; //记录上次登录时间
+	
 	private String directName; //负责人姓名,物业公司更换负责人姓名，手机号，email必须上传公司证明（盖章）
 	
 	@Indexed(unique = true)

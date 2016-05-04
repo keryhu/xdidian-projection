@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
-
+import static com.xdidian.keryhu.util.Constants.READ_AND_WRITE_RESOURCE_ID;
 /**
  * 
 * @ClassName: ResourceServerConfig
@@ -58,7 +58,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		 @Override
 		    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 		        
-		        resources.resourceId("ReadAndWriteResource");
+		        resources.resourceId(READ_AND_WRITE_RESOURCE_ID);
 		    }
 		 
 		 

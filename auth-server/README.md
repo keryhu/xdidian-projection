@@ -32,4 +32,6 @@
 
 十 、 实现了登陆时输错账户，密码，自动跳转/login?error页面，显示错误信息的功能，目前能够显示账户被冻结的信息，和通过messageSource，实现了 badCredentials 错误信息 message.property，自定义的功能。到时候通过js，远程传递当前失败了多少次的 参数，显示该页面。
 
-十一： 403，非授权和401 页面显示问题，到时候通过前途 httpCode 拦截，设置页面实现。
+十一 、 403，非授权和401 页面显示问题，到时候通过前途 httpCode 拦截，设置页面实现。
+
+十二 、 通过监听用户登录成功事件，实现了用户登录成功后，发送spring cloud stream message（userId） 出去，（user——account）接受，并且更新用户登录时间为当时时间的功能。

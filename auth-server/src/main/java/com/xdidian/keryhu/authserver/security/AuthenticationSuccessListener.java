@@ -8,6 +8,7 @@
 */ 
 package com.xdidian.keryhu.authserver.security;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,9 @@ import org.springframework.security.authentication.event.AuthenticationSuccessEv
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
+
 import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
-import com.xdidian.keryhu.util.SecurityUtils;
+import com.xdidian.keryhu.authserver.stream.LoginSuccessProducer;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +34,8 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationSuccessListener  implements ApplicationListener<AuthenticationSuccessEvent>{
 	
 	private final LoginAttemptUserService loginAttemptUserService;
+	
+	private final LoginSuccessProducer sendSource;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticationSuccessListener.class);
 
@@ -52,6 +56,9 @@ public class AuthenticationSuccessListener  implements ApplicationListener<Authe
 		 loginAttemptUserService.loginSuccess(ip, userId);
 		 logger.info("登陆成功后，远程登陆的ip地址是： "+auth.getRemoteAddress()
 				 +" , userId is : "+userId);
+		 
+		 //登录成功后，通过spring cloud stream rabbit 将登录成功的userId发送出去，user－account接受
+		 sendSource.send(userId);
 		 
 	}
 

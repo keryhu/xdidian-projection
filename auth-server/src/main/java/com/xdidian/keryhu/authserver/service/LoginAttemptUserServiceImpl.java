@@ -11,6 +11,7 @@ package com.xdidian.keryhu.authserver.service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,12 +88,14 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 		    	e.setAlreadyAttemptTimes(1);	
 		    } else {
 		    	//如果输错次数已经等同于规定的最大次数－1
+		    	
 		    	if(e.getAlreadyAttemptTimes()==loginAttemptProperties.getMaxAttemptTimes()-1){
 		    		e.setLocked(true);
 		    		e.setLockedTime(LocalDateTime.now());    		
 		    	}
-		    	
-		    	e.setAlreadyAttemptTimes(e.getAlreadyAttemptTimes()+1);  	
+		    	AtomicInteger atomic=new AtomicInteger(e.getAlreadyAttemptTimes());
+		    	//原子性＋1
+		    	e.setAlreadyAttemptTimes(atomic.incrementAndGet());  	
 		    }
 		    addLoginName(loginName,e);
 		    repository.save(e);
@@ -173,7 +176,9 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 					 				 e.setAlreadyAttemptTimes(0);
 					 				 e.setLocked(false);
 					 				 e.setLockedTime(null);
-					 				 e.setAlreadyLockedTimes(e.getAlreadyLockedTimes()+1);
+					 				 AtomicInteger atomic=new AtomicInteger(e.getAlreadyLockedTimes());
+					 				 //原子性＋1
+					 				 e.setAlreadyLockedTimes(atomic.incrementAndGet());
 					 				 repository.save(e);
 					 				 return false;
 					 			}

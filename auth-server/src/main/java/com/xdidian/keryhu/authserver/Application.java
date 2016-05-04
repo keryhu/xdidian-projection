@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes("authorizationRequest")
 @EnableDiscoveryClient
 @EnableFeignClients
+
 public class Application {
 
 	public static void main(String[] args) {
