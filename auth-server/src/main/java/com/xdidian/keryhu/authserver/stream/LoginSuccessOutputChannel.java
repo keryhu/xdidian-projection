@@ -19,6 +19,7 @@ import org.springframework.messaging.MessageChannel;
 */
 public interface LoginSuccessOutputChannel {
 	
+	//此channel的值和 application bindings下面的值一致
 	String NAME="loginSuccessOutputChannel";
 	
 	@Output(NAME)

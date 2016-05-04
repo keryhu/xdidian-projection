@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
 * @ClassName: SendSource
 * @Description: TODO(当登录成功后，通过spring cloud stream 发送userId出去。)
+* 注意这个不能通过lombok 实现 constructor
 * @author keryhu  keryhu@hotmail.com
 * @date 2016年5月3日 下午9:20:51
 */

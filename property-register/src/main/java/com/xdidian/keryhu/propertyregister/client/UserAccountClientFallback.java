@@ -1,11 +1,7 @@
 package com.xdidian.keryhu.propertyregister.client;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import com.xdidian.keryhu.propertyregister.domain.PropertyRegisterDto;
-
 
 
 /**
@@ -17,11 +13,7 @@ import com.xdidian.keryhu.propertyregister.domain.PropertyRegisterDto;
 @Component
 public class UserAccountClientFallback implements UserAccountClient {
 
-	@Override
-	public ResponseEntity<PropertyRegisterDto> createUser(PropertyRegisterDto dto) {
-		// TODO Auto-generated method stub
-		return new ResponseEntity<PropertyRegisterDto>(new PropertyRegisterDto(),HttpStatus.BAD_GATEWAY);
-	}
+	
 
 	@Override
 	public ResponseEntity<?> del(String id) {

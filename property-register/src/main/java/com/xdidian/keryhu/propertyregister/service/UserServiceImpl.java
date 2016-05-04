@@ -10,13 +10,12 @@ package com.xdidian.keryhu.propertyregister.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.xdidian.keryhu.propertyregister.client.UserAccountClient;
 import com.xdidian.keryhu.propertyregister.domain.PropertyForm;
 import com.xdidian.keryhu.propertyregister.exception.PropertySaveException;
 import com.xdidian.keryhu.util.StringValidate;
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
 * @ClassName: UserServiceImpl
@@ -26,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 */
 @Component("userService")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class UserServiceImpl implements UserService {
 	
 	private final UserAccountClient userAccountClient;
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void vlidateBeforSave(PropertyForm propertyForm) {
 		// TODO Auto-generated method stub
-		
+		log.info("需要验证的propertyForm is ： "+propertyForm);
 		boolean isEmailCorrect=StringValidate.IsEmail(propertyForm.getEmail());
 		boolean isPhoneCorrect=StringValidate.IsPhone(propertyForm.getPhone());
 		boolean isPasswordCorrect=StringValidate.IsPassword(propertyForm.getPassword());
@@ -53,11 +53,13 @@ public class UserServiceImpl implements UserService {
 		boolean noExist=(!userAccountClient.isEmailExist(propertyForm.getEmail()))&&
 				(!userAccountClient.isPhoneExist(propertyForm.getPhone()))&&
 				(!userAccountClient.isCompanyNameExist(propertyForm.getCompanyName()));
+		log.info("是否所有的输入信息都符合规定 ： "+allCorrect+" ， 是否所有输入的信息，在系统中都不存在 ： "+noExist);
 		
 		if(!(allCorrect&&noExist)){
 			throw new PropertySaveException("输入信息不合法，或者提供的手机号，email，公司名字已经注册过!");
 		}
 		
 	}
+
 
 }

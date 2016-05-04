@@ -3,36 +3,31 @@ package com.xdidian.keryhu.useraccount.rest;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xdidian.keryhu.useraccount.domain.AuthUserDto;
-import com.xdidian.keryhu.useraccount.domain.PropertyRegisterDto;
 import com.xdidian.keryhu.useraccount.domain.User;
 import com.xdidian.keryhu.useraccount.exception.UserNotFoundException;
 import com.xdidian.keryhu.useraccount.service.ConverterUtil;
 import com.xdidian.keryhu.useraccount.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class UserController {
 	
 	private final UserService userService;
 	
 	private final ConverterUtil converterUtil;
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	//返回的是spring data HAL rest 带有herf的链接，这个是 auth－service 需要调用的rest get接口
 	//必须使用@RequestParam，如果使用PathVariable，则查询email会有bug
@@ -64,31 +59,6 @@ public class UserController {
 	}
 	
 	
-	/**
-	* @Title: createUser
-	* @Description: TODO(将远程提交过来的物业公司注册dto对象转为user 对象，并且保存数据库。)
-	* 物业公司注册信息已经在property－register 里面验证过了，这里无需再验证，假设有黑客通过链接自动post
-	* 提交，也做不了下一步的工作，因为注册完了还需要，验证邮箱，企业营业执照才能做账单等工作，所以无需担心。
-	* @param @param dto
-	* @param @return    设定文件
-	* @return ResponseEntity<Resource<User>>    返回类型
-	* @throws
-	 */
-	@RequestMapping(method=RequestMethod.POST,value="/users/property/save")
-		public ResponseEntity<PropertyRegisterDto> createUser(@RequestBody PropertyRegisterDto dto){
-		   
-		logger.info("提交的dto is : "+dto);	
-		
-		  //将提交的PropertyRegisterDto 转为User对象。
-		
-		  User user=converterUtil.propertyRegisterDtoToUser.apply(dto);
-		  //保存数据库
-		  userService.save(user);
-			
-		  return new  ResponseEntity<PropertyRegisterDto>(dto,HttpStatus.CREATED);
-		}
-	
-	
 	
 	
 	
@@ -103,7 +73,7 @@ public class UserController {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isEmailExist")
 	public ResponseEntity<?> isEmailExist(@RequestParam(value="", required=true) String email){
-		logger.info("需要被查询的email是："+email+" , email  是否存在于数据库 ： "+userService.emailIsExist(email));
+		log.info("需要被查询的email是："+email+" , email  是否存在于数据库 ： "+userService.emailIsExist(email));
 		Map<String,Boolean> result=new HashMap<String,Boolean>();
 		result.put("isEmailExist", userService.emailIsExist(email));
 		return ResponseEntity.ok(result);
@@ -122,7 +92,7 @@ public class UserController {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isPhoneExist")
     public ResponseEntity<?> isPhoneExist(@RequestParam(value="", required=true) String phone){
-		logger.info("需要被查询的phone是："+phone+" , phone  是否存在于数据库 ： "+userService.phoneIsExist(phone));
+		log.info("需要被查询的phone是："+phone+" , phone  是否存在于数据库 ： "+userService.phoneIsExist(phone));
 		Map<String,Boolean> result=new HashMap<String,Boolean>();
 		result.put("isPhoneExist", userService.phoneIsExist(phone));
 		

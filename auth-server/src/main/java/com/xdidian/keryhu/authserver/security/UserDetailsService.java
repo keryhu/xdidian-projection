@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.authserver.domain.AuthUserDto;
@@ -26,7 +25,7 @@ import com.xdidian.keryhu.authserver.service.UserServiceImpl;
 
 @Component("userDetailsService")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-
+@Slf4j
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
 	private final UserServiceImpl userService;
@@ -37,8 +36,6 @@ public class UserDetailsService implements org.springframework.security.core.use
 	
 	private final LoginAttemptProperties loginAttemptProperties;
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserDetailsService.class);
-
 	/**
 	 * <p>
 	 * Title: loadUserByUsername
@@ -61,7 +58,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 					.append("次，被系统锁定了")
 					.append(loginAttemptProperties.getTimeOfLock())
 					.append("小时！").toString();
-			logger.error("系统日志错误，原因 : "+msg);
+			log.error("系统日志错误，原因 : "+msg);
 			//当用户在某个时间点类登陆错误次数过多，就冻结此账户的ip地址。
 			throw new LoginAttemptBlockedException(msg);
 		}

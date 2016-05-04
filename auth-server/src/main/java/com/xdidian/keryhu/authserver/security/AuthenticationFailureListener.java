@@ -8,19 +8,14 @@
 */ 
 package com.xdidian.keryhu.authserver.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
-
-import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
-import com.xdidian.keryhu.authserver.repository.LoginAttemptUserRepository;
 import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
 * @ClassName: AuthenticationFailureListener
@@ -30,10 +25,10 @@ import lombok.RequiredArgsConstructor;
 */
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class AuthenticationFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent>  {
 
 	private final LoginAttemptUserService loginAttemptUserService;
-	private static final Logger logger = LoggerFactory.getLogger(AuthenticationFailureListener.class);
 
 	/**
 	* <p>Title: onApplicationEvent</p>
@@ -54,7 +49,7 @@ public class AuthenticationFailureListener implements ApplicationListener<Authen
 		
 		loginAttemptUserService.loginFail(ip, loginName);
 		
-		logger.info("auth failer is running and auth is : "+auth);
+		log.info("auth failer is running and auth is : "+auth);
 		
 	}
 

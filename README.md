@@ -9,8 +9,8 @@ spring micro－service cloud docker domo
 三 、 目前是每一个service单独的数据库，相互之间没有实现message broker。
 
 
-四 、 更新于 2016-5-2: 接下来需要实现的功能： 
-   物业公司注册，提交的web数据，需要经过合法的验证
+四 、 更新于 2016-5-4: 接下来需要实现的功能： 
+     邮箱验证（role ＝物业公司）物业公司资料编辑
   
  
 

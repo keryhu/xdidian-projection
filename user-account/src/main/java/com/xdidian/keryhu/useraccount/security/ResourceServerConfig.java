@@ -47,7 +47,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		                .and().authorizeRequests().expressionHandler(webExpressionHandler())  //权限排序
 		                .antMatchers("/favicon.ico").permitAll()
 		                .antMatchers(HttpMethod.GET, "/users/query/**").permitAll()
-		                .antMatchers(HttpMethod.POST,"/users/property/save").permitAll()
 		                
 		                .anyRequest().authenticated()
 		                ;

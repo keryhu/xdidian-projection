@@ -3,7 +3,7 @@
 user的数据库，必须和这些接口对接，不能直接操作数据库。
 目前实现了下面几个功能：
 
- AuthUser 接口、 email 接口、 phone 接口、 companyName 接口 、 Property 注册接口 、 user 删除接口。
+ AuthUser 接口、 email 接口、 phone 接口、 companyName 接口 、  user 删除接口。
 
 二 、 它本身是一个spring OAuth2 Resource Service，实现了根据权限大小，分配不同的功能，也就是权限的层级关系。
 
@@ -22,13 +22,13 @@ user的数据库，必须和这些接口对接，不能直接操作数据库。
 
 > /users/query/isComponyNameExist get 方法 @RequestParam("phone") ， 无security
 
-七 、 property 注册接口： 用户propertyRegitser 服务器，将用户注册数据，远程post 给该接口，该接口实现了保存数据库的功能。
-> /users/property/save post 方法，保存，无 security，但是保存之前，必须是非登陆用户，做了相应的拦截。
 
-八： user 删除接口： 用户注销账户，管理员清理账户，
+七 、 user 删除接口： 用户注销账户，管理员清理账户，
 
 > /users/{id} delete 方法  有security，目前还未设置。
 
-九 、 实现了两个Dto（AuthUser 和 propertyRegister ）
+八 、 实现了两个Dto（AuthUser 和 propertyRegister ）
 
-十 、 通过spring cloud stream 监听message（用户注册成功），接受到userId后，自动更新到该user 的 上次登录成功的时间为当时时间。
+九 、 通过spring cloud stream 监听message（用户注册成功），接受到userId后，自动更新到该user 的 上次登录成功的时间为当时时间。
+
+十 、 通过spring cloud stream 监听 物业公司注册信息的message，都收到此信息后，converter 为user ，然后保存数据库。

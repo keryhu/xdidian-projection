@@ -9,13 +9,15 @@
 package com.xdidian.keryhu.pcgateway.security;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
+
+
+import lombok.extern.slf4j.Slf4j;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,9 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 * @date 2016年4月28日 下午4:12:37
 */
 @Component
+@Slf4j
 public class CustomLogoutHandler implements LogoutHandler {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CustomLogoutHandler.class);
 
     public CustomLogoutHandler(){
         super();
@@ -39,7 +41,7 @@ public class CustomLogoutHandler implements LogoutHandler {
     @Override
     public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
 
-    	logger.error("cusotomer logout handler is running ..");
+    	log.error("cusotomer logout handler is running ..");
     	
         if (authentication != null && authentication.getDetails() != null && authentication.isAuthenticated()) {
             authentication.setAuthenticated(false);

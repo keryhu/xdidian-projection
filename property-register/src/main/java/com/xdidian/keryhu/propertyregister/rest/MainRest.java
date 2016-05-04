@@ -1,24 +1,21 @@
 package com.xdidian.keryhu.propertyregister.rest;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import com.esotericsoftware.minlog.Log;
 import com.xdidian.keryhu.propertyregister.client.UserAccountClient;
 import com.xdidian.keryhu.propertyregister.domain.PropertyForm;
-import com.xdidian.keryhu.propertyregister.domain.PropertyRegisterDto;
 import com.xdidian.keryhu.propertyregister.service.ConverterUtil;
 import com.xdidian.keryhu.propertyregister.service.UserService;
-
+import com.xdidian.keryhu.propertyregister.stream.PropertyRegisterProducer;
 import lombok.RequiredArgsConstructor;
 
 
@@ -28,10 +25,11 @@ public class MainRest {
 
 	private final ConverterUtil converterUtil;
 
-	private  final UserAccountClient createUserClient;
+	private final UserAccountClient createUserClient;
 	
 	private final UserService userService;
 
+	private final PropertyRegisterProducer producer;
 	
 	/**
 	 * 
@@ -44,7 +42,7 @@ public class MainRest {
 	* @throws
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/property/register")
-	public  ResponseEntity<?>  createUser(@RequestBody PropertyForm propertyForm) {
+	public void  createUser(@RequestBody PropertyForm propertyForm) {
 		
 		System.out.println("正在调用property－register service 的 save get方法。");
 		
@@ -52,13 +50,9 @@ public class MainRest {
 		
 		userService.vlidateBeforSave(propertyForm);
 			
-			//将web 数据转为dto，并远程提交给useraccount service
-			ResponseEntity<PropertyRegisterDto> result=createUserClient.createUser(
-					converterUtil.propertyFormToRegisterDto.apply(propertyForm));
-			
-			return new  ResponseEntity<PropertyRegisterDto>(result.getBody(),HttpStatus.CREATED);
-			
-	
+		//用户注册完，发送dto具体信息的message 给 user-account
+	    producer.send(converterUtil.propertyFormToRegisterDto.apply(propertyForm));
+		
 	}
 	
 	
@@ -76,16 +70,13 @@ public class MainRest {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/property/{id}")
 	public ResponseEntity<?> hello(@PathVariable("id") String id){
 		
-		//return userService.delById(id);
+		Log.info("删除id的程序正在运行");
 		return createUserClient.del(id);
 		
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/test")
 	public String test(){
-		
-		
-		
 		
 		return "get useraccount feign ";
 	}

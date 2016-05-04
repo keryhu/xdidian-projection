@@ -13,17 +13,14 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
 import com.xdidian.keryhu.authserver.domain.LoginAttemptUser;
 import com.xdidian.keryhu.authserver.repository.LoginAttemptUserRepository;
-import com.xdidian.keryhu.authserver.security.UserDetailsService;
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @ClassName: LoginAttemptUserServiceImpl
@@ -33,12 +30,12 @@ import lombok.RequiredArgsConstructor;
  */
 @Component("loginAttemptUserService")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 
 	private final LoginAttemptProperties loginAttemptProperties;
 	private final LoginAttemptUserRepository repository;
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserDetailsService.class);
 
 	/**
 	* <p>Title: loginFail</p>
@@ -152,7 +149,7 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 				         .map(e->{			        	 
 				        	 //获取用户锁定的时间点
 				    		 LocalDateTime lockedTime=e.getLockedTime();
-				  				logger.info(new StringBuffer("数据库中ip账户锁定的时间点是 : ")
+				  				log.info(new StringBuffer("数据库中ip账户锁定的时间点是 : ")
 				  						.append(lockedTime)
 				  						.append(" , 目前的ISO时间是 : ")
 				  						.append(LocalDateTime.now())
