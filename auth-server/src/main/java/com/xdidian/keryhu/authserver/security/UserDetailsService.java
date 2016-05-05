@@ -52,8 +52,6 @@ public class UserDetailsService implements org.springframework.security.core.use
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		
-		// 需要增加一个，查看email是否已经被验证了。如果没有验证报错
-		
 		if(loginAttemptUserService.isBlocked(getRemoteIP())){
 			
 			String msg=new StringBuffer("您在").append(loginAttemptProperties.getTimeOfPerid())
@@ -73,6 +71,10 @@ public class UserDetailsService implements org.springframework.security.core.use
 			if (StringUtils.isNullOrEmpty(a.getId())) {
 				throw new UsernameNotFoundException("新地点不存在此账户，请先注册！");
 			}
+			
+			//AuthUser 需要增加一个 emailActivated 值 然后这里判断此值是否true，否则报错
+			
+			
 			return new org.springframework.security.core.userdetails.User(a.getId(), a.getPassword(), true, true, true,
 					true, getAuthorities(a));
 		}).get();

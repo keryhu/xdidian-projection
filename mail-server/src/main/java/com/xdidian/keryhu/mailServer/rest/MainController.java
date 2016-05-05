@@ -1,4 +1,4 @@
-package com.xdidian.keryhu.mailActivate.rest;
+package com.xdidian.keryhu.mailServer.rest;
 
 import javax.mail.MessagingException;
 
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xdidian.keryhu.mailActivate.mail.SmtpMailSender;
+import com.xdidian.keryhu.mailServer.mail.SmtpMailSender;
 
 import lombok.RequiredArgsConstructor;
 

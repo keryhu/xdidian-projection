@@ -1,4 +1,4 @@
-package com.xdidian.keryhu.mailActivate.mail;
+package com.xdidian.keryhu.mailServer.mail;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;

@@ -139,9 +139,9 @@ services:
       - eureka
       - configserver
       
-  mailactivate:
-    image: mail-activate:0.0.1-SNAPSHOT
-    container_name: mailactivate
+  mailserver:
+    image: mail-server:0.0.1-SNAPSHOT
+    container_name: mailserver
     restart: always
     ports:
      - "8002:8002"
@@ -172,7 +172,7 @@ services:
       - configserver
       - authserver
       - useraccount
-      - mailactivate
+      - mailserver
 
 networks:
   wfij:
