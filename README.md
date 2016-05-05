@@ -4,7 +4,7 @@
 spring micro－service cloud docker domo
 
 二 、 目前启动顺序是： eureka －> config server ->user account-> auth server
--> property-register -> pc gateway 等其他的
+-> property-register -> mail-activation-> pc gateway 等其他的
 
 三 、 目前是每一个service单独的数据库，相互之间没有实现message broker。
 

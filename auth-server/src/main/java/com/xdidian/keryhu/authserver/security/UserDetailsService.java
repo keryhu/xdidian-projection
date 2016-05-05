@@ -39,8 +39,9 @@ public class UserDetailsService implements org.springframework.security.core.use
 	/**
 	 * <p>
 	 * Title: loadUserByUsername
-	 * Description: 根据用户名，查询数据库系统后台(user-account),是否存在此用户,同时增加了一个loginAttempt 的拦截限制，
-	 * 一旦用户被冻结，则锁定账户多少小时
+	 * Description: 根据用户名，查询数据库系统后台(user-account),是否存在此用户,同时增加了两个拦截器
+	 * email账户是否验证激活的拦截，如果没有则报错
+	 * 一个loginAttempt 的拦截限制，一旦用户被冻结，则锁定账户多少小时
 	 * @param username  包含uuid，email phone 的任何一种
 	 * @return 当前用户的spring security details
 	 * @throws UsernameNotFoundException  当前用户不存在
@@ -50,6 +51,8 @@ public class UserDetailsService implements org.springframework.security.core.use
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
+		
+		// 需要增加一个，查看email是否已经被验证了。如果没有验证报错
 		
 		if(loginAttemptUserService.isBlocked(getRemoteIP())){
 			
@@ -62,6 +65,9 @@ public class UserDetailsService implements org.springframework.security.core.use
 			//当用户在某个时间点类登陆错误次数过多，就冻结此账户的ip地址。
 			throw new LoginAttemptBlockedException(msg);
 		}
+		
+		
+		
 		
 		return (UserDetails) Optional.of(userService.findByIdentity(username)).map(a -> {
 			if (StringUtils.isNullOrEmpty(a.getId())) {

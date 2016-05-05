@@ -71,6 +71,13 @@ public class User implements Serializable{
 	
 	private List<Role> roles=new ArrayList<Role>();   //权限
 	
+	//邮箱是否被激活 ，之所以要加上index索引，方便定时清理未激活的账户
+	@Indexed
+	private boolean emailActivated;  
+	
+	//email激活的验证码
+	private String emailActivatedCode;
+	
 	//用户新注册时候的时候，自动生成Id,其它的变量都为null
 	public User(){
 	this.id=UUID.randomUUID().toString();
@@ -80,6 +87,8 @@ public class User implements Serializable{
 	this.phone=null;
 	this.directName=null;
 	this.registerTime=null;
+	this.emailActivated=false;
+	this.emailActivatedCode=null;
 	//roles 已经设置了默认值。
 	}
 	

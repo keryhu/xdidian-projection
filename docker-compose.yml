@@ -123,19 +123,7 @@ services:
       - useraccount
 
 
-  mailactivation:
-    image: mail-activation:0.0.1-SNAPSHOT
-    container_name: mailactivation
-    restart: always
-    ports:
-     - "8002:8002"
-    environment:
-      DOMAIN_NAME: 192.168.1.110
-    networks:
-      - wfij
-    depends_on: 
-      - eureka
-      - configserver
+ 
     
   propertyregister:
     image: property-register:0.0.1-SNAPSHOT
@@ -143,6 +131,20 @@ services:
     restart: always
     ports:
      - "8003:8003"
+    environment:
+      DOMAIN_NAME: 192.168.1.110
+    networks:
+      - wfij
+    depends_on: 
+      - eureka
+      - configserver
+      
+  mailactivate:
+    image: mail-activate:0.0.1-SNAPSHOT
+    container_name: mailactivate
+    restart: always
+    ports:
+     - "8002:8002"
     environment:
       DOMAIN_NAME: 192.168.1.110
     networks:
@@ -170,7 +172,7 @@ services:
       - configserver
       - authserver
       - useraccount
-      - mailserver
+      - mailactivate
 
 networks:
   wfij:

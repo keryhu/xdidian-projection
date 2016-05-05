@@ -1,4 +1,4 @@
-package com.xdidian.keryhu.mailActivation;
+package com.xdidian.keryhu.mailActivate;
 
 
 import org.springframework.boot.SpringApplication;
