@@ -123,9 +123,9 @@ services:
       - useraccount
 
 
-  mailserver:
-    image: mail-server:0.0.1-SNAPSHOT
-    container_name: mailserver
+  mailactivation:
+    image: mail-activation:0.0.1-SNAPSHOT
+    container_name: mailactivation
     restart: always
     ports:
      - "8002:8002"

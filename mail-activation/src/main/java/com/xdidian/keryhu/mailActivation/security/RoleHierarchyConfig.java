@@ -1,4 +1,4 @@
-package com.xdidian.keryhu.mailserver.security;
+package com.xdidian.keryhu.mailActivation.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

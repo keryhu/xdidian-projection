@@ -1,7 +1,6 @@
-
 spring:
   application:
-    name: mail-server
+    name: mail-activation
   cloud:  
     config:
        uri: http://15900455491:skdjf7782c@${domain.name:localhost}:8888

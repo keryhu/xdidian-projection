@@ -28,7 +28,7 @@
 		<module>user-account</module>
 		<module>auth-server</module>
 		<module>property-register</module>
-		<module>mail-server</module>
+		<module>mail-activation</module>
 		<module>pc-gateway</module>
 	</modules>
 
@@ -66,7 +66,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
 
 	<dependencyManagement>

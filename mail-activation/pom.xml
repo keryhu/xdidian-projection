@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>mail-server</artifactId>
-	<name>mail-server</name>
+	<artifactId>mail-activation</artifactId>
+	<name>mail-activation</name>
 	<packaging>jar</packaging>
-	<description>spring cloud mail-server</description>
+	<description>用户注册完，需要验证注册的邮箱的service</description>
 
 
 	<parent>
