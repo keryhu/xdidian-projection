@@ -1,7 +1,6 @@
 package com.xdidian.keryhu.authserver.security;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,25 +51,26 @@ public class UserDetailsService implements org.springframework.security.core.use
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		
-		if(loginAttemptUserService.isBlocked(getRemoteIP())){
-			
-			String msg=new StringBuffer("您在").append(loginAttemptProperties.getTimeOfPerid())
-					.append("个小时内，登陆失败了").append(loginAttemptProperties.getMaxAttemptTimes())
-					.append("次，被系统锁定了")
-					.append(loginAttemptProperties.getTimeOfLock())
-					.append("小时！").toString();
-			log.error("系统日志错误，原因 : "+msg);
-			//当用户在某个时间点类登陆错误次数过多，就冻结此账户的ip地址。
-			throw new LoginAttemptBlockedException(msg);
-		}
 		
-		
-		
-		
-		return (UserDetails) Optional.of(userService.findByIdentity(username)).map(a -> {
+		return (UserDetails) userService.findByIdentity(username).map(a -> {
 			if (StringUtils.isNullOrEmpty(a.getId())) {
 				throw new UsernameNotFoundException("新地点不存在此账户，请先注册！");
 			}
+			
+			//查看当前账户有没有被冻结－－
+			
+			if(loginAttemptUserService.isBlocked(getRemoteIP())){
+				
+				String msg=new StringBuffer("您在").append(loginAttemptProperties.getTimeOfPerid())
+						.append("个小时内，登陆失败了").append(loginAttemptProperties.getMaxAttemptTimes())
+						.append("次，被系统锁定了")
+						.append(loginAttemptProperties.getTimeOfLock())
+						.append("小时！").toString();
+				log.error("系统日志错误，原因 : "+msg);
+				//当用户在某个时间点类登陆错误次数过多，就冻结此账户的ip地址。
+				throw new LoginAttemptBlockedException(msg);
+			}
+			
 			
 			//AuthUser 需要增加一个 emailActivated 值 然后这里判断此值是否true，否则报错
 			

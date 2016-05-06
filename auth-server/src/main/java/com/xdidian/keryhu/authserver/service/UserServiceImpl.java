@@ -1,6 +1,8 @@
 package com.xdidian.keryhu.authserver.service;
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +29,14 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * 
 	 * @Title: findByIdentity (从远程接口UserAccount 获取需要被验证的AuthUser 对象。
-	 * @Description: TODO(根据User 的 唯一标志符 例如 email，userId ，phone 等查询唯一的数据库用户)
+	 * @Description: TODO(根据User 的 唯一标志符 用户登录的帐号。例如 email ，phone 等查询唯一的数据库用户)
 	 * @param @param identity
-	 * @param @return @param 传入的唯一标示符 @return 返回查询到AuthUser结果，如无结果则为null
+	 * @param @return @param 传入的唯一标示符 @return 返回查询到AuthUser结果，返回结果是Optional形式
 	 */
 	@Override
-	public AuthUserDto findByIdentity(String identity) {
+	public Optional<AuthUserDto> findByIdentity(String loginName) {
 					
-		return authUserClient.ByIdentity(identity).getBody();
+		return authUserClient.ByLoginName(loginName);
 	}
 
 

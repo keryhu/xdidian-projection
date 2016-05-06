@@ -1,10 +1,7 @@
 package com.xdidian.keryhu.authserver.client;
 
+import java.util.Optional;
 
-import java.util.Map;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.xdidian.keryhu.authserver.domain.AuthUserDto;
@@ -18,9 +15,9 @@ import com.xdidian.keryhu.authserver.domain.AuthUserDto;
 public class UserAccountClientFallback implements UserAccountClient {
 	
 	@Override
-	public ResponseEntity<AuthUserDto> ByIdentity(String identity) {
+	public Optional<AuthUserDto> ByLoginName(String loginName) {
 		// TODO Auto-generated method stub
-		return new ResponseEntity<AuthUserDto>(new AuthUserDto(),HttpStatus.NOT_FOUND);
+		return Optional.empty();
 	}
 
 	/**
@@ -31,9 +28,9 @@ public class UserAccountClientFallback implements UserAccountClient {
 	* @see com.xdidian.keryhu.authserver.client.UserAccountClient#isEmailExist(java.lang.String)
 	*/ 
 	@Override
-	public ResponseEntity<Map<String,Boolean>> isEmailExist(String email) {
+	public boolean isEmailExist(String email) {
 		// TODO Auto-generated method stub
-		return  ResponseEntity.ok(null);	
+		return  false;	
 		}
 
 	/**
@@ -44,9 +41,9 @@ public class UserAccountClientFallback implements UserAccountClient {
 	* @see com.xdidian.keryhu.authserver.client.UserAccountClient#isPhoneExist(java.lang.String)
 	*/ 
 	@Override
-	public ResponseEntity<Map<String,Boolean>> isPhoneExist(String phone) {
+	public boolean isPhoneExist(String phone) {
 		// TODO Auto-generated method stub
-		return   ResponseEntity.ok(null);
+		return   false;
 	}
 
 }

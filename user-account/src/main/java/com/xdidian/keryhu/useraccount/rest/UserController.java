@@ -34,17 +34,17 @@ public class UserController {
 	/**
 	 * 
 	* @Title: findByIdentity
-	* @Description: TODO(根据identity 查询数据库中的user 对象,未注册用户和已经注册的用户都可以使用)
+	* @Description: TODO(根据用户输入的登录帐号loginName，email或者phone格式 查询数据库中的user 对象,未注册用户和已经注册的用户都可以使用)
 	* @param @param identity 可以是phone，email ，uuid中任何一种
 	* @param @return    设定文件  返回ResponseEntity<userDto>
 	* @return ResponseEntity<?>    返回类型
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/query/findByIdentity")
-	public ResponseEntity<?> findByIdentity(@RequestParam(value="", required=true) String identity){
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/findByLoginName")
+	public ResponseEntity<?> findByLoginName(@RequestParam(value="", required=true) String loginName){
 		
 		//如果用户不存在，则抛出错误,返回json {"code":404,"message":"您查询的用户不存在！！"}
-		User user=userService.findByIdentity(identity)
+		User user=userService.findByLoginName(loginName)
 			        .orElseThrow(()->new UserNotFoundException("您输入的identity，数据库中不存在！！"));
 		//将User 转为 AuthUser对象
 		AuthUserDto au=converterUtil.userToAuthUser.apply(user);

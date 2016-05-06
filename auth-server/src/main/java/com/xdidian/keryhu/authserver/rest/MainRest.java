@@ -61,7 +61,9 @@ public class MainRest {
 	 */
 	@RequestMapping(value="/query/isEmailExist",method=RequestMethod.GET)
 	public ResponseEntity<?> isEmailExist(@RequestParam("email") String email){
-		return ResponseEntity.ok(userAccountClient.isEmailExist(email));
+		Map<String,Boolean> result=new HashMap<String,Boolean>();
+		result.put("isEmailExist", userAccountClient.isEmailExist(email));
+		return ResponseEntity.ok(result);
 	}
 
 	/**
@@ -75,8 +77,9 @@ public class MainRest {
 	 */
 	@RequestMapping(value="/query/isPhoneExist",method=RequestMethod.GET)
 	public ResponseEntity<?> isPhoneExist(@RequestParam("phone") String phone){
-		
-		return ResponseEntity.ok(userAccountClient.isPhoneExist(phone));
+		Map<String,Boolean> result=new HashMap<String,Boolean>();
+		result.put("isEmailExist", userAccountClient.isPhoneExist(phone));
+		return ResponseEntity.ok(result);
 	}
 	
 	/**
@@ -112,7 +115,5 @@ public class MainRest {
 	        
 	    
 	}
-	
-	
 	
 }

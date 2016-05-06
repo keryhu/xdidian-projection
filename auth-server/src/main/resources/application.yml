@@ -25,6 +25,8 @@ spring:
       bindings:
         loginSuccessOutputChannel:
           destination: loginSuccess
+        removeUserOutputChannel:
+          destination: removeUser
           
           
   rabbitmq:

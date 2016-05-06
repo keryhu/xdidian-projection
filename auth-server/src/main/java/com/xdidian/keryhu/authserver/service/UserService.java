@@ -1,6 +1,8 @@
 package com.xdidian.keryhu.authserver.service;
 
 
+import java.util.Optional;
+
 import com.xdidian.keryhu.authserver.domain.AuthUserDto;
 
 /**
@@ -16,7 +18,7 @@ public interface UserService {
 	 * @param identity ,传入的参数是 uuid，email，phone的一种，
 	 * @return  根据参数查询user－account，返回AuthUser对象
 	 */
-	public AuthUserDto findByIdentity(String identity) ;
+	public Optional<AuthUserDto> findByIdentity(String identity) ;
 	
 	
 	

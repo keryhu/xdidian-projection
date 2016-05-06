@@ -40,11 +40,11 @@ public class UserServiceImpl implements UserService {
 	public void vlidateBeforSave(PropertyForm propertyForm) {
 		// TODO Auto-generated method stub
 		log.info("需要验证的propertyForm is ： "+propertyForm);
-		boolean isEmailCorrect=StringValidate.IsEmail(propertyForm.getEmail());
-		boolean isPhoneCorrect=StringValidate.IsPhone(propertyForm.getPhone());
-		boolean isPasswordCorrect=StringValidate.IsPassword(propertyForm.getPassword());
-		boolean isCompanyName=StringValidate.IsCompanyName(propertyForm.getCompanyName());
-		boolean isDirectName=StringValidate.IsPeopleName(propertyForm.getDirectName());
+		boolean isEmailCorrect=StringValidate.isEmail(propertyForm.getEmail());
+		boolean isPhoneCorrect=StringValidate.isPhone(propertyForm.getPhone());
+		boolean isPasswordCorrect=StringValidate.isPassword(propertyForm.getPassword());
+		boolean isCompanyName=StringValidate.isCompanyName(propertyForm.getCompanyName());
+		boolean isDirectName=StringValidate.isPeopleName(propertyForm.getDirectName());
 		
 		//所有的输入信息的合法性  boolean，必须确保他们为true，否则报错。
 		boolean allCorrect=isEmailCorrect&&isPhoneCorrect&&isPasswordCorrect&&isCompanyName&&isDirectName;

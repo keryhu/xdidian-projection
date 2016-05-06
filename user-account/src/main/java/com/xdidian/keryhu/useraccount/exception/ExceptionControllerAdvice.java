@@ -35,5 +35,15 @@ public class ExceptionControllerAdvice {
 	        return new ErrorMessage(HttpStatus.NOT_FOUND.value(),ex.getMessage());
 	    }
 	 
+	 
+	 @ExceptionHandler(EmailNotFoundException.class)
+	 @ResponseBody
+	 @ResponseStatus(HttpStatus.NOT_FOUND)
+	 ErrorMessage handleEmailNotFoundException( Throwable ex) {
+	        
+	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
+	        return new ErrorMessage(HttpStatus.NOT_FOUND.value(),ex.getMessage());
+	    }
+	 
 
 }

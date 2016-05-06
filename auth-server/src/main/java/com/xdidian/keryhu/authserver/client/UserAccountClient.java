@@ -1,12 +1,10 @@
 package com.xdidian.keryhu.authserver.client;
 
 
-
-import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,11 +24,11 @@ public interface UserAccountClient {
 	/**
 	 * 自定义spring feign ，用于获取auth server 验证登陆用户，get 后台mongo 数据库，从user-account api 接口获取。
 	 * @author hushuming
-	 * @param 是uuid ，email phone 的任何一种。
+	 * @param loginName 就是用户登陆的帐号类型，可以是email，或者phone
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/query/findByIdentity",
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/findByLoginName",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<AuthUserDto> ByIdentity(@RequestParam("identity") String identity);
+	public Optional<AuthUserDto> ByLoginName(@RequestParam("loginName") String loginName);
 	
 
 	/**
@@ -44,7 +42,7 @@ public interface UserAccountClient {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isEmailExist",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Map<String,Boolean>> isEmailExist(@RequestParam("email") String email);
+	public boolean isEmailExist(@RequestParam("email") String email);
 	
 	/**
 	 * 
@@ -57,7 +55,7 @@ public interface UserAccountClient {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isPhoneExist",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String,Boolean>> isPhoneExist(@RequestParam("phone") String phone);
+    public boolean isPhoneExist(@RequestParam("phone") String phone);
 }
 
 

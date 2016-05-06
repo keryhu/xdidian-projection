@@ -40,8 +40,6 @@ public class LoginSuccessProducer {
 	* @param     设定文件
 	* @return void    返回类型
 	* @throws
-	* 
-	*
 	 */
 	public void  send(String userId){
 		//登录成功后，发送成功的信号
