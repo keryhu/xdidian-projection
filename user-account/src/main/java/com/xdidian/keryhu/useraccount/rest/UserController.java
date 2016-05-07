@@ -80,6 +80,22 @@ public class UserController {
 	}
 	
 	
+	/**
+	 * 
+	* @Title: getUserIdByEmail
+	* @Description: TODO(通过email，查询数据库，在数据库存在的情况下，返回user 的 id)
+	* @param @param email
+	* @param @return    设定文件
+	* @return ResponseEntity<?>    返回类型
+	* @throws
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/getUserIdByEmail")
+	public ResponseEntity<?> getUserIdByEmail(@RequestParam(value="", required=true)String email){
+		Map<String,Boolean> result=new HashMap<String,Boolean>();
+		result.put("getUserIdByEmail", userService.emailIsExist(email));
+		return ResponseEntity.ok(result);
+	}
+	
 
 	/**
 	 * 

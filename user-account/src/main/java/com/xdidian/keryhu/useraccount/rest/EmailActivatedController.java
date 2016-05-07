@@ -82,11 +82,11 @@ public class EmailActivatedController {
 	* @return ResponseEntity<?>    返回类型
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/query/findEmailActivatedStatus")
-	public ResponseEntity<?> findEmailActivatedStatus(@RequestParam(value="", required=true) String email){
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/emailActivatedStatus")
+	public ResponseEntity<?> emailActivatedStatus(@RequestParam(value="", required=true) String email){
 		
 		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("emailActivatedStatus", userService.findEmailActivatedStatus(email));
+		result.put("emailActivatedStatus", userService.emailActivatedStatus(email));
 		return ResponseEntity.ok(result);
 	}
 	
@@ -100,8 +100,8 @@ public class EmailActivatedController {
 	* @return ResponseEntity<?>    返回类型
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/query/emailActivateSendTimesNotOver")
-	public ResponseEntity<?> emailActivateSendTimesNotOver(@RequestParam(value="", required=true) String email){
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/emailActivateSentTimesNotOver")
+	public ResponseEntity<?> emailActivateSentTimesNotOver(@RequestParam(value="", required=true) String email){
 		
 		Map<String,Boolean> result=new HashMap<String,Boolean>();
 		result.put("emailActivateSendTimesNotOver", userService.emailActivateSendTimesNotOver(email));

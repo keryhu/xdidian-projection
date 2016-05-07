@@ -27,6 +27,8 @@ spring:
           destination: loginSuccess
         removeUserOutputChannel:
           destination: removeUser
+        retryEmailActivatedOutputChannel:
+          destination: retryEmailActivated
           
           
   rabbitmq:

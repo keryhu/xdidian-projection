@@ -32,8 +32,8 @@ public interface  EmailActivatedClient {
 	* @return boolean    返回类型
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/query/findEmailActivatedStatus")
-	public boolean findEmailActivatedStatus(@RequestParam("email") String email);
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/EmailActivatedStatus")
+	public boolean emailActivatedStatus(@RequestParam("email") String email);
 	
 	
 	/**
@@ -49,5 +49,18 @@ public interface  EmailActivatedClient {
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/emailActivatedExpired")
 	public boolean emailActivatedExpired(@RequestParam("email") String email);
 	    
+	
+	/**
+	 * 
+	* @Title: emailActivateSentTimesNotOver
+	* @Description: TODO(根据当前email值，查询此email数据库中，email激活发送的次数有没有超过限制)
+	* @param @param email
+	* @param @return    设定文件
+	* @return boolean    返回类型
+	* @throws
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/emailActivateSentTimesNotOver")
+	public boolean emailActivateSentTimesNotOver(@RequestParam("email") String email);
+	
 
 }

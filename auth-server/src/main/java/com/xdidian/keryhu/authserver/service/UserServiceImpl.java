@@ -28,13 +28,13 @@ public class UserServiceImpl implements UserService {
 
 	/**
 	 * 
-	 * @Title: findByIdentity (从远程接口UserAccount 获取需要被验证的AuthUser 对象。
+	 * @Title: findByLoginName (从远程接口UserAccount 获取需要被验证的AuthUser 对象。
 	 * @Description: TODO(根据User 的 唯一标志符 用户登录的帐号。例如 email ，phone 等查询唯一的数据库用户)
 	 * @param @param identity
 	 * @param @return @param 传入的唯一标示符 @return 返回查询到AuthUser结果，返回结果是Optional形式
 	 */
 	@Override
-	public Optional<AuthUserDto> findByIdentity(String loginName) {
+	public Optional<AuthUserDto> findByLoginName(String loginName) {
 					
 		return authUserClient.ByLoginName(loginName);
 	}

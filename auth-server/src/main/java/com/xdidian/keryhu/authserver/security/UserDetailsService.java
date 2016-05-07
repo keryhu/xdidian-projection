@@ -19,6 +19,7 @@ import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.authserver.domain.AuthUserDto;
 import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
 import com.xdidian.keryhu.authserver.exception.LoginAttemptBlockedException;
+import com.xdidian.keryhu.authserver.service.EmailActivatedService;
 import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
 import com.xdidian.keryhu.authserver.service.UserServiceImpl;
 
@@ -35,6 +36,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 	
 	private final LoginAttemptProperties loginAttemptProperties;
 	
+	private final EmailActivatedService emailActivatedService;
 	/**
 	 * <p>
 	 * Title: loadUserByUsername
@@ -52,13 +54,12 @@ public class UserDetailsService implements org.springframework.security.core.use
 		// TODO Auto-generated method stub
 		
 		
-		return (UserDetails) userService.findByIdentity(username).map(a -> {
+		return (UserDetails) userService.findByLoginName(username).map(a -> {
 			if (StringUtils.isNullOrEmpty(a.getId())) {
 				throw new UsernameNotFoundException("新地点不存在此账户，请先注册！");
 			}
 			
 			//查看当前账户有没有被冻结－－
-			
 			if(loginAttemptUserService.isBlocked(getRemoteIP())){
 				
 				String msg=new StringBuffer("您在").append(loginAttemptProperties.getTimeOfPerid())
@@ -72,7 +73,11 @@ public class UserDetailsService implements org.springframework.security.core.use
 			}
 			
 			
-			//AuthUser 需要增加一个 emailActivated 值 然后这里判断此值是否true，否则报错
+			//如果 emailActivated 值 为false ，处理相应的事情，为true，直接忽略
+			//需要传递注册时间，用来计算，有没有过期，  传递userid,用来删除过期的user，,不需要再次计算，直接获取
+			if(!a.isEmailActivatedStatus()){
+				emailActivatedService.handleEmaiActivated(a.getId(),a.getEmail());
+			}
 			
 			
 			return new org.springframework.security.core.userdetails.User(a.getId(), a.getPassword(), true, true, true,

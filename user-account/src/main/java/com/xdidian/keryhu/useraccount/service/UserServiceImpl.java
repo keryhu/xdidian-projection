@@ -1,6 +1,5 @@
 package com.xdidian.keryhu.useraccount.service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.xdidian.keryhu.util.StringValidate;
 import com.xdidian.keryhu.useraccount.domain.EmailActivatedProperties;
 import com.xdidian.keryhu.useraccount.domain.User;
-import com.xdidian.keryhu.useraccount.exception.EmailNotFoundException;
 import com.xdidian.keryhu.useraccount.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -113,80 +111,7 @@ public class UserServiceImpl implements UserService {
 		return repository.findByCompanyName(companyName).isPresent();
 	}
 
-	/**
 	
-	 * Title: emailActivatedCodeExist
-	 * Description:如果email不存在，返回false，如果 查询的对象，不存在emailActivatedCode，则返回false
-	 * 否则判断 参数emailActivatedCode 是否和 查询的结果 emailActivatedCode 相等。
-	
-	 * @param email
-	 * @param emailActivatedCode
-	 * @return
-	 * @see com.xdidian.keryhu.useraccount.service.UserService#emailActivatedCodeExist(java.lang.String,
-	 *      java.lang.String)
-	 */
-	@Override
-	public boolean emailActivatedCodeExist(String email, String emailActivatedCode) {
-		// TODO Auto-generated method stub
-		return repository.findByEmail(email).map(e -> {
-			if (e.getEmailActivatedCode() != null) {
-				return e.getEmailActivatedCode().equals(emailActivatedCode);
-			}
-			return false;
-
-		}).orElse(false);
-
-	}
-
-	/**
-	 * Title: emailActivatedExpired
-	 * Description: 如果email 存在的情况下，查看注册时间 是否 已经大于 最大的允许时间
-	 * 默认的执行此方法的前提是： email存在，且email的 emailActivated＝false ，在这个前提下，才会执行此方法
-	 * @param email
-	 * @return 
-	 * @see com.xdidian.keryhu.useraccount.service.UserService#emailActivatedCodeExpired(java.lang.String,
-	 *      java.lang.String)
-	 */
-	@Override
-	public boolean emailActivatedExpired(String email) {
-		// TODO Auto-generated method stub
-		return repository.findByEmail(email)
-				         .filter(e->!e.isEmailActivatedStatus())
-		                 .map(e->LocalDateTime.now().isAfter(e.getRegisterTime()
-		                		 .plusHours(emailActivatedProperties.getExpiredTime())))
-		                 .orElseThrow(()->new EmailNotFoundException("您需要查询的email不存在于数据库"));	
-	}
-
-	/**
-	 * Title: findEmailActivatedStatus
-
-	 * Description: 查询当前email所在的user 数据库账户，email 有没有被激活
-	 * @param email
-	 * @return 如果email 不存在，返回默认fasle
-	 * @see com.xdidian.keryhu.useraccount.service.UserService#findEmailActivated(java.lang.String)
-	 */
-	@Override
-	public boolean findEmailActivatedStatus(String email) {
-		// TODO Auto-generated method stub
-
-		return repository.findByEmail(email).map(e -> e.isEmailActivatedStatus()).orElse(false);
-	}
-
-	/**
-	
-	 * Description: 查看当前用户的email，邮件激活发送的次数，有没有超过最大的限定次数，默认是返回true（就是没有超过）
-	 * 如果email不存在于数据库，则返回默认值true
-	 * @param email
-	 * @return
-	 * @see com.xdidian.keryhu.useraccount.service.UserService#emailActivateSendTimesNotOver(java.lang.String)
-	 */
-	@Override
-	public boolean emailActivateSendTimesNotOver(String email) {
-		// TODO Auto-generated method stub
-		return repository.findByEmail(email)
-				.map(e -> e.getEmailActivatedSendTimes() < emailActivatedProperties.getMaxSendTimes()).orElse(true);
-
-	}
 
 	/**
 	* <p>Title: deleteById</p>
@@ -201,5 +126,7 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return repository.deleteById(id);
 	}
+
+	
 
 }

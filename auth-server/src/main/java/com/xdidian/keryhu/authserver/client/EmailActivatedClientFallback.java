@@ -27,7 +27,7 @@ public class EmailActivatedClientFallback implements  EmailActivatedClient{
 	* @see com.xdidian.keryhu.authserver.client.EmailActivatedClient#findEmailActivatedStatus(java.lang.String)
 	*/ 
 	@Override
-	public boolean findEmailActivatedStatus(String email) {
+	public boolean emailActivatedStatus(String email) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -41,6 +41,19 @@ public class EmailActivatedClientFallback implements  EmailActivatedClient{
 	*/ 
 	@Override
 	public boolean emailActivatedExpired(String email) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	* <p>Title: emailActivateSentTimesNotOver</p>
+	* <p>Description: </p>
+	* @param email
+	* @return
+	* @see com.xdidian.keryhu.authserver.client.EmailActivatedClient#emailActivateSentTimesNotOver(java.lang.String)
+	*/ 
+	@Override
+	public boolean emailActivateSentTimesNotOver(String email) {
 		// TODO Auto-generated method stub
 		return false;
 	}
