@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.function.Function;
 import org.springframework.stereotype.Component;
 
+import com.xdidian.keryhu.domain.EmailActivatedDto;
 import com.xdidian.keryhu.domain.PropertyRegisterDto;
 import com.xdidian.keryhu.domain.Role;
 import com.xdidian.keryhu.useraccount.domain.AuthUserDto;
@@ -39,5 +40,12 @@ public class ConverterUtil {
 		return user;
 	};
 	
+	public Function<User,EmailActivatedDto> userToEmailActivatedDto=x->{
+		EmailActivatedDto dto=new EmailActivatedDto();
+		dto.setEmail(x.getEmail());
+		dto.setEmailActivatedCode(x.getEmailActivatedCode());
+		return dto;
+	};
+	   
 
 }

@@ -9,13 +9,18 @@
 package com.xdidian.keryhu.useraccount.service;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.xdidian.keryhu.useraccount.domain.EmailActivatedProperties;
+import com.xdidian.keryhu.useraccount.exception.EmailActivatedCodeNotFoundException;
+import com.xdidian.keryhu.useraccount.exception.EmailActivatedExpiredException;
+import com.xdidian.keryhu.useraccount.exception.EmailActivatedSentTimesOverException;
 import com.xdidian.keryhu.useraccount.exception.EmailNotFoundException;
 import com.xdidian.keryhu.useraccount.repository.UserRepository;
+import com.xdidian.keryhu.useraccount.stream.EmailActivatedProducer;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,10 +37,15 @@ public class EmailActivatedServiceImpl implements EmailActivatedService {
 	private final UserRepository repository;
 
 	private final EmailActivatedProperties emailActivatedProperties;
+	
+	private final RandomUtil randomUtil;
+	
+	private final ConverterUtil converterUtil;
+	
+	private final EmailActivatedProducer producer;
 
 	
-/**
-	
+    /**	
 	 * Description: 查看当前用户的email，邮件激活发送的次数，有没有超过最大的限定次数，默认是返回true（就是没有超过）
 	 * 如果email不存在于数据库，则返回默认值true
 	 * @param email
@@ -43,7 +53,7 @@ public class EmailActivatedServiceImpl implements EmailActivatedService {
 	 * @see com.xdidian.keryhu.useraccount.service.UserService#emailActivateSendTimesNotOver(java.lang.String)
 	 */
 	@Override
-	public boolean emailActivateSendTimesNotOver(String email) {
+	public boolean emailActivateSentTimesNotOver(String email) {
 		// TODO Auto-generated method stub
 		return repository.findByEmail(email)
 				.map(e -> e.getEmailActivatedSentTimes() < emailActivatedProperties.getMaxSendTimes()).orElse(true);
@@ -53,7 +63,6 @@ public class EmailActivatedServiceImpl implements EmailActivatedService {
 
 	/**
 	 * Title: emailActivatedStatus
-
 	 * Description: 查询当前email所在的user 数据库账户，email 有没有被激活
 	 * @param email
 	 * @return 如果email 不存在，返回默认fasle
@@ -124,7 +133,49 @@ public class EmailActivatedServiceImpl implements EmailActivatedService {
 	public void retryEmailActivated(String email) {
 		// TODO Auto-generated method stub
 		
+		repository.findByEmail(email).ifPresent(e->{
+			e.setEmailActivatedCode(randomUtil.create(6));
+			AtomicInteger atomic=new AtomicInteger(e.getEmailActivatedSentTimes());
+			e.setEmailActivatedSentTimes(atomic.incrementAndGet());
+			repository.save(e);
+			//发送email激活的消息出去。
+			producer.send(converterUtil.userToEmailActivatedDto.apply(e));
+			
+		});
+	}
+
+
+	/**
+	* <p>Title: validateEmailActivatedAndSave</p>
+	* <p>Description: 验证email激活，发送到邮箱的url，用户点击url，后台处理get 的url，查看是否此url
+	* 能够通过验证，如果通过验证，那么就更新数据库，否则报错</p>
+	* @param email
+	* @param emailActivatedCode
+	* @see com.xdidian.keryhu.useraccount.service.EmailActivatedService#validateEmailActivatedClicked(java.lang.String, java.lang.String)
+	*/ 
+	@Override
+	public void validateEmailActivatedAndSave(String email, String emailActivatedCode) {
+		// TODO Auto-generated method stub
 		
+	  repository.findByEmail(email)
+		          .orElseThrow(()->new EmailNotFoundException("您的email还未注册！"));
+		
+		
+	  if(!emailActivatedCodeExist(email,emailActivatedCode)){
+   		  throw new EmailActivatedCodeNotFoundException("您的email激活码不存在，不能验证。");
+   	  } 
+   	  else if(emailActivatedExpired(email)){
+   		  throw new EmailActivatedExpiredException("您的email激活时间已过期，请重新注册");
+   	  }
+   	  else if(!emailActivateSentTimesNotOver(email)){
+   		  throw new EmailActivatedSentTimesOverException("您的email激活次数过于频繁，请稍后再试！");
+   	  }
+	  
+	  repository.findByEmail(email)
+	            .ifPresent(e->{ 
+	            	e.setEmailActivatedStatus(true);
+	            	repository.save(e);     
+	            });			
 	}
 
 }

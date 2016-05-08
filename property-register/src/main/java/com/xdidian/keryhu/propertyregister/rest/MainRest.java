@@ -1,11 +1,15 @@
 package com.xdidian.keryhu.propertyregister.rest;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +29,7 @@ public class MainRest {
 
 	private final ConverterUtil converterUtil;
 
-	private final UserAccountClient createUserClient;
+	private final UserAccountClient userClient;
 	
 	private final UserService userService;
 
@@ -56,6 +60,60 @@ public class MainRest {
 	}
 	
 	
+	/**
+	 * 
+	* @Title: isEmailExist
+	* @Description: TODO(用于前台物业公司注册时，查询登陆的email是否存在于数据库，此为调用的后台接口)
+	* @param @param email  需要被查询的email
+	* @param @return    设定文件 返回的是一个json对象 Map对象，， 如果存在此email，则返回true，否则false
+	* @return ResponseEntity<?>    返回类型
+	* @throws
+	 */
+	@RequestMapping(value="/query/isEmailExist",method=RequestMethod.GET)
+	public ResponseEntity<?> isEmailExist(@RequestParam("email") String email){
+		Map<String,Boolean> result=new HashMap<String,Boolean>();
+		result.put("isEmailExist", userClient.isEmailExist(email));
+		return ResponseEntity.ok(result);
+	}
+	
+	
+	/**
+	 * 
+	* @Title: isPhoneExist
+	* @Description: TODO(用于前台物业公司注册时，查询登陆的phone是否存在于数据库，此为调用的后台接口)
+	* @param @param phone  需要被调用的phone
+	* @param @return    设定文件   如果存在此email，则返回true，否则false
+	* @return ResponseEntity<?>    返回类型
+	* @throws
+	 */
+	@RequestMapping(value="/query/isPhoneExist",method=RequestMethod.GET)
+	public ResponseEntity<?> isPhoneExist(@RequestParam("phone") String phone){
+		Map<String,Boolean> result=new HashMap<String,Boolean>();
+		result.put("isEmailExist", userClient.isPhoneExist(phone));
+		return ResponseEntity.ok(result);
+	}
+	
+	
+	/**
+	 * 
+	* @Title: isComponyNameExist
+	* @Description: TODO(查询数据库中是否存在此公司名字)
+	* @param @param companyName  需要被查询的公司名字参数
+	* @param @return    设定文件   返回数据库中是否存在此公司名字
+	* @return ResponseEntity<?>    返回类型  ResponseEntity<map json>
+	* @throws
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="/query/isComponyNameExist")
+    public ResponseEntity<?> isComponyNameExist(@RequestParam(value="", required=true) String companyName){
+		
+		Map<String,Boolean> result=new HashMap<String,Boolean>();
+		result.put("isComponyNameExist", userClient.isCompanyNameExist(companyName));
+		
+		return ResponseEntity.ok(result);
+	}  
+	
+	
+	
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping( "/admin")
@@ -71,7 +129,7 @@ public class MainRest {
 	public ResponseEntity<?> hello(@PathVariable("id") String id){
 		
 		Log.info("删除id的程序正在运行");
-		return createUserClient.del(id);
+		return userClient.del(id);
 		
 	}
 	

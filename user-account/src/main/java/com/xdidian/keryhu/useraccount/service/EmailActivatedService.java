@@ -8,6 +8,8 @@
 */ 
 package com.xdidian.keryhu.useraccount.service;
 
+
+
 /**
 * @ClassName: EmailActivatedService
 * @Description: TODO(email激活的一些基础接口)
@@ -18,7 +20,7 @@ public interface EmailActivatedService {
 	
 	/**
 	 * 
-	* @Title: emailActivateTimesNotOver
+	* @Title: emailActivateSentTimesNotOver
 	* @Description: TODO(根据email，查看当前尝试的次数有没有超过限制)
 	* @param @param email
 	* @param @param emailActivatedCode
@@ -26,7 +28,7 @@ public interface EmailActivatedService {
 	* @return boolean    返回类型
 	* @throws
 	 */
-	public boolean emailActivateSendTimesNotOver(String email);
+	public boolean emailActivateSentTimesNotOver(String email);
 	
 	
 	/**
@@ -74,5 +76,17 @@ public interface EmailActivatedService {
 	* @throws
 	 */
 	public void retryEmailActivated(String email);
+	
+	/**
+	 * 
+	* @Title: validateEmailActivatedAndSave
+	* @Description: TODO(验证email激活，发送到邮箱的url，用户点击url，后台处理get 的url，查看是否此url
+	* 能够通过验证，如果通过验证，那么就更新数据库，否则报错)
+	* @param @param email
+	* @param @param emailActivatedCode    设定文件
+	* @return Optional<User>    返回类型
+	* @throws
+	 */
+	public void validateEmailActivatedAndSave(String email,String emailActivatedCode);
 
 }

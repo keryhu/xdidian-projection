@@ -129,7 +129,7 @@ public class UserController {
     public ResponseEntity<?> isComponyNameExist(@RequestParam(value="", required=true) String companyName){
 		
 		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("isComponyNameExist", userService.phoneIsExist(companyName));
+		result.put("isComponyNameExist", userService.companyNameIsExist(companyName));
 		
 		return ResponseEntity.ok(result);
 	}  

@@ -10,15 +10,16 @@ package com.xdidian.keryhu.useraccount.rest;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.xdidian.keryhu.useraccount.service.UserService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.xdidian.keryhu.useraccount.service.EmailActivatedService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,10 +31,11 @@ import lombok.extern.slf4j.Slf4j;
 */
 @Controller
 @Slf4j
+@RibbonClient("auth-server")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class EmailActivatedController {
-	
-	private final UserService userService;
+
+	private final EmailActivatedService emailActivatedService;
 	
 	/**
 	 * 
@@ -50,7 +52,7 @@ public class EmailActivatedController {
 			@RequestParam(value="", required=true)String emailActivatedCode){
 		
 		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("emailActivatedCodeExist", userService.emailActivatedCodeExist(email, emailActivatedCode));
+		result.put("emailActivatedCodeExist", emailActivatedService.emailActivatedCodeExist(email, emailActivatedCode));
 		return ResponseEntity.ok(result);
 	}
 	
@@ -68,7 +70,7 @@ public class EmailActivatedController {
 	public ResponseEntity<?> emailActivatedExpired(@RequestParam(value="", required=true) String email){
 		
 		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("emailActivatedExpired", userService.emailActivatedExpired(email));
+		result.put("emailActivatedExpired", emailActivatedService.emailActivatedExpired(email));
 		return ResponseEntity.ok(result);
 	}
 	
@@ -86,7 +88,7 @@ public class EmailActivatedController {
 	public ResponseEntity<?> emailActivatedStatus(@RequestParam(value="", required=true) String email){
 		
 		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("emailActivatedStatus", userService.emailActivatedStatus(email));
+		result.put("emailActivatedStatus", emailActivatedService.emailActivatedStatus(email));
 		return ResponseEntity.ok(result);
 	}
 	
@@ -104,11 +106,28 @@ public class EmailActivatedController {
 	public ResponseEntity<?> emailActivateSentTimesNotOver(@RequestParam(value="", required=true) String email){
 		
 		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("emailActivateSendTimesNotOver", userService.emailActivateSendTimesNotOver(email));
+		result.put("emailActivateSentTimesNotOver", emailActivatedService.emailActivateSentTimesNotOver(email));
 		return ResponseEntity.ok(result);
 	}
 	
 	
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/emailActivated")
+	public String clickEmailActivateUrl(@RequestParam(value="", required=true) String email,
+			@RequestParam(value="", required=true) String emailActivatedCode,RedirectAttributes attr){
+		//接下来就是验证 这个url中 email 和 emailactivatedCode 是否符合要求。这个只有后台处理程序，处理结果json 报出，给前台现实
+		
+		emailActivatedService.validateEmailActivatedAndSave(email, emailActivatedCode);
+		
+		//跳转email激活成功的页面，然后倒数4秒，跳转登录页面
+		String message=new StringBuffer(email)
+				   .append("  已经成功激活，请登录帐号！")
+				   .toString();
+		attr.addAttribute("emailActivated", message);
+		
+		log.info("user-account email成功激活，且设置了提示信息。将跳转login页面");
+		//使用ribbon 定位url页面
+		return "redirect:http://auth-server/uaa/login";
+	}
 	
 	
 

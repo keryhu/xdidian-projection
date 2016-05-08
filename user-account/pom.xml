@@ -5,7 +5,7 @@
 	<name>user-account</name>
 	<packaging>jar</packaging>
 	<description>spring cloud user-account</description>
-	
+
 	<parent>
 		<groupId>com.xdidian</groupId>
 		<artifactId>xdidian-micro-docker</artifactId>
@@ -48,6 +48,10 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-rsa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-ribbon</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

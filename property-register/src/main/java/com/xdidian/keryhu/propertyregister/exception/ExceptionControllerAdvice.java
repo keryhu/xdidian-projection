@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.xdidian.keryhu.domain.ErrorMessage;
+import com.xdidian.keryhu.exception.MessageNotSendException;
 
 
 /**
