@@ -12,11 +12,11 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<properties>
-		<webjars.jquery>2.2.0</webjars.jquery>
-		<webjars.bootstrap>3.3.6</webjars.bootstrap>
-		<webjars.angular>1.4.8</webjars.angular>
-		<webjars.angular.ui.router>0.2.15</webjars.angular.ui.router>
-	</properties>
+	<webjars.jquery>2.2.0</webjars.jquery>
+	<webjars.bootstrap>3.3.6</webjars.bootstrap>
+	<webjars.angular>1.4.8</webjars.angular>
+	<webjars.angular.ui.router>0.2.15</webjars.angular.ui.router>
+</properties>
 
 	<dependencies>
 		<dependency>

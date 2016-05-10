@@ -3,17 +3,26 @@ package com.xdidian.keryhu.useraccount.service;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.function.Function;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.xdidian.keryhu.domain.EmailActivatedDto;
 import com.xdidian.keryhu.domain.PropertyRegisterDto;
 import com.xdidian.keryhu.domain.Role;
 import com.xdidian.keryhu.useraccount.domain.AuthUserDto;
+import com.xdidian.keryhu.useraccount.domain.EmailActivatedProperties;
 import com.xdidian.keryhu.useraccount.domain.User;
 
 
 @Component
 public class ConverterUtil {
+	
+	@Autowired
+	private  EmailActivatedProperties emailActivatedProperties;
+	
+	@Autowired
+	private RandomUtil randomUtil;
 	
 	
 	/**
@@ -37,6 +46,9 @@ public class ConverterUtil {
 		user.setDirectName(x.getDirectName());
 		user.setRoles(Arrays.asList(Role.ROLE_PROPERTY));
 		user.setRegisterTime(LocalDateTime.now());
+		user.setEmailActivatedStatus(false);
+		user.setEmailActivatedCode(randomUtil.create(emailActivatedProperties.getCodeLength()));
+		user.setEmailActivatedSentTimes(0);
 		return user;
 	};
 	
@@ -44,6 +56,8 @@ public class ConverterUtil {
 		EmailActivatedDto dto=new EmailActivatedDto();
 		dto.setEmail(x.getEmail());
 		dto.setEmailActivatedCode(x.getEmailActivatedCode());
+		//设置email激活的过期截止时间
+		dto.setDeadlineOfEmailActivated(x.getRegisterTime().plusHours(emailActivatedProperties.getExpiredTime()));
 		return dto;
 	};
 	   

@@ -1,5 +1,6 @@
 package com.xdidian.keryhu.authserver.security;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	 @Autowired
 	 private  UserDetailsService userDetailsService; 
-	
+	 
 	
 	 @Override
 	 @Bean
@@ -52,7 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()
 				.authorizeRequests()
 				.anyRequest().authenticated()
-		        ;
+				;
+			
 		 	// @formatter:on
 		}
 	 

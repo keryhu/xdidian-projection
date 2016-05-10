@@ -33,6 +33,9 @@ public class PropertyRegisterConsumer {
 	private  ConverterUtil converterUtil;
 	
 	@Autowired
+	private EmailActivatedProducer emailActivatedProducer;
+	
+	@Autowired
 	private UserService userService;
 	
 	@StreamListener(PropertyRegisterInputChannel.NAME)
@@ -44,6 +47,9 @@ public class PropertyRegisterConsumer {
 			  User user=converterUtil.propertyRegisterDtoToUser.apply(dto);
 			  //保存数据库
 			  userService.save(user);
+			  //发送email激活的message出去。
+			  log.info("物业公司收到了注册信息，并且准备发送 email 激活的message 出去。");
+			  emailActivatedProducer.send(converterUtil.userToEmailActivatedDto.apply(user));
 			
 		}	
 	}

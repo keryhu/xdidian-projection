@@ -1,6 +1,8 @@
 package com.xdidian.keryhu.propertyregister.client;
 
 
+import java.util.Map;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +35,7 @@ public interface UserAccountClient {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isEmailExist",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public boolean isEmailExist(@RequestParam("email") String email);
+	public Map<String,Boolean> isEmailExist(@RequestParam("email") String email);
 	
 	/**
 	 * 
@@ -46,7 +48,7 @@ public interface UserAccountClient {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isPhoneExist",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean isPhoneExist(@RequestParam("phone") String phone);
+    public Map<String,Boolean> isPhoneExist(@RequestParam("phone") String phone);
 	
 	/**
 	 * 
@@ -59,7 +61,7 @@ public interface UserAccountClient {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isCompanyNameExist",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean isCompanyNameExist(@RequestParam("companyName") String companyName);
+    public Map<String,Boolean> isCompanyNameExist(@RequestParam("companyName") String companyName);
 	
 		
 

@@ -8,12 +8,7 @@
 	<div class="container">
 		
 
-<div th:if="${param.error != null}"  th:text="${session[SPRING_SECURITY_LAST_EXCEPTION].message}">error</div>
-
-<div th:if="${emailActivated!=null}" th:text="${emailActivated}">email激活成功显示的信息提示</div>
-	
-<div th:if="${emailActivatedSentTimesOver!=null}" th:text="${emailActivatedSentTimesOver}">email激活未处理</div>
-	
+<div th:if="${param.error != null}"  th:text="${session[SPRING_SECURITY_LAST_EXCEPTION].message}">error</div>	
 	
 		<form role="form" th:action="@{/login}" method="post">
 			<div class="form-group">

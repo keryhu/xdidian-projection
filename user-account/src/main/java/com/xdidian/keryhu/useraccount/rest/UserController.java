@@ -48,7 +48,6 @@ public class UserController {
 			        .orElseThrow(()->new UserNotFoundException("您输入的identity，数据库中不存在！！"));
 		//将User 转为 AuthUser对象
 		AuthUserDto au=converterUtil.userToAuthUser.apply(user);
-		
 		//Resource<AuthUser>  resources=new Resource<AuthUser>(
 			//	new AuthUser("11111","22222",Arrays.asList(Role.ROLE_ADMIN,Role.ROLE_PROPERTY)));
 	
@@ -79,23 +78,7 @@ public class UserController {
 		return ResponseEntity.ok(result);
 	}
 	
-	
-	/**
-	 * 
-	* @Title: getUserIdByEmail
-	* @Description: TODO(通过email，查询数据库，在数据库存在的情况下，返回user 的 id)
-	* @param @param email
-	* @param @return    设定文件
-	* @return ResponseEntity<?>    返回类型
-	* @throws
-	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/query/getUserIdByEmail")
-	public ResponseEntity<?> getUserIdByEmail(@RequestParam(value="", required=true)String email){
-		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("getUserIdByEmail", userService.emailIsExist(email));
-		return ResponseEntity.ok(result);
-	}
-	
+
 
 	/**
 	 * 
@@ -125,12 +108,11 @@ public class UserController {
 	* @return ResponseEntity<?>    返回类型  ResponseEntity<map json>
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/query/isComponyNameExist")
-    public ResponseEntity<?> isComponyNameExist(@RequestParam(value="", required=true) String companyName){
-		
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/isCompanyNameExist")
+    public ResponseEntity<?> isCompanyNameExist(@RequestParam(value="", required=true) String companyName){
+		log.info("查询公司名字是否存在，公司名字是 ： "+companyName+"查到的 结果 为 ： "+userService.companyNameIsExist(companyName));
 		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("isComponyNameExist", userService.companyNameIsExist(companyName));
-		
+		result.put("isCompanyNameExist", userService.companyNameIsExist(companyName));
 		return ResponseEntity.ok(result);
 	}  
 	

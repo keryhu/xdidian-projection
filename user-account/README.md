@@ -29,6 +29,12 @@ user的数据库，必须和这些接口对接，不能直接操作数据库。
 
 八 、 实现了两个Dto（AuthUser 和 propertyRegister ）
 
-九 、 通过spring cloud stream 监听message（用户注册成功），接受到userId后，自动更新到该user 的 上次登录成功的时间为当时时间。
+九 、 更新用户登录时间－－－通过spring cloud stream 监听message（用户注册成功），接受到userId后，自动更新到该user 的 上次登录成功的时间为当时时间。
 
-十 、 通过spring cloud stream 监听 物业公司注册信息的message，都收到此信息后，converter 为user ，然后保存数据库。
+十 、 通过spring cloud stream 监听 物业公司注册信息的message，当收到此信息后，converter 为user ，增加email激活码和设置email激活状态为false，后然后保存数据库。
+
+十一 、 取出刚刚注册的user信息，转为EmailActivatedDto对象，然后发送message ，要求mail-server 发送注册帐号激活的email
+
+十二 、 当用户注册完后，前台页面跳转到 显示消息提示“ 请查收邮箱，如未收到，请查看垃圾邮件，或重新发送邮件，或重新注册”，pc-gateway，通过spring zuul获取到后台的rest接口，来显示上面的信息，和完成ajax提交。
+
+十三 、 当用户点击 激活email的链接时，后台有一个对应url的get方法，来判断url是否正确，是否过时，如果一起都是预期的，则将数据保存到数据库，并且更新用户的email激活状态为true，跳转login页面，并显示 激活成功的 提示信息，

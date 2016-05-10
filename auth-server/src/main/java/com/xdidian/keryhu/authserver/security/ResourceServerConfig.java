@@ -50,6 +50,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		                .antMatchers("/webjars/**","/favicon.ico").permitAll()
 		                .antMatchers(HttpMethod.GET, "/query/**").permitAll()
 		                .antMatchers(HttpMethod.POST,"/retryEmailActivated").permitAll()
+		                .antMatchers(HttpMethod.POST,"/retryRegister").permitAll()
 		                .antMatchers(HttpMethod.GET, "/loginAttemptUsers").hasRole("ADMIN")
 		                .anyRequest().authenticated()
 		                ;

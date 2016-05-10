@@ -1,7 +1,6 @@
 package com.xdidian.keryhu.authserver.client;
 
-
-import java.util.Optional;
+import java.util.Map;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
@@ -28,13 +27,14 @@ public interface UserAccountClient {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/findByLoginName",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Optional<AuthUserDto> ByLoginName(@RequestParam("loginName") String loginName);
+	public AuthUserDto ByLoginName(@RequestParam("loginName") String loginName);
 	
 
 	/**
 	 * 
 	* @Title: isEmailExist
 	* @Description: TODO(用于前台用户登录时，查询登陆的email是否已经注册过，这个是后台调用接口)
+	* 注意spring feign的返回对象，要和被spring  feign的的rest controller 的返回结果一致
 	* @param @param email  需要被查询的email
 	* @param @return    设定文件   如果已经存在了此email，则返回true，否则是false
 	* @return ResponseEntity<?>    返回类型 json的封装对象
@@ -42,7 +42,7 @@ public interface UserAccountClient {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isEmailExist",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public boolean isEmailExist(@RequestParam("email") String email);
+	public Map<String,Boolean> isEmailExist(@RequestParam("email") String email);
 	
 	/**
 	 * 
@@ -55,7 +55,7 @@ public interface UserAccountClient {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isPhoneExist",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean isPhoneExist(@RequestParam("phone") String phone);
+    public Map<String,Boolean> isPhoneExist(@RequestParam("phone") String phone);
 }
 
 

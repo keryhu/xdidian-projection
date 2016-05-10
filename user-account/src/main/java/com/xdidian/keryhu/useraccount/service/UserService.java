@@ -27,7 +27,16 @@ public interface UserService {
 	public Optional<User> findByLoginName(String loginName);
 
 	
-	
+	/**
+	 * 
+	* @Title: findById
+	* @Description: TODO(这里的id指，email、phone，或user中的id，3个里任何一种，来查看数据库的user)
+	* @param @param id
+	* @param @return    设定文件
+	* @return Optional<User>    返回类型
+	* @throws
+	 */
+	public Optional<User> findById(String id);
 	
 	/**
 	 * 
@@ -80,17 +89,17 @@ public interface UserService {
 	 */
 	public boolean companyNameIsExist(String companyName);
 	
-		
+	
 	/**
 	 * 
-	* @Title: deleteById
-	* @Description: TODO(根据id，删除user)
-	* @param @param id
-	* @param @return    设定文件
-	* @return Optional<User>    返回类型
+	* @Title: deleteUser
+	* @Description: TODO(删除传递进来的user对象)
+	* @param @param user    设定文件
+	* @return void    返回类型
 	* @throws
 	 */
-	public Optional<User> deleteById(String id);
+	public void deleteUser(User user);
+
 	
 	
 }

@@ -5,10 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.xdidian.keryhu.authserver.client.UserAccountClient;
 import com.xdidian.keryhu.authserver.domain.AuthUserDto;
-
 import lombok.RequiredArgsConstructor;
 
 
@@ -35,8 +33,8 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public Optional<AuthUserDto> findByLoginName(String loginName) {
-					
-		return authUserClient.ByLoginName(loginName);
+						
+		return Optional.ofNullable(authUserClient.ByLoginName(loginName));
 	}
 
 

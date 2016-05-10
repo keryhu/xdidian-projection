@@ -71,9 +71,8 @@ public class MainRest {
 	 */
 	@RequestMapping(value="/query/isEmailExist",method=RequestMethod.GET)
 	public ResponseEntity<?> isEmailExist(@RequestParam("email") String email){
-		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("isEmailExist", userClient.isEmailExist(email));
-		return ResponseEntity.ok(result);
+		Log.info("查到的email 是否存在于 数据库 ： "+userClient.isEmailExist(email));
+		return ResponseEntity.ok(userClient.isEmailExist(email));
 	}
 	
 	
@@ -88,9 +87,8 @@ public class MainRest {
 	 */
 	@RequestMapping(value="/query/isPhoneExist",method=RequestMethod.GET)
 	public ResponseEntity<?> isPhoneExist(@RequestParam("phone") String phone){
-		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("isEmailExist", userClient.isPhoneExist(phone));
-		return ResponseEntity.ok(result);
+		Log.info("查到的手机号是否存在于数据库： "+userClient.isPhoneExist(phone));
+		return ResponseEntity.ok(userClient.isPhoneExist(phone));
 	}
 	
 	
@@ -103,13 +101,11 @@ public class MainRest {
 	* @return ResponseEntity<?>    返回类型  ResponseEntity<map json>
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/query/isComponyNameExist")
-    public ResponseEntity<?> isComponyNameExist(@RequestParam(value="", required=true) String companyName){
+	@RequestMapping(method=RequestMethod.GET,value="/query/isCompanyNameExist")
+    public ResponseEntity<?> isCompanyNameExist(@RequestParam(value="", required=true) String companyName){
 		
-		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("isComponyNameExist", userClient.isCompanyNameExist(companyName));
-		
-		return ResponseEntity.ok(result);
+	    Log.info("查的公司名字是否在数据库中： "+userClient.isCompanyNameExist(companyName));
+		return ResponseEntity.ok(userClient.isCompanyNameExist(companyName));
 	}  
 	
 	

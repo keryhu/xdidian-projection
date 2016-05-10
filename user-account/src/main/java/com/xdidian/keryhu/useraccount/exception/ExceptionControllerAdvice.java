@@ -64,5 +64,14 @@ public class ExceptionControllerAdvice {
 	        return new ErrorMessage(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
 	    }
 	 
+	 
+	 @ExceptionHandler(EmailActivatedSentTimesOverException.class)
+	 @ResponseBody
+	 @ResponseStatus(HttpStatus.BAD_REQUEST)
+	 ErrorMessage handleEmailActivatedSentTimesOverException( Throwable ex) {
+	        
+	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
+	        return new ErrorMessage(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
+	    }
 
 }

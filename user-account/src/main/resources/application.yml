@@ -62,8 +62,11 @@ security:
 
  # 设置邮箱激活，验证码的最大有效期是3个小时，最多允许重复发送激活邮件 6次 
 emailActivate:
-  expiredTime: 3
+  expiredTime: 1
   maxSendTimes: 6
+  codeLength: 6
   
 
-    
+#取得当前的ip地址
+hostProperty:
+  hostName: http://${domain.name:localhost}    

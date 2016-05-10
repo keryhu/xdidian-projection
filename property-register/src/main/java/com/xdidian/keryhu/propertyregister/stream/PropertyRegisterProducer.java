@@ -41,7 +41,7 @@ public class PropertyRegisterProducer {
 	public void send(PropertyRegisterDto dto){
 		
 		boolean result=channel.saveOutput().send(MessageBuilder.withPayload(dto).build());
-		
+		log.info("物业公司注册成功，现在发送message，给user-account ! ");
 		 if (!result) {
 			    log.error("物业公司注册完，发送具体消息失败！");
 	            throw new MessageNotSendException("物业公司注册完，发送具体消息失败！");

@@ -8,6 +8,9 @@
 */ 
 package com.xdidian.keryhu.authserver.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,40 +25,40 @@ public class EmailActivatedClientFallback implements  EmailActivatedClient{
 	/**
 	* <p>Title: findEmailActivatedStatus</p>
 	* <p>Description: 默认的返回邮件激活返回状态</p>
-	* @param email
+	* @param loginName
 	* @return
 	* @see com.xdidian.keryhu.authserver.client.EmailActivatedClient#findEmailActivatedStatus(java.lang.String)
 	*/ 
 	@Override
-	public boolean emailActivatedStatus(String email) {
+	public Map<String,Boolean> emailActivatedStatus(String loginName) {
 		// TODO Auto-generated method stub
-		return false;
+		return new HashMap<String,Boolean>();
 	}
 
 	/**
 	* <p>Title: emailActivatedExpired</p>
 	* <p>Description: 查看邮件激活的时间是否过期</p>
-	* @param email
+	* @param loginName
 	* @return
 	* @see com.xdidian.keryhu.authserver.client.EmailActivatedClient#emailActivatedExpired(java.lang.String)
 	*/ 
 	@Override
-	public boolean emailActivatedExpired(String email) {
+	public Map<String,Boolean> emailActivatedExpired(String loginName) {
 		// TODO Auto-generated method stub
-		return false;
+		return new HashMap<String,Boolean>();
 	}
 
 	/**
 	* <p>Title: emailActivateSentTimesNotOver</p>
 	* <p>Description: </p>
-	* @param email
+	* @param loginName
 	* @return
 	* @see com.xdidian.keryhu.authserver.client.EmailActivatedClient#emailActivateSentTimesNotOver(java.lang.String)
 	*/ 
 	@Override
-	public boolean emailActivateSentTimesNotOver(String email) {
+	public Map<String,Boolean> emailActivateSentTimesNotOver(String loginName) {
 		// TODO Auto-generated method stub
-		return false;
+		return new HashMap<String,Boolean>();
 	}
 
 }

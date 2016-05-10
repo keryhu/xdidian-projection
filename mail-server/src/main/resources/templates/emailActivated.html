@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title th:remove="all">激活账户</title>
+<!--  注意 在邮件系统中，thymeleaf 文件的 bootstrap 和js 的文件引用地址，不能写成 th:src,这样找不到地址。 -->
+<link rel="stylesheet" type="text/css"
+	href="/webjars/bootstrap/3.3.6/css/bootstrap.min.css" />
+
+</head>
+<body>
+	<div th:text="'尊敬的'+${email}+'您好！欢迎您注册新地点！'">email</div>
+
+	<div>
+		为了您的安全起见，我们需要确保您是此账户的持有人。请点击<strong>激活我的账户</strong>，以确认您的 电子邮件地址。
+	</div>
+	<p>
+		（此链接有效期至：<strong
+			th:text="${#temporals.format(deadline,'yy-MM-dd HH:mm:ss')}">有效期截止时间</strong>）
+	</p>
+	<br/>
+	<br/>
+
+	<form th:action="@{${url}}" method="get">
+	 <button type="submit"  class="btn btn-primary" >激活我的账户</button>
+	</form>
+	
+	
+
+
+	<script type="text/javascript"
+		src="/webjars/jquery/2.2.0/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="/webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</body>
+</html>

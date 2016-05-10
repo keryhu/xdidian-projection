@@ -8,7 +8,7 @@
 */ 
 package com.xdidian.keryhu.mailServer.mail;
 
-import javax.mail.MessagingException;
+
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
 * @ClassName: EmailActivatedMailSender
@@ -26,24 +27,36 @@ import lombok.RequiredArgsConstructor;
 */
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class EmailActivatedMailSender {
 	
 	private final JavaMailSender javaMailSender;
 	
-    public void send(String to, String subject,String body) throws MessagingException{
-		
-		final MimeMessage mimeMessage=this.javaMailSender.createMimeMessage();
-		
-		//暗示发送的是html内容
-		final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
-		
-		//产品上线时候，需要更改
-		message.setFrom("948747450@qq.com");
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(body,true);
-		this.javaMailSender.send(mimeMessage);
-		
-	}
+    
+    public EmailStatus sendPlainText(String to, String subject, String text) {
+        return sendM(to, subject, text, false);
+    }
+ 
+    public EmailStatus sendHtml(String to, String subject, String htmlBody) {
+        return sendM(to, subject, htmlBody, true);
+    }
+    
+    
+    private EmailStatus sendM(String to, String subject, String text, Boolean isHtml) {
+        try {
+            MimeMessage mail = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mail, true);
+            helper.setFrom("948747450@qq.com");
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(text, isHtml);
+            javaMailSender.send(mail);
+            log.info("Send email '{}' to: {}", subject, to);
+            return new EmailStatus(to, subject, text).success();
+        } catch (Exception e) {
+            log.error(String.format("Problem with sending email to: {}, error message: {}", to, e.getMessage()));
+            return new EmailStatus(to, subject, text).error(e.getMessage());
+        }
+    }
 
 }

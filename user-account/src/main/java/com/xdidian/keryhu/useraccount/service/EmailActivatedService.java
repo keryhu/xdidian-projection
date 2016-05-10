@@ -21,61 +21,60 @@ public interface EmailActivatedService {
 	/**
 	 * 
 	* @Title: emailActivateSentTimesNotOver
-	* @Description: TODO(根据email，查看当前尝试的次数有没有超过限制)
-	* @param @param email
-	* @param @param emailActivatedCode
+	* @Description: TODO(根据登录帐号（email或password），查看当前尝试的次数有没有超过限制)
+	* @param @param loginName
 	* @param @return    设定文件
 	* @return boolean    返回类型
 	* @throws
 	 */
-	public boolean emailActivateSentTimesNotOver(String email);
+	public boolean emailActivateSentTimesNotOver(String loginName);
 	
 	
 	/**
 	 * 
 	* @Title: emailActivatedStatus
-	* @Description: TODO(查询email 有没有被激活，（true or false）)
-	* @param @param email
+	* @Description: TODO(查询登录帐号（email或phone） 有没有被激活，（true or false）)
+	* @param @param loginName
 	* @param @return    设定文件
 	* @return boolean    返回类型
 	* @throws
 	 */
-	public boolean emailActivatedStatus(String email);
+	public boolean emailActivatedStatus(String loginName);
 	
 	
 	/**
 	 * 
 	* @Title: emailActivatedExpired
-	* @Description: TODO(根据email查询的值，在emailActivated 为false的情况下，看现在时间有没有超过
+	* @Description: TODO(根据登录帐号查看（phone或email），在emailActivated 为false的情况下，看现在时间有没有超过
 	* 注册时间＋最大允许的过期时间)
-	* @param @param email
+	* @param @param loginName
 	* @param @return    设定文件
 	* @return boolean    返回类型
 	* @throws
 	 */
-	public boolean emailActivatedExpired(String email);
+	public boolean emailActivatedExpired(String loginName);
 	
 	/**
 	 * 
 	* @Title: emailActivatedCodeExist
-	* @Description: TODO(根据eamil查询的值，查看EmailActivatedCodeExist是否存在)
-	* @param @param email
+	* @Description: TODO(根据登录帐号（email或phone）查询的值，查看EmailActivatedCodeExist是否存在)
+	* @param @param loginName
 	* @param @param emailActivatedCode
 	* @param @return    设定文件
 	* @return boolean    返回类型
 	* @throws
 	 */
-	public boolean emailActivatedCodeExist(String email,String emailActivatedCode);
+	public boolean emailActivatedCodeExist(String loginName,String emailActivatedCode);
 	
 	/**
 	 * 
 	* @Title: retryEmailActivated
 	* @Description: TODO(当user-account接受到再次发送邮件激活命令时的接口)
-	* @param @param email    设定文件
+	* @param @param loginName    设定文件
 	* @return void    返回类型
 	* @throws
 	 */
-	public void retryEmailActivated(String email);
+	public void retryEmailActivated(String loginName);
 	
 	/**
 	 * 

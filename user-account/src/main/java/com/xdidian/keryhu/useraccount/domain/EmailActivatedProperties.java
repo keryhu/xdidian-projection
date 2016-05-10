@@ -25,4 +25,5 @@ public class EmailActivatedProperties  implements Serializable {
 	private int expiredTime ;//默认是小时为单位
 	private int maxSendTimes  ; //最大的允许发送邮件的次数
 
+	private int codeLength;   //email 激活码的长度
 }

@@ -4,8 +4,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
 import com.xdidian.keryhu.util.StringValidate;
-import com.xdidian.keryhu.useraccount.domain.EmailActivatedProperties;
+
+import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.useraccount.domain.User;
 import com.xdidian.keryhu.useraccount.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,33 +26,72 @@ public class UserServiceImpl implements UserService {
 
 	private final UserRepository repository;
 
-	private final EmailActivatedProperties emailActivatedProperties;
-
 	/**
 	 * @Title: findByLoginName
-	 * @Description: TODO(登录login 的登录名loginName查询数据库中是否存在user数据)
+	 * @Description: TODO(登录login 的登录名loginName(email或phone）查询数据库中是否存在user数据)
 	 * @param @param        loginName
-	 * @param @param
-	 *            传入的唯一标示符 @return 返回查询到数据库User结果，如无结果则为null
+	 * @param @param 传入的唯一标示符
+	 *  @return 返回查询到数据库User结果，如无结果则为null
 	 */
 
 	@Override
 	public Optional<User> findByLoginName(String loginName) {
 		// TODO Auto-generated method stub
-
+		
+        Optional<User> user;
+        if(StringUtils.isNullOrEmpty(loginName)){
+        	return Optional.empty();
+        }
 		switch (StringValidate.checkType(loginName)) {
 		case EMAIL:
-			return  repository.findByEmail(loginName.toLowerCase());
-			
+			user= repository.findByEmail(loginName.toLowerCase());
+			break;
 		case PHONE:
-			return  repository.findByPhone(loginName);
-		
+			user= repository.findByPhone(loginName);
+			break;
 		default:
-			return  Optional.empty();
+			user= Optional.empty();
+			break;
 
-		}
+		}	
+		return user;
 		
 	}
+	
+	
+	/**
+	* <p>Title: findById</p>
+	* <p>Description:这里的id指，email、phone，或user中的id，3个里任何一种，来查看数据库的user </p>
+	* @param id
+	* @return
+	* @see com.xdidian.keryhu.useraccount.service.UserService#findById(java.lang.String)
+	*/ 
+	@Override
+	public Optional<User> findById(String id) {
+		// TODO Auto-generated method stub
+		 Optional<User> user;
+	        if(StringUtils.isNullOrEmpty(id)){
+	        	return Optional.empty();
+	        }
+			switch (StringValidate.checkType(id)) {
+			case EMAIL:
+				user= repository.findByEmail(id.toLowerCase());
+				break;
+			case PHONE:
+				user= repository.findByPhone(id);
+				break;
+			case UUID:
+				user=repository.findById(id);
+				break;
+			default:
+				user= Optional.empty();
+				break;
+
+			}	
+			return user;
+	}
+	
+	
 
 	/**
 	
@@ -111,21 +153,23 @@ public class UserServiceImpl implements UserService {
 		return repository.findByCompanyName(companyName).isPresent();
 	}
 
-	
 
 	/**
-	* <p>Title: deleteById</p>
-	* <p>Description:  根据user ID 删除user</p>
-	* @param id
-	* @return
-	* @see com.xdidian.keryhu.useraccount.service.UserService#deleteById(java.lang.String)
+	* <p>Title: deleteUser</p>
+	* <p>Description: 删除传递进来的user对象</p>
+	* @param user
+	* @see com.xdidian.keryhu.useraccount.service.UserService#deleteUser(com.xdidian.keryhu.useraccount.domain.User)
 	*/ 
-	@Override
 	@Transactional
-	public Optional<User> deleteById(String id) {
+	@Override
+	public void deleteUser(User user) {
 		// TODO Auto-generated method stub
-		return repository.deleteById(id);
+			Assert.notNull(user,"被删除的对象user不能为null");
+			repository.findById(user.getId())
+			          .ifPresent(e->repository.delete(e));
 	}
+
+
 
 	
 

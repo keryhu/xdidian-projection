@@ -18,6 +18,8 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/login").setViewName("login");
 		registry.addViewController("/oauth/confirm_access").setViewName("authorize");
+		registry.addViewController("/error/EmailActivatedSentTimesOverErrorPage").setViewName("EmailActivatedSentTimesOverErrorPage");
+		
 	}
 
 }

@@ -12,4 +12,8 @@
    
    4 、 将注册的信息打包成message dto 利用spring cloud stream 发送给user-account 
    
-   5 、 user－account 接受到注册信息的message，执行dto converter 转换成user 的操作，然后保存数据库
+   5 、 user－account 接受到注册信息的message，执行dto converter 转换成user 的操作，然后保存数据库，并发送email出去激活帐号。
+   
+   6 、 然后页面跳转到 信息提示页面，“查看邮件，或再次发送。。”，这些是 pc-gateway和 user-account 来处理。－－－完成
+   
+   三 、 
