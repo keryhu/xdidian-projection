@@ -13,13 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.thymeleaf.context.Context;
-
-import com.esotericsoftware.minlog.Log;
 import com.xdidian.keryhu.domain.EmailActivatedDto;
+import com.xdidian.keryhu.mailServer.domain.HostProperty;
 import com.xdidian.keryhu.mailServer.mail.EmailHtmlSender;
-import com.xdidian.keryhu.mailServer.mail.HostProperty;
 
-import lombok.extern.slf4j.Slf4j;
 
 /**
 * @ClassName: EmailActivatedConsumer
@@ -28,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 * @date 2016年5月7日 下午5:38:02
 */
 @EnableBinding(EmailActivatedInputChannel.class)
-@Slf4j
 public class EmailActivatedConsumer {
 	
 	@Autowired
@@ -41,17 +37,18 @@ public class EmailActivatedConsumer {
 	public void receive(EmailActivatedDto dto){
 		
 		//通过zuul 中转到 user-account，这样前台 点击 url，后台user-account使用 get 方法来处理
-			
-		String url=String.format("%s://8080/user-account/users/query/emailActivated?email=%s&emailActivatedCode=%s",
-				hostProperty.getHostName(),dto.getEmail(),dto.getEmailActivatedCode());
-		log.info("url is : {} ",url);
 		
+		String url=new StringBuffer(hostProperty.getHostName())
+				.append(":8080/email-activate/email/emailActivatedConfirm?email=")
+				.append(dto.getEmail())
+				.append("&token=")
+				.append(dto.getToken())
+				.toString();
 		Context context = new Context();
+		context.setVariable("dto", dto);
 		context.setVariable("url", url);
-		context.setVariable("email", dto.getEmail());
-		context.setVariable("deadline", dto.getDeadlineOfEmailActivated());
 		
-		
+
 		mailSender.send(dto.getEmail(), "新地点帐号激活", "emailActivated",context);
 			
 		

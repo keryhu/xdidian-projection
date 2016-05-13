@@ -9,7 +9,9 @@
 		
 
 <div th:if="${param.error != null}"  th:text="${session[SPRING_SECURITY_LAST_EXCEPTION].message}">error</div>	
-	
+	<!-- begin －－－下面这个是用户注册成功后，点击邮箱中的激活邮件，跳转到login页面，附带的“用户注册成功的提示信息” -->
+	<div  th:text="${param.emailActivated[0]}"  th:unless="${param.emailActivated==null}">点击邮件中的帐号激活出现的提示</div>
+	<!--  end -->
 		<form role="form" th:action="@{/login}" method="post">
 			<div class="form-group">
 				<label for="username">用户名:</label> <input type="text"

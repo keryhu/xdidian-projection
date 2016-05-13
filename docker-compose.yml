@@ -153,6 +153,20 @@ services:
       - eureka
       - configserver
 
+  emailactivate:
+    image: email-activate:0.0.1-SNAPSHOT
+    container_name: emailactivate
+    restart: always
+    ports:
+     - "8004:8004"
+    environment:
+      MONGO_HOST: mongo
+      DOMAIN_NAME: 192.168.1.110
+    networks:
+      - wfij
+    depends_on: 
+      - eureka
+      - configserver
 
   pcgateway:
     image: pc-gateway:0.0.1-SNAPSHOT

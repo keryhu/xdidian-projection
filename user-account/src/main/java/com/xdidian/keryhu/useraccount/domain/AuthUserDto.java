@@ -26,16 +26,14 @@ public class AuthUserDto implements Serializable {
 	private String id;
 	private String password;
 	private List<Role> roles;
-	private String email;
-	private boolean EmailActivatedStatus;
+	private boolean emailStatus;
 	
 	public AuthUserDto() {
 		// TODO Auto-generated constructor stub
 		this.id=null;
 		this.password=null;
 		this.roles=null;
-		this.email=null;
-		this.EmailActivatedStatus=false;
+		this.emailStatus=false;
 	}
 		
 }

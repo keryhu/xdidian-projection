@@ -1,9 +1,7 @@
 package com.xdidian.keryhu.propertyregister.client;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Component;
 
 
@@ -16,13 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserAccountClientFallback implements UserAccountClient {
 
-	
 
-	@Override
-	public ResponseEntity<?> del(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/**
 	* <p>Title: isEmailExist</p>
@@ -32,10 +24,10 @@ public class UserAccountClientFallback implements UserAccountClient {
 	* @see com.xdidian.keryhu.propertyregister.client.UserAccountClient#isEmailExist(java.lang.String)
 	*/ 
 	@Override
-	public Map<String,Boolean> isEmailExist(String email) {
+	public Boolean isEmailExist(String email) {
 		// TODO Auto-generated method stub
-		return new HashMap<String,Boolean>();
-	}
+		return false;
+		}
 
 	/**
 	* <p>Title: isPhoneExist</p>
@@ -45,9 +37,9 @@ public class UserAccountClientFallback implements UserAccountClient {
 	* @see com.xdidian.keryhu.propertyregister.client.UserAccountClient#isPhoneExist(java.lang.String)
 	*/ 
 	@Override
-	public Map<String,Boolean> isPhoneExist(String phone) {
+	public Boolean isPhoneExist(String phone) {
 		// TODO Auto-generated method stub
-		return new HashMap<String,Boolean>();
+		return false;
 	}
 
 	/**
@@ -58,9 +50,9 @@ public class UserAccountClientFallback implements UserAccountClient {
 	* @see com.xdidian.keryhu.propertyregister.client.UserAccountClient#isCompanyNameExist(java.lang.String)
 	*/ 
 	@Override
-	public Map<String,Boolean> isCompanyNameExist(String companyName) {
+	public Boolean isCompanyNameExist(String companyName) {
 		// TODO Auto-generated method stub
-		return new HashMap<String,Boolean>();
+		return false;
 	}
 
 	

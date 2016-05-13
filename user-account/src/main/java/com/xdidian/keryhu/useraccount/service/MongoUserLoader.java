@@ -37,7 +37,7 @@ public class MongoUserLoader  {
 			user.setRegisterTime(LocalDateTime.now());
 			user.addRole(Role.ROLE_ADMIN);
 			//因为是管理员，所以默认设置email已经激活
-			user.setEmailActivatedStatus(true);
+			user.setEmailStatus(true);
 			repository.save(user);
 		}
 		

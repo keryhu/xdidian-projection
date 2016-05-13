@@ -21,12 +21,9 @@ spring:
         propertyRegisterSaveInputChannel: 
           destination: propertyRegisterSave
           content-type: application/x-java-object; type=com.xdidian.keryhu.domain.PropertyRegisterDto
-        emailActivatedOutputChannel:
-          destination: emailActivated
-          contentType: application/json
-        retryEmailActivatedInputChannel:
-          destination: retryEmailActivated
-          
+        emailActivatedSuccessInputChannel:
+          destination: emailActivatedSuccess
+           
         
           
   rabbitmq:
@@ -38,17 +35,17 @@ spring:
     virtual-host: /wfij
     listener:
      
-      #max pool size of thread is 10
-      max-concurrency: 10
+      #max pool size of thread is 100
+      max-concurrency: 100
       #核心的listen thread 是3 
-      concurrency: 5
+      concurrency: 50
       # the container will acknowledge the message automatically, unless the MessageListener throws an exception. Note that acknowledgeMode is complementary to channelTransacted - if the channel is transacted then the broker requires a commit notification in addition to the ack. This is the default mode. See also txSize.
       acknowledge-mode: auto
       auto-startup: true
       #The number of messages to accept from the broker in one socket frame
-      prefetch: 5
+      prefetch: 50
       #When used with acknowledgeMode AUTO, the container will attempt to process up to this number of messages before sending an ack 
-      transaction-size: 5
+      transaction-size: 50
   
       
 security:
@@ -60,13 +57,6 @@ security:
           MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApVuOPKLwgnZxosn1zUH35nHq0bTxbcky8y9VgYg+1/XAWj6hPftDyUIXcH2vaRauoJxCf6QtpID3kcQCGVFvzkrQrNT1+2y+OjqKMmgZPe6EF6qd+1djqgfSzOSQuyIrFfhmMO84KMhyuL6wZnq0fqgqIZIXmzzyd5j12JL3jIHxsv8m5b7Crk+XuQToKCId1rTXB17t+ZmNjc6TXkmdcsCqiBRbKZ7N//VH33nNIxbFHF1uFEDrdLI2ziG/iGt9cS9dVvecgLgmPaE45ALgbv8WQycEMjCD/jopfhb2u+ybcOAEoH1pzjX4WHEVoGjVadyBE8hq9U4aH1x+Cji0kwIDAQAB
           -----END PUBLIC KEY----- 
 
- # 设置邮箱激活，验证码的最大有效期是3个小时，最多允许重复发送激活邮件 6次 
-emailActivate:
-  expiredTime: 1
-  maxSendTimes: 6
-  codeLength: 6
+ 
   
 
-#取得当前的ip地址
-hostProperty:
-  hostName: http://${domain.name:localhost}    

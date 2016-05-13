@@ -21,6 +21,10 @@ spring:
           destination: propertyRegisterSave
           contentType: application/json
           
+        emailActivatedOutputChannel:
+          destination: emailActivated
+          contentType: application/json
+          
   rabbitmq:
     dynamic: true
     host: ${rabbit.host:localhost}
@@ -30,15 +34,20 @@ spring:
     virtual-host: /wfij
     listener:
      
-      #max pool size of thread is 10
-      max-concurrency: 10
+      #max pool size of thread is 100
+      max-concurrency: 100
       #核心的listen thread 是3 
-      concurrency: 5
+      concurrency: 50
       # the container will acknowledge the message automatically, unless the MessageListener throws an exception. Note that acknowledgeMode is complementary to channelTransacted - if the channel is transacted then the broker requires a commit notification in addition to the ack. This is the default mode. See also txSize.
       acknowledge-mode: auto
       auto-startup: true
       #The number of messages to accept from the broker in one socket frame
-      prefetch: 5
+      prefetch: 50
       #When used with acknowledgeMode AUTO, the container will attempt to process up to this number of messages before sending an ack 
-      transaction-size: 5
+      transaction-size: 50
         
+ # 设置邮箱激活，验证码的最大有效期是3个小时，最多允许重复发送激活邮件 6次 
+emailActivate:
+  expiredTime: 1
+ 
+

@@ -24,7 +24,7 @@ public interface UserService {
 	* @return Optional<User>    返回类型  返回是否存在的user Optional类型
 	* @throws
 	 */
-	public Optional<User> findByLoginName(String loginName);
+	public Optional<User> findByLoginName(final String loginName);
 
 	
 	/**
@@ -47,7 +47,7 @@ public interface UserService {
 	* @return User    返回类型   返回刚刚创建的user对象
 	* @throws
 	 */
-	public User save(User user);
+	public User save(final User user);
 	
 	
 	
@@ -60,7 +60,7 @@ public interface UserService {
 	* @return boolean    返回类型  如果存在则返回true，否则false
 	* @throws
 	 */
-	public boolean emailIsExist(String email);
+	public boolean emailIsExist(final String email);
 	
 	
 	
@@ -74,7 +74,7 @@ public interface UserService {
 	* @return boolean    返回类型  如果存在则返回true，否则false
 	* @throws
 	 */
-	public boolean phoneIsExist(String phone);
+	public boolean phoneIsExist(final String phone);
 	
 	
 	
@@ -87,7 +87,7 @@ public interface UserService {
 	* @return boolean    返回类型   如果存在则返回true，否则false
 	* @throws
 	 */
-	public boolean companyNameIsExist(String companyName);
+	public boolean companyNameIsExist(final String companyName);
 	
 	
 	/**
@@ -98,8 +98,30 @@ public interface UserService {
 	* @return void    返回类型
 	* @throws
 	 */
-	public void deleteUser(User user);
+	public void deleteUser(final User user);
 
 	
+	/**
+	 * 
+	* @Title: emailStatus
+	* @Description: TODO(根据loginName查看所在的user数据库的emailStatus状态，)
+	* @param @param loginName
+	* @param @return    设定文件
+	* @return boolean    返回类型
+	* @throws
+	 */
+	public boolean emailStatus(final String loginName);
+	
+	/**
+	 * 
+	* @Title: loginNameToEmail
+	* @Description: TODO(根据登录账号email或者phone，查找数据库系统中对应的email
+	* 用于login 时rest 需求)
+	* @param @param loginName
+	* @param @return    设定文件
+	* @return String    返回类型
+	* @throws
+	 */
+	public String loginNameToEmail(final String loginName);
 	
 }

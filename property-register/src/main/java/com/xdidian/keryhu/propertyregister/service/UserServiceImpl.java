@@ -50,12 +50,9 @@ public class UserServiceImpl implements UserService {
 		boolean allCorrect=isEmailCorrect&&isPhoneCorrect&&isPasswordCorrect&&isCompanyName&&isDirectName;
 		
 		//email，phone，companyName都必须没有注册过，
-		boolean noExist=(!userAccountClient.isEmailExist(propertyForm.getEmail()).get("isEmailExist"))&&
-				(!userAccountClient.isPhoneExist(propertyForm.getPhone()).get("isPhoneExist"))&&
-				(!userAccountClient.isCompanyNameExist(propertyForm.getCompanyName()).get("isCompanyNameExist"));
-		log.info("email 是否存在于数据库   "+userAccountClient.isEmailExist(propertyForm.getEmail()));
-		log.info("手机是否存在于数据库  "+userAccountClient.isPhoneExist(propertyForm.getPhone()));
-		log.info("公司名字是否存在于数据库  "+userAccountClient.isCompanyNameExist(propertyForm.getCompanyName()));
+		boolean noExist=(!userAccountClient.isEmailExist(propertyForm.getEmail()))&&
+				(!userAccountClient.isPhoneExist(propertyForm.getPhone()))&&
+				(!userAccountClient.isCompanyNameExist(propertyForm.getCompanyName()));
 		log.info("是否所有的输入信息都符合规定 ： "+allCorrect+" ， 是否所有输入的信息，在系统中都不存在 ： "+noExist);
 		
 		if(!(allCorrect&&noExist)){

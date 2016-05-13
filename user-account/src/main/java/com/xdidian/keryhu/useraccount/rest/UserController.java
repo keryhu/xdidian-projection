@@ -1,15 +1,16 @@
 package com.xdidian.keryhu.useraccount.rest;
 
 
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.xdidian.keryhu.useraccount.domain.AuthUserDto;
 import com.xdidian.keryhu.useraccount.domain.User;
 import com.xdidian.keryhu.useraccount.exception.UserNotFoundException;
@@ -48,12 +49,6 @@ public class UserController {
 			        .orElseThrow(()->new UserNotFoundException("您输入的identity，数据库中不存在！！"));
 		//将User 转为 AuthUser对象
 		AuthUserDto au=converterUtil.userToAuthUser.apply(user);
-		//Resource<AuthUser>  resources=new Resource<AuthUser>(
-			//	new AuthUser("11111","22222",Arrays.asList(Role.ROLE_ADMIN,Role.ROLE_PROPERTY)));
-	
-		//resources.add(linkTo(methodOn(UserController.class).findByIdentity(identity)).withSelfRel());
-		//return ResponseEntity.ok(resources);
-		
 		return ResponseEntity.ok(au);
 	}
 	
@@ -66,16 +61,14 @@ public class UserController {
 	* @Title: isEmailExist
 	* @Description: TODO(对外提供查询email是否存在数据库的api接口，不需要增加spring security验证)
 	* @param @param email  需要被查询的email对象
-	* @param @return    返回json 对象，map类型，是否存在此email
-	* @return ResponseEntity<?>    返回类型 ResponseEntity<boolean>
+	* @param @return   
+	* @return Boolean   返回类型 
 	* @throws
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isEmailExist")
-	public ResponseEntity<?> isEmailExist(@RequestParam(value="", required=true) String email){
-		log.info("需要被查询的email是："+email+" , email  是否存在于数据库 ： "+userService.emailIsExist(email));
-		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("isEmailExist", userService.emailIsExist(email));
-		return ResponseEntity.ok(result);
+	public Boolean isEmailExist(@RequestParam(value="", required=true) String email){
+		
+		return userService.emailIsExist(email);
 	}
 	
 
@@ -86,16 +79,14 @@ public class UserController {
 	* @Description: TODO(对外提供查询phone是否存在与数据库，不需要增加spring security验证)
 	* @param @param phone  需要被查询的phone
 	* @param @return    设定文件 返回数据库中是否存在此phone
-	* @return ResponseEntity<?>    返回类型 ResponseEntity<map json>
+	* @return Boolean  返回类型 ResponseEntity<map json>
 	* @throws
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isPhoneExist")
-    public ResponseEntity<?> isPhoneExist(@RequestParam(value="", required=true) String phone){
+    public Boolean isPhoneExist(@RequestParam(value="", required=true) String phone){
 		log.info("需要被查询的phone是："+phone+" , phone  是否存在于数据库 ： "+userService.phoneIsExist(phone));
-		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("isPhoneExist", userService.phoneIsExist(phone));
 		
-		return ResponseEntity.ok(result);
+		return userService.phoneIsExist(phone);
 	}  
 	
 	
@@ -105,18 +96,74 @@ public class UserController {
 	* @Description: TODO(查询数据库中是否存在此公司名字)
 	* @param @param companyName  需要被查询的公司名字参数
 	* @param @return    设定文件   返回数据库中是否存在此公司名字
-	* @return ResponseEntity<?>    返回类型  ResponseEntity<map json>
+	* @return Boolean    返回类型  
 	* @throws
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/isCompanyNameExist")
-    public ResponseEntity<?> isCompanyNameExist(@RequestParam(value="", required=true) String companyName){
+    public Boolean isCompanyNameExist(@RequestParam(value="", required=true) String companyName){
 		log.info("查询公司名字是否存在，公司名字是 ： "+companyName+"查到的 结果 为 ： "+userService.companyNameIsExist(companyName));
-		Map<String,Boolean> result=new HashMap<String,Boolean>();
-		result.put("isCompanyNameExist", userService.companyNameIsExist(companyName));
-		return ResponseEntity.ok(result);
+		
+		return userService.companyNameIsExist(companyName);
 	}  
 	
+	/**
+	 * 
+	* @Title: emailStatus
+	* @Description: TODO(rest 接口查询当前loginName所在的用户，邮箱是否已经激活，如果激活，返回ture，默认是false)
+	* @param @param loginName
+	* @param @return    设定文件
+	* @return ResponseEntity<?>    返回类型
+	* @throws
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/emailStatus")
+	public Boolean emailStatus(@RequestParam(value="", required=true) String loginName){
+		
+		return userService.emailStatus(loginName);
+	}
 	
+	/**
+	 * @throws Exception 
+	 * 
+	* @Title: findRolesByEmail
+	* @Description: TODO(根据提供的loginName，查询到数据库中此用户拥有的roles)
+	* @param @param loginName
+	* @param @return    设定文件
+	* @return ResponseEntity<?>    返回类型
+	* @throws
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/roles")
+	public List<String> findRolesByEmail(@RequestParam(value="", required=true) String loginName) {
+				
+		List<String> roles=null;
+		try {
+			roles = userService.findByLoginName(loginName)
+					                      .map(e->e.getRoles())
+					                      .get()			                     
+					                      .stream()
+					                      .map(e->e.toString())
+					                      .collect(Collectors.toList());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				                      		                     
+
+		return roles;
+	}
 	
+	/**
+	 * 
+	* @Title: loginNameToEmail
+	* @Description: TODO(提供rest接口，供login服务器，根据loginName查询对应的email)
+	* @param @param loginName
+	* @param @return    设定文件
+	* @return String   返回类型
+	* @throws
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/loginNameToEmail")
+	public String loginNameToEmail(@RequestParam(value="", required=true) String loginName){
+		
+		return userService.loginNameToEmail(loginName);
+	}
 
 }

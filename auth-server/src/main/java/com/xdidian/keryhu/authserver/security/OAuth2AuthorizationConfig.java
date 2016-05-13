@@ -46,7 +46,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
 		public JwtAccessTokenConverter jwtAccessTokenConverter() {
 			JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
 			KeyPair keyPair = new KeyStoreKeyFactory(
-					//-storepass  jsk8iiu2e
+					//Storepass  jsk8iiu2e
 					new ClassPathResource("microserver.jks"), "jsk8iiu2e".toCharArray())
 					//keypass   jsdk88sk
 					    .getKeyPair("serverconfig","jsk8iiu2e".toCharArray());

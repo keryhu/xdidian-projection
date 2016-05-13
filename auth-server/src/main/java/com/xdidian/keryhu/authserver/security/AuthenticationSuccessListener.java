@@ -50,8 +50,7 @@ public class AuthenticationSuccessListener  implements ApplicationListener<Authe
 		 String userId=e.getAuthentication().getName();
 		 String ip=auth.getRemoteAddress();
 		 loginAttemptUserService.loginSuccess(ip, userId);
-		 log.info("登陆成功后，远程登陆的ip地址是： "+auth.getRemoteAddress()
-				 +" , userId is : "+userId);
+		 log.info("登陆成功后，远程登陆的ip地址是：{} , userId is :  ",auth.getRemoteAddress(),userId);
 		 
 		 //登录成功后，通过spring cloud stream rabbit 将登录成功的userId发送出去，user－account接受
 		 sendSource.send(userId);

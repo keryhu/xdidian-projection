@@ -1,12 +1,8 @@
 package com.xdidian.keryhu.propertyregister.client;
 
 
-import java.util.Map;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,9 +29,8 @@ public interface UserAccountClient {
 	* @return boolean    返回类型
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/query/isEmailExist",
-			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String,Boolean> isEmailExist(@RequestParam("email") String email);
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/isEmailExist")
+	public Boolean isEmailExist(@RequestParam("email") String email);
 	
 	/**
 	 * 
@@ -46,9 +41,8 @@ public interface UserAccountClient {
 	* @return boolean    返回类型
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/query/isPhoneExist",
-			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String,Boolean> isPhoneExist(@RequestParam("phone") String phone);
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/isPhoneExist")
+    public Boolean isPhoneExist(@RequestParam("phone") String phone);
 	
 	/**
 	 * 
@@ -59,14 +53,10 @@ public interface UserAccountClient {
 	* @return boolean    返回类型
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/users/query/isCompanyNameExist",
-			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String,Boolean> isCompanyNameExist(@RequestParam("companyName") String companyName);
+	@RequestMapping(method=RequestMethod.GET,value="/users/query/isCompanyNameExist")
+	public Boolean isCompanyNameExist(@RequestParam("companyName") String companyName);
 	
-		
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
-	public ResponseEntity<?> del(@PathVariable("id") String id);
 }
 
 

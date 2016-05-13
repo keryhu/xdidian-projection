@@ -17,21 +17,17 @@ spring:
       uri: mongodb://test:123456@${mongo.host:localhost}:27017/test
       repositories:
         enabled: true
-    rest:
-      enable-enum-translation: true
+    
       
   cloud:
     stream:
       bindings:
         loginSuccessOutputChannel:
           destination: loginSuccess
-        removeUserOutputChannel:
-          destination: removeUser
-        retryEmailActivatedOutputChannel:
-          destination: retryEmailActivated
+        
+        
           
-          
-          
+             
   rabbitmq:
     dynamic: true
     host: ${rabbit.host:localhost}
@@ -41,17 +37,17 @@ spring:
     virtual-host: /wfij
     listener:
      
-      #max pool size of thread is 10
-      max-concurrency: 10
+      #max pool size of thread is 100
+      max-concurrency: 100
       #核心的listen thread 是3 
-      concurrency: 5
+      concurrency: 50
       # the container will acknowledge the message automatically, unless the MessageListener throws an exception. Note that acknowledgeMode is complementary to channelTransacted - if the channel is transacted then the broker requires a commit notification in addition to the ack. This is the default mode. See also txSize.
       acknowledge-mode: auto
       auto-startup: true
       #The number of messages to accept from the broker in one socket frame
-      prefetch: 5
+      prefetch: 50
       #When used with acknowledgeMode AUTO, the container will attempt to process up to this number of messages before sending an ack 
-      transaction-size: 5
+      transaction-size: 50
        
 
  # custom jwt varietes 
@@ -72,8 +68,8 @@ jwtOfReadAndWrite:
    #设定固定清零时间为6个小时，最大的尝试失败的次数为10次，10次后，锁定ip 24小时。  
 LoginAttempt:
   maxAttemptTimes: 10
-  timeOfPerid: 1
-  timeOfLock: 3
+  timeOfPerid: 6
+  timeOfLock: 24
   
   
 

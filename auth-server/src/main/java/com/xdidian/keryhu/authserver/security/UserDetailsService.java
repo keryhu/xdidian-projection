@@ -14,12 +14,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.authserver.domain.AuthUserDto;
 import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
+import com.xdidian.keryhu.authserver.exception.EmailNotActivedException;
 import com.xdidian.keryhu.authserver.exception.LoginAttemptBlockedException;
-import com.xdidian.keryhu.authserver.service.EmailActivatedService;
 import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
 import com.xdidian.keryhu.authserver.service.UserServiceImpl;
 
@@ -35,8 +34,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 	private final LoginAttemptUserService loginAttemptUserService;
 	
 	private final LoginAttemptProperties loginAttemptProperties;
-	
-	private final EmailActivatedService emailActivatedService;
+		
 	/**
 	 * <p>
 	 * Title: loadUserByUsername
@@ -62,7 +60,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 			}
 			
 			//查看当前账户有没有被冻结－－
-			if(loginAttemptUserService.isBlocked(getRemoteIP())){
+			if(loginAttemptUserService.isBlocked(userService.getIP(request))){
 				
 				String msg=new StringBuffer("您在").append(loginAttemptProperties.getTimeOfPerid())
 						.append("个小时内，登陆失败了").append(loginAttemptProperties.getMaxAttemptTimes())
@@ -74,11 +72,9 @@ public class UserDetailsService implements org.springframework.security.core.use
 				throw new LoginAttemptBlockedException(msg);
 			}
 			
-			
-			//如果 emailActivated 值 为false ，处理相应的事情，为true，直接忽略
-			//需要传递注册时间，用来计算，有没有过期，  传递userid,用来删除过期的user，,不需要再次计算，直接获取
-			if(!a.isEmailActivatedStatus()){
-				emailActivatedService.handleEmaiActivated(a.getId(),a.getEmail());
+			//如果email未激活，后台只负责过滤，报错，让它堵塞，前台负责跳转指定的错误页面和发送message出去。
+			if(!a.isEmailStatus()){
+				throw new EmailNotActivedException("您的email尚未激活，请查看邮箱，或垃圾邮件，或重新注册！");					
 			}
 			
 			
@@ -105,20 +101,5 @@ public class UserDetailsService implements org.springframework.security.core.use
 				.collect(Collectors.toList());
 	}
 	
-	/**
-	 * 
-	* @Title: getRemoteIP
-	* @Description: TODO(获取remote user 的ip地址)
-	* @param @return    设定文件
-	* @return String    返回类型
-	* @throws
-	 */
-	private String getRemoteIP() {
-	    String xfHeader = request.getHeader("X-Forwarded-For");
-	    if (xfHeader == null){
-	        return request.getRemoteAddr();
-	    }
-	    return xfHeader.split(",")[0];
-	}
-
+	
 }

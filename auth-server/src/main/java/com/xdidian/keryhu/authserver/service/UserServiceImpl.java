@@ -3,9 +3,11 @@ package com.xdidian.keryhu.authserver.service;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.xdidian.keryhu.authserver.client.UserAccountClient;
+import com.xdidian.keryhu.authserver.client.UserClient;
 import com.xdidian.keryhu.authserver.domain.AuthUserDto;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements UserService {
 
-	private final UserAccountClient authUserClient;
+	private final UserClient userClient;
 
 	/**
 	 * 
@@ -34,7 +36,22 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Optional<AuthUserDto> findByLoginName(String loginName) {
 						
-		return Optional.ofNullable(authUserClient.ByLoginName(loginName));
+		return Optional.ofNullable(userClient.ByLoginName(loginName));
+	}
+
+	/**
+	* <p>Title: getIP</p>
+	* <p>Description:获取当前ip地址 </p>
+	* @param request
+	* @return
+	* @see com.xdidian.keryhu.authserver.service.UserService#getIP(javax.servlet.http.HttpServletRequest)
+	*/ 
+	@Override
+	public String getIP(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		String xfHeader = request.getHeader("X-Forwarded-For");
+		return xfHeader == null?request.getRemoteAddr():xfHeader.split(",")[0];
+		
 	}
 
 

@@ -73,13 +73,10 @@ public class User implements Serializable{
 	
 	//邮箱是否被激活 ，之所以要加上index索引，方便定时清理未激活的账户
 	@Indexed
-	private boolean emailActivatedStatus;  
+	private boolean emailStatus;  
 	
-	//email激活的验证码
-	private String emailActivatedCode;
 	
-	//邮件激活，已经重发的次数（包含当前userId下更换email的次数）
-	private int emailActivatedSentTimes;
+	
 	
 	//用户新注册时候的时候，自动生成Id,其它的变量都为null
 	public User(){
@@ -90,9 +87,7 @@ public class User implements Serializable{
 	this.phone=null;
 	this.directName=null;
 	this.registerTime=null;
-	this.emailActivatedStatus=false;
-	this.emailActivatedCode=null;
-	this.emailActivatedSentTimes=0;
+	this.emailStatus=false;
 	//roles 已经设置了默认值。
 	}
 	

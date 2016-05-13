@@ -45,5 +45,22 @@ public class ExceptionControllerAdvice {
 	        return new ErrorMessage(HttpStatus.BAD_GATEWAY.value(),ex.getMessage());
 	    }
 	 
+	 /**
+	  * 
+	 * @Title: handlePropertySaveException
+	 * @Description: TODO(当报错物业公司注册信息时候，发现有错误的时候，报告此class)
+	 * @param @param ex
+	 * @param @return    设定文件
+	 * @return ErrorMessage    返回类型
+	 * @throws
+	  */
+	 @ExceptionHandler(PropertySaveException.class)
+	 @ResponseBody
+	 @ResponseStatus(HttpStatus.BAD_REQUEST)
+	 ErrorMessage handlePropertySaveException( Throwable ex) {
+	        
+	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
+	        return new ErrorMessage(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
+	    }
 
 }

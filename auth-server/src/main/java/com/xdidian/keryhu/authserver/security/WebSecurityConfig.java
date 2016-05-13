@@ -28,6 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	 @Autowired
 	 private  UserDetailsService userDetailsService; 
 	 
+	 
 	
 	 @Override
 	 @Bean
@@ -38,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	 /**
 	 * <p>Title: configure</p>
 	 * <p>Description: 注意对于auth-server 里的url 路由security 控制，都加到 ResourceServerConfig class 里，不要加到此class 方法里。 </p>
-	 * @param http
+	 * @param http   所有的关于login 路由或者 login 带参数 如 login*  的路由 权限配置都是在 此方法中
 	 * @throws Exception
 	 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
 	  */
@@ -47,11 +48,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			// @formatter:off
 			http
 				.formLogin().loginPage("/login")
+				.failureUrl("/login?error")
 				.permitAll()
 			.and()
 				.requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
 			.and()
 				.authorizeRequests()
+				.antMatchers("/login*").permitAll()
 				.anyRequest().authenticated()
 				;
 			

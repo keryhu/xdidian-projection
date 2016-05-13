@@ -4,9 +4,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
 @RestController
 public class MainController {
+	
+	
 	
 	@RequestMapping("/hello")
     public String hello() {
@@ -17,6 +18,7 @@ public class MainController {
     public String test() {
         return "Hello this is pc-gateway'test  page , it not protected !";
     }
+	
 	
 	
 }

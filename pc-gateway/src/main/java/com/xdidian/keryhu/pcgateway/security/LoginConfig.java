@@ -30,11 +30,11 @@ public class LoginConfig extends WebSecurityConfigurerAdapter  {
 		http 
 		     .logout().permitAll()
 		     .and().antMatcher("/**").authorizeRequests()
-			 .antMatchers("/","/register","/webjars/**","/favicon.ico","/script/**").permitAll()
+			 .antMatchers("/","/register","/register/**","/webjars/**","/favicon.ico","/script/**").permitAll()
 				//只有未登陆用户，才能提交注册。
 			 .antMatchers(HttpMethod.POST,"/property-register/property/register").permitAll()
 			 .antMatchers(HttpMethod.GET, "/user-account/users/query/**").permitAll()
-			 .antMatchers(HttpMethod.DELETE,"/property-register/property/**").permitAll()
+			 .antMatchers(HttpMethod.GET, "/email-activate/email/**").permitAll()
 			 .anyRequest().authenticated()
 			 .and().csrf().csrfTokenRepository(csrfTokenRepository())
 			 .and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);

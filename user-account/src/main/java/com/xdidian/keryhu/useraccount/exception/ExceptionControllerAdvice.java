@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
 import com.xdidian.keryhu.domain.ErrorMessage;
+
 
 
 /**
@@ -25,6 +25,7 @@ import com.xdidian.keryhu.domain.ErrorMessage;
 */
 @ControllerAdvice
 public class ExceptionControllerAdvice {
+	
 	
 	 @ExceptionHandler(UserNotFoundException.class)
 	 @ResponseBody
@@ -45,33 +46,5 @@ public class ExceptionControllerAdvice {
 	        return new ErrorMessage(HttpStatus.NOT_FOUND.value(),ex.getMessage());
 	    }
 	 
-	 
-	 @ExceptionHandler(EmailActivatedCodeNotFoundException.class)
-	 @ResponseBody
-	 @ResponseStatus(HttpStatus.NOT_FOUND)
-	 ErrorMessage handleEmailActivatedCodeNotFoundException( Throwable ex) {
-	        
-	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
-	        return new ErrorMessage(HttpStatus.NOT_FOUND.value(),ex.getMessage());
-	    }
-	 
-	 @ExceptionHandler(EmailActivatedExpiredException.class)
-	 @ResponseBody
-	 @ResponseStatus(HttpStatus.BAD_REQUEST)
-	 ErrorMessage handleEmailActivatedExpiredException( Throwable ex) {
-	        
-	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
-	        return new ErrorMessage(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
-	    }
-	 
-	 
-	 @ExceptionHandler(EmailActivatedSentTimesOverException.class)
-	 @ResponseBody
-	 @ResponseStatus(HttpStatus.BAD_REQUEST)
-	 ErrorMessage handleEmailActivatedSentTimesOverException( Throwable ex) {
-	        
-	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
-	        return new ErrorMessage(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
-	    }
 
 }

@@ -30,6 +30,7 @@ zuul:
     property-register: /property-register/**
     user-account: /user-account/**
     auth-server: /auth-server/**
+    email-activate: /email-activate/**
     
       
   
@@ -38,5 +39,5 @@ logging:
   level:
     org.springframework.security: DEBUG
 
-   
+
       

@@ -10,6 +10,7 @@ import com.xdidian.keryhu.util.StringValidate;
 
 import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.useraccount.domain.User;
+import com.xdidian.keryhu.useraccount.exception.EmailNotFoundException;
 import com.xdidian.keryhu.useraccount.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -28,14 +29,15 @@ public class UserServiceImpl implements UserService {
 
 	/**
 	 * @Title: findByLoginName
-	 * @Description: TODO(登录login 的登录名loginName(email或phone）查询数据库中是否存在user数据)
+	 * @Description: TODO(登录login 的登录名loginName(email或phone）查询数据库中是否存在user数据
+	 * 主要用于login服务器的 userDetailsService 的后台调用。spring－feign)
 	 * @param @param        loginName
 	 * @param @param 传入的唯一标示符
 	 *  @return 返回查询到数据库User结果，如无结果则为null
 	 */
 
 	@Override
-	public Optional<User> findByLoginName(String loginName) {
+	public Optional<User> findByLoginName(final String loginName) {
 		// TODO Auto-generated method stub
 		
         Optional<User> user;
@@ -67,7 +69,7 @@ public class UserServiceImpl implements UserService {
 	* @see com.xdidian.keryhu.useraccount.service.UserService#findById(java.lang.String)
 	*/ 
 	@Override
-	public Optional<User> findById(String id) {
+	public Optional<User> findById(final String id) {
 		// TODO Auto-generated method stub
 		 Optional<User> user;
 	        if(StringUtils.isNullOrEmpty(id)){
@@ -103,7 +105,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	@Transactional
-	public User save(User user) {
+	public User save(final User user) {
 		// TODO Auto-generated method stub
 		return repository.save(user);
 
@@ -119,7 +121,7 @@ public class UserServiceImpl implements UserService {
 	 * @see com.xdidian.keryhu.useraccount.service.UserService#EmailIsExist(java.lang.String)
 	 */
 	@Override
-	public boolean emailIsExist(String email) {
+	public boolean emailIsExist(final String email) {
 		// TODO Auto-generated method stub
 		return repository.findByEmail(email).isPresent();
 	}
@@ -134,7 +136,7 @@ public class UserServiceImpl implements UserService {
 	 * @see com.xdidian.keryhu.useraccount.service.UserService#phoneIsExist(java.lang.String)
 	 */
 	@Override
-	public boolean phoneIsExist(String phone) {
+	public boolean phoneIsExist (final String phone) {
 		// TODO Auto-generated method stub
 		return repository.findByPhone(phone).isPresent();
 	}
@@ -148,7 +150,7 @@ public class UserServiceImpl implements UserService {
 	 * @see com.xdidian.keryhu.useraccount.service.UserService#companyNameIsExist(java.lang.String)
 	 */
 	@Override
-	public boolean companyNameIsExist(String companyName) {
+	public boolean companyNameIsExist(final String companyName) {
 		// TODO Auto-generated method stub
 		return repository.findByCompanyName(companyName).isPresent();
 	}
@@ -162,11 +164,41 @@ public class UserServiceImpl implements UserService {
 	*/ 
 	@Transactional
 	@Override
-	public void deleteUser(User user) {
+	public void deleteUser(final User user) {
 		// TODO Auto-generated method stub
 			Assert.notNull(user,"被删除的对象user不能为null");
 			repository.findById(user.getId())
 			          .ifPresent(e->repository.delete(e));
+	}
+
+
+	/**
+	* <p>Title: emailStatus</p>
+	* <p>Description: 如果loginName找不到对于的user 数据，返回false，否则返回查询到的 emailStatus激活状态</p>
+	* @param loginName
+	* @return
+	* @see com.xdidian.keryhu.useraccount.service.UserService#emailStatus(java.lang.String)
+	*/ 
+	@Override
+	public boolean emailStatus(final String loginName) {
+		// TODO Auto-generated method stub
+		return findByLoginName(loginName).map(e->e.isEmailStatus()).orElse(false);
+	}
+
+
+	/**
+	* <p>Title: loginNameToEmail</p>
+	* <p>Description: 用于login服务器，登录时，根据loginName查询系统中存在的email账户</p>
+	* @param loginName
+	* @return
+	* @see com.xdidian.keryhu.useraccount.service.UserService#loginNameToEmail(java.lang.String)
+	*/ 
+	@Override
+	public String loginNameToEmail(final String loginName) {
+		// TODO Auto-generated method stub
+		return findById(loginName).map(e->e.getEmail())
+				.orElseThrow(()-> new EmailNotFoundException("您要查找的email不存在！"));
+		
 	}
 
 
