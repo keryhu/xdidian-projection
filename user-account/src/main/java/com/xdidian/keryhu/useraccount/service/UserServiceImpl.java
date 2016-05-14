@@ -5,10 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
 import com.xdidian.keryhu.util.StringValidate;
 
-import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.useraccount.domain.User;
 import com.xdidian.keryhu.useraccount.exception.EmailNotFoundException;
 import com.xdidian.keryhu.useraccount.repository.UserRepository;
@@ -44,7 +42,7 @@ public class UserServiceImpl implements UserService {
 		
 		
         Optional<User> user;
-        if(StringUtils.isNullOrEmpty(loginName)){
+        if(loginName==null||loginName.isEmpty()){
         	return Optional.empty();
         }
 		switch (StringValidate.checkType(loginName)) {
@@ -75,7 +73,7 @@ public class UserServiceImpl implements UserService {
 	public Optional<User> findById(final String id) {
 		// TODO Auto-generated method stub
 		 Optional<User> user;
-	        if(StringUtils.isNullOrEmpty(id)){
+	        if(id==null||id.isEmpty()){
 	        	return Optional.empty();
 	        }
 			switch (StringValidate.checkType(id)) {

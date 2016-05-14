@@ -11,8 +11,6 @@ package com.xdidian.keryhu.useraccount.stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
-
-import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.useraccount.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +33,7 @@ public class RemoveUserConsumer {
 	@StreamListener(RemoveUserInputChannel.NAME)
 	public void removeUser(String id){
 		log.info("id is : {}",id);
-		if(!StringUtils.isNullOrEmpty(id)){
+		if(!(id==null||id.isEmpty())){
 			
 			userService.findById(id)
 			           .ifPresent(e->userService.deleteUser(e));

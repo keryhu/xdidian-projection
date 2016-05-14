@@ -12,7 +12,6 @@ package com.xdidian.keryhu.useraccount.stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.useraccount.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,7 +32,7 @@ public class ActivatedSuccessConsumer {
 	@StreamListener(ActivatedSuccessInputChannel.NAME)
 	public void removeUser(final String email){
 		
-		if(!StringUtils.isNullOrEmpty(email)){
+		if(!(email==null||email.isEmpty())){
 			userService.findByLoginName(email).ifPresent(e->{
 				e.setEmailStatus(true);
 				userService.save(e);
