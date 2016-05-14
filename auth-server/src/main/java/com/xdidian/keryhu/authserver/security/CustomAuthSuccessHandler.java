@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,8 +57,10 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
 		// TODO Auto-generated method stub
 
 		// 找出含有admin权限的用户
-		boolean b = authentication.getAuthorities().stream().filter(e -> e != null)
-				.anyMatch(e -> e.getAuthority().equals("ROLE_ADMIN"));
+		Assert.notNull(authentication.getAuthorities(), "需要转换的权限不能为空！");
+		
+		boolean b = authentication.getAuthorities().stream() 
+				          .anyMatch(e -> e.getAuthority().equals("ROLE_ADMIN"));
 		
 		String adminUrl=new StringBuffer(request.getServerName())
 				.append(":8080/admin").toString();

@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
 import com.xdidian.keryhu.authserver.domain.LoginAttemptUser;
 import com.xdidian.keryhu.authserver.repository.LoginAttemptUserRepository;
@@ -195,7 +194,9 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 	  */
 	 private void addLoginName(String loginName,LoginAttemptUser loginAttemptUser){
 		 
-		 if((!StringUtils.isNullOrEmpty(loginName))&&(!loginAttemptUser.containLoginName(loginName))){
+		 boolean loginNameEmpty=loginName==null||loginName.isEmpty();
+		 
+		 if((!loginNameEmpty)&&(!loginAttemptUser.containLoginName(loginName))){
 			 loginAttemptUser.addLoginName(loginName);
    	  }
 	 }

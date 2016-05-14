@@ -12,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
+
 import com.xdidian.keryhu.domain.PropertyRegisterDto;
-import com.xdidian.keryhu.exception.MessageNotSendException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -41,11 +42,9 @@ public class SaveProducer {
 	public void send(PropertyRegisterDto dto){
 		
 		boolean result=channel.saveOutput().send(MessageBuilder.withPayload(dto).build());
+		
+		Assert.isTrue(result, "物业公司注册完，发送具体消息失败！"); 
 		log.info("物业公司注册成功，现在发送message，给user-account ! ");
-		 if (!result) {
-			    log.error("物业公司注册完，发送具体消息失败！");
-	            throw new MessageNotSendException("物业公司注册完，发送具体消息失败！");
-	        }
 		
 	}
 

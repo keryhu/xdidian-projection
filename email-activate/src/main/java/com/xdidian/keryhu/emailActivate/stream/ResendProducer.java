@@ -12,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import com.xdidian.keryhu.domain.EmailActivatedDto;
-import com.xdidian.keryhu.exception.MessageNotSendException;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -36,10 +35,7 @@ public class ResendProducer {
 		boolean result=channel.resend()
 				              .send(MessageBuilder.withPayload(dto).build());
 		
-		if (!result) {
-		    log.error("用户用户点击'再次发送邮件激活的需求，再次发送的请求message发出失败！");
-            throw new MessageNotSendException("用户用户点击'再次发送邮件激活的需求，再次发送的请求message发出消息失败！");
-        }
+		Assert.isTrue(result, "用户用户点击'再次发送邮件激活的需求，再次发送的请求message发出失败！");
 		
 		log.info("用户用户点击'再次发送邮件激活的需求，再次发送的请求message发出！'");
 	}

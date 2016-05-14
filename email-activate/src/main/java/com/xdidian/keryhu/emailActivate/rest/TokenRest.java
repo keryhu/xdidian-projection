@@ -11,18 +11,15 @@ package com.xdidian.keryhu.emailActivate.rest;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.emailActivate.client.UserClient;
 import com.xdidian.keryhu.emailActivate.domain.ActivatedProperties;
-import com.xdidian.keryhu.emailActivate.exception.CannotRestException;
-import com.xdidian.keryhu.emailActivate.exception.EmailNotFoundException;
 import com.xdidian.keryhu.emailActivate.service.TokenService;
 import com.xdidian.keryhu.util.StringValidate;
 
@@ -50,13 +47,9 @@ public class TokenRest {
 	public ModelAndView urlConfirm(@RequestParam("email") final String email,
 			@RequestParam("token") final String token,RedirectAttributes attr){
 		
-		if(StringUtils.isNullOrEmpty(email)||StringUtils.isNullOrEmpty(token)){
-			throw new EmailNotFoundException("email或token 不能为空！ ");
-		}
-		else if(!StringValidate.isEmail(email)){
-			throw new EmailNotFoundException("您输入的不是eamil，请检查后再试 ！ ");
-		}
-		
+		Assert.hasText(token, "token不能为空");
+		Assert.isTrue(StringValidate.isEmail(email), "您输入的不是eamil，请检查后再试 ！");
+	
 		ModelAndView mav=new ModelAndView();
 		//如果email不存在于user-account数据库，跳转注册页面，然后显示email未注册，提示先注册
 		boolean notInUser=!userClient.isEmailExist(email);
@@ -108,13 +101,8 @@ public class TokenRest {
 			,RedirectAttributes attr){
 		ModelAndView mav=new ModelAndView();
 		log.info("正在调用email-activate");
-		if(StringUtils.isNullOrEmpty(email)){
-			throw new EmailNotFoundException("email 不能为空！ ");
-		}
-		
-		if(!StringValidate.isEmail(email)){
-			throw new EmailNotFoundException("您输入的数据不是email，请查正后再试！ ");
-		}
+		Assert.hasText(email, "email不能为空");
+		Assert.isTrue(StringValidate.isEmail(email), "您输入的不是eamil，请检查后再试 ！");
 		
 		//如果激活时间没有过期，那么跳转  hostname/8080/register/result 页面，并且附带email参数
 		if(!tokenService.activateExpired(email)){
@@ -126,10 +114,7 @@ public class TokenRest {
 		else if(tokenService.activateExpired(email)){
 			log.info("激活时间已经过期。。。");
 			tokenService.doWhenExpired(email, mav, attr);
-		}  else {
-			//报错，您无法执行此操作
-			throw new CannotRestException("您无法执行此操作！");
-		}
+		}  
 		return mav;
 	}
 	
@@ -187,10 +172,7 @@ public class TokenRest {
 	@RequestMapping(method=RequestMethod.GET,value="/email/reregister")
 	public ModelAndView reregister(@RequestParam("email") final String email
 			,RedirectAttributes attr){
-		
-		if(StringUtils.isNullOrEmpty(email)){
-			throw new EmailNotFoundException("email 不能为空！ ");
-		}
+		Assert.hasText(email, "email不能为空");
 		
 		ModelAndView mav=new ModelAndView();
 		//执行和激活过期相同的代码

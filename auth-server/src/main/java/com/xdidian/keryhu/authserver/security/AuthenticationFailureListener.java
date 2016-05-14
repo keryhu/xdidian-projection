@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
 * @ClassName: AuthenticationFailureListener
@@ -25,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 */
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Slf4j
 public class AuthenticationFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent>  {
 
 	private final LoginAttemptUserService loginAttemptUserService;
@@ -49,7 +47,6 @@ public class AuthenticationFailureListener implements ApplicationListener<Authen
 		
 		loginAttemptUserService.loginFail(ip, loginName);
 		
-		log.info("auth failer is running and auth is : {} ",auth);
 		
 	}
 

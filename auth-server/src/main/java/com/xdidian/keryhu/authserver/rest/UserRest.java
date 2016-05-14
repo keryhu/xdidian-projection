@@ -6,15 +6,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.amazonaws.util.StringUtils;
 import com.xdidian.keryhu.authserver.client.UserClient;
 import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
 import com.xdidian.keryhu.authserver.repository.LoginAttemptUserRepository;
@@ -72,16 +71,11 @@ public class UserRest {
 	@RequestMapping(value="/query/leftLoginAttemptTimes",method=RequestMethod.GET)
 	public ResponseEntity<?> queryLoginAttemptInfo(HttpServletRequest request){
 		
-	    //获取当前用户的ip地址	
-		
-		String xfHeader = request.getHeader("X-Forwarded-For");
-	    String ip=StringUtils.isNullOrEmpty(xfHeader)?request.getRemoteAddr():xfHeader.split(",")[0];
-	       
 	    //设置一个默认值，只有当ip不存在的时候，返回这个值
 	    Map<String,Integer> result=new HashMap<String,Integer>();
 	    result.put("leftLoginAttemptTimes", loginAttemptProperties.getMaxAttemptTimes());
 	    
-	   return repository.findByRemoteIp(ip).map(e->{
+	   return repository.findByRemoteIp(userService.getIP(request)).map(e->{
 		   //目前还剩几此输错的机会
 	       int leftLoginAttemptTimes=loginAttemptProperties.getMaxAttemptTimes()-
 	    		   e.getAlreadyAttemptTimes();
@@ -118,22 +112,26 @@ public class UserRest {
 	@RequestMapping(value="/query/validateLoginName",method=RequestMethod.GET)
     public  ResponseEntity<?> validateLoginName(@RequestParam("loginName") String loginName,
     		HttpServletRequest request){
-		Assert.assertNotNull(loginName, "被查询的loginName不能为空");
+		
+		Assert.hasText(loginName,"登录名loginName不能为空");
 		Map<String,Object> result=new HashMap<String,Object>();
 		
 		String ip=userService.getIP(request);
 		
 		if(loginAttemptService.isBlocked(ip)){
 			result.put("error", "由于您操作太过频繁，您当前的ip已经被冻结！请稍后再试。");
+			return ResponseEntity.ok(result);
 		}
 		else if(StringValidate.isEmail(loginName)){
 			if(!userClient.isEmailExist(loginName)){
 				result.put("error", "email不存在于数据库");
+				return ResponseEntity.ok(result);
 			}
 		}
 		else if(StringValidate.isPhone(loginName)){
 			if(!userClient.isPhoneExist(loginName)){
 				result.put("error", "phone不存在于数据库");
+				return ResponseEntity.ok(result);
 			}
 		}
 		result.put("emailStatus", userClient.emailStatus(loginName));

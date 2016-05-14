@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,8 +24,6 @@ import com.xdidian.keryhu.emailActivate.client.UserClient;
 import com.xdidian.keryhu.emailActivate.domain.ActivatedProperties;
 import com.xdidian.keryhu.emailActivate.domain.ActivatedToken;
 import com.xdidian.keryhu.emailActivate.exception.EmailNotFoundException;
-import com.xdidian.keryhu.emailActivate.exception.SendTimesOverException;
-import com.xdidian.keryhu.emailActivate.exception.TokenNotFoundException;
 import com.xdidian.keryhu.emailActivate.repository.ActivatedTokenRepository;
 import com.xdidian.keryhu.emailActivate.stream.ActivatedSuccessProducer;
 import com.xdidian.keryhu.emailActivate.stream.RemoveUserProducer;
@@ -101,14 +100,10 @@ public class TokenServiceImpl  implements TokenService{
 		
 		String redirectUrl=activatedProperties.getLoginUrl();
 			
-		 //如果token不存在于数据库，报错
-		 if (!tokenExist(email,token)){
-			 log.info("您要激活的验证码不存在，到时候，导到前台页面显示错误！");
-			throw new TokenNotFoundException("您的email激活码不存在，无法通过验证。");
-		 } 
-		 
+		Assert.isTrue(tokenExist(email,token), "您的email激活码不存在，无法通过验证。");
+	
 		 //验证成功的方法。  
-		  else if (!activateExpired(email)){			 
+		 if (!activateExpired(email)){			 
 			  confirmSuccess(email);			 
 			  attr.addAttribute("emailActivated",message);
 			  mav.setViewName(redirectUrl);
@@ -156,13 +151,13 @@ public class TokenServiceImpl  implements TokenService{
 	* @throws
 	 */
 	private boolean tokenExist(String email,String token){
-		
+				
 		return repository.findByEmail(email).map(e->{
-			if(e.getToken().trim().length()>0){
+			if(e.getToken().length()>0){
 				return e.getToken().equals(token);
 			  }
 			    return false;
-		   }).orElseThrow(()->new EmailNotFoundException("您要激活的email不存在！"));
+		   }).orElseThrow(()->new EmailNotFoundException("您要激活的email不存在于数据库"));
 		
 	}
 	
@@ -273,10 +268,8 @@ public class TokenServiceImpl  implements TokenService{
 	 */
 	@Override
 	public void doWithResend(final String email){
+		Assert.isTrue(!sendTimesOver(email), "您点击的太过频繁，请稍后再试！");
 		
-		if(sendTimesOver(email)){
-			throw new SendTimesOverException("您点击的太过频繁，请稍后再试！");
-		}
 		repository.findByEmail(email).ifPresent(e->{
 			e.setToken(UUID.randomUUID().toString());
 			AtomicInteger atomic=new AtomicInteger(e.getSentTimes());

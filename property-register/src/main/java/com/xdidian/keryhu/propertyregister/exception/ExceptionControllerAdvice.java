@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.xdidian.keryhu.domain.ErrorMessage;
-import com.xdidian.keryhu.exception.MessageNotSendException;
 
 
 /**
@@ -27,40 +26,14 @@ import com.xdidian.keryhu.exception.MessageNotSendException;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 	
-	/**
-	 * 
-	* @Title: handleMessageNotSendException
-	* @Description: TODO(当物业公司用户注册完后，需要发送message到user-account，如果发送消息没有成功，那么就会报告此错误。)
-	* @param @param ex
-	* @param @return    设定文件
-	* @return ErrorMessage    返回类型
-	* @throws
-	 */
-	 @ExceptionHandler(MessageNotSendException.class)
-	 @ResponseBody
-	 @ResponseStatus(HttpStatus.BAD_GATEWAY)
-	 ErrorMessage handleMessageNotSendException( Throwable ex) {
-	        
-	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
-	        return new ErrorMessage(HttpStatus.BAD_GATEWAY.value(),ex.getMessage());
-	    }
 	 
-	 /**
-	  * 
-	 * @Title: handlePropertySaveException
-	 * @Description: TODO(当报错物业公司注册信息时候，发现有错误的时候，报告此class)
-	 * @param @param ex
-	 * @param @return    设定文件
-	 * @return ErrorMessage    返回类型
-	 * @throws
-	  */
-	 @ExceptionHandler(PropertySaveException.class)
+	//捕获Assert验证的错误信息。
+	 @ExceptionHandler(IllegalArgumentException.class)
 	 @ResponseBody
-	 @ResponseStatus(HttpStatus.BAD_REQUEST)
-	 ErrorMessage handlePropertySaveException( Throwable ex) {
+	 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	 ErrorMessage handleIllegalArgumentException( Throwable ex) {
 	        
 	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
-	        return new ErrorMessage(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
-	    }
-
+	        return new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(),ex.getMessage());
+	    }	
 }

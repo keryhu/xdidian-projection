@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 	public String getIP(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		String xfHeader = request.getHeader("X-Forwarded-For");
-		return xfHeader == null?request.getRemoteAddr():xfHeader.split(",")[0];
+		return (xfHeader == null||xfHeader.isEmpty())?request.getRemoteAddr():xfHeader.split(",")[0];
 		
 	}
 

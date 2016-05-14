@@ -12,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
-import com.xdidian.keryhu.exception.MessageNotSendException;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
 * @ClassName: EmailActivatedExpiredProducer
@@ -25,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 */
 @Component
 @EnableBinding(RemoveUserOutputChannel.class)
-@Slf4j
 public class RemoveUserProducer {
 	
 	@Autowired
@@ -44,11 +41,8 @@ public class RemoveUserProducer {
 		boolean result=channel.removeUser()
 				              .send(MessageBuilder.withPayload(id).build());
 		
+		Assert.isTrue(result, "发送 remove user messge 失败！！");
 		
-		if(!result){
-			 log.error("发送 remove user messge 失败");
-	         throw new MessageNotSendException("发送 remove user messge 失败！！");
-		}
 	}
 
 }

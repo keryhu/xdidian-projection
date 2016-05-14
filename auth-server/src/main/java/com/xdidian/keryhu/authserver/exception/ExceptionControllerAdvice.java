@@ -27,25 +27,14 @@ import com.xdidian.keryhu.domain.ErrorMessage;
 public class ExceptionControllerAdvice {
 	
 	 
-	 
-
-	 @ExceptionHandler(EmailNotActivedException.class)
+	//捕获Assert验证的错误信息。
+	 @ExceptionHandler(IllegalArgumentException.class)
 	 @ResponseBody
-	 @ResponseStatus(HttpStatus.BAD_REQUEST)
-	 ErrorMessage handleEmailNotActivedException( Throwable ex) {
+	 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	 ErrorMessage handleIllegalArgumentException( Throwable ex) {
 	        
 	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
-	        return new ErrorMessage(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
-	    }
-	 
-	 
-	 @ExceptionHandler(LoginAttemptBlockedException.class)
-	 @ResponseBody
-	 @ResponseStatus(HttpStatus.BAD_REQUEST)
-	 ErrorMessage handleLoginAttemptBlockedException( Throwable ex) {
-	        
-	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
-	        return new ErrorMessage(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
-	    }
+	        return new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(),ex.getMessage());
+	    }	 
 	 
 }

@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Component;
-import com.xdidian.keryhu.domain.EmailActivatedDto;
-import com.xdidian.keryhu.exception.MessageNotSendException;
+import org.springframework.util.Assert;
 
+import com.xdidian.keryhu.domain.EmailActivatedDto;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -36,10 +36,7 @@ public class EmailActivatedProducer {
 		boolean result=channel.emailActivatedOutput()
 				              .send(MessageBuilder.withPayload(dto).build());
 		
-		if (!result) {
-		    log.error("服务器发送email激活的message消息失败！");
-            throw new MessageNotSendException("服务器发送email激活的message消息失败！");
-        }
+		Assert.isTrue(result, "服务器发送email激活的message消息失败！");
 		
 		log.info("物业公司会员注册成功，现在发送email激活的message出去。");
 	}

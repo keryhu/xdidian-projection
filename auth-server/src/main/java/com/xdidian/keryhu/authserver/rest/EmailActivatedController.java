@@ -11,6 +11,7 @@ package com.xdidian.keryhu.authserver.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,6 +50,7 @@ public class EmailActivatedController  {
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/query/emailNotActived")
 	public ModelAndView callEmailActivatedValidate(@RequestParam("loginName") String loginName){
+		Assert.hasText(loginName,"登录名loginName不能为空");
 		ModelAndView mav=new ModelAndView();
 		String email=userClient.loginNameToEmail(loginName);
 		String redirectUrl=new StringBuffer("redirect:")

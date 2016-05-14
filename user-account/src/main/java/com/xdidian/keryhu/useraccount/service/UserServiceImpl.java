@@ -38,9 +38,6 @@ public class UserServiceImpl implements UserService {
 	public Optional<User> findByLoginName(final String loginName) {
 		// TODO Auto-generated method stub
 		
-		
-		
-		
         Optional<User> user;
         if(loginName==null||loginName.isEmpty()){
         	return Optional.empty();

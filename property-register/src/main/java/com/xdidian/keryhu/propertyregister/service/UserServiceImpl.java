@@ -10,9 +10,10 @@ package com.xdidian.keryhu.propertyregister.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
+
 import com.xdidian.keryhu.propertyregister.client.UserAccountClient;
 import com.xdidian.keryhu.propertyregister.domain.PropertyForm;
-import com.xdidian.keryhu.propertyregister.exception.PropertySaveException;
 import com.xdidian.keryhu.util.StringValidate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,24 +41,15 @@ public class UserServiceImpl implements UserService {
 	public void vlidateBeforSave(PropertyForm propertyForm) {
 		// TODO Auto-generated method stub
 		log.info("需要验证的propertyForm is ： "+propertyForm);
-		boolean isEmailCorrect=StringValidate.isEmail(propertyForm.getEmail());
-		boolean isPhoneCorrect=StringValidate.isPhone(propertyForm.getPhone());
-		boolean isPasswordCorrect=StringValidate.isPassword(propertyForm.getPassword());
-		boolean isCompanyName=StringValidate.isCompanyName(propertyForm.getCompanyName());
-		boolean isDirectName=StringValidate.isPeopleName(propertyForm.getDirectName());
+		Assert.isTrue(StringValidate.isEmail(propertyForm.getEmail()), "email格式不正确！");
+		Assert.isTrue(StringValidate.isPhone(propertyForm.getPhone()),"phone格式不正确！");
+		Assert.isTrue(StringValidate.isPassword(propertyForm.getPassword()), "手机格式不正确！");
+		Assert.isTrue(StringValidate.isCompanyName(propertyForm.getCompanyName()), "公司名字格式不正确！");
+		Assert.isTrue(StringValidate.isPeopleName(propertyForm.getDirectName()), "姓名格式不正确！");
 		
-		//所有的输入信息的合法性  boolean，必须确保他们为true，否则报错。
-		boolean allCorrect=isEmailCorrect&&isPhoneCorrect&&isPasswordCorrect&&isCompanyName&&isDirectName;
-		
-		//email，phone，companyName都必须没有注册过，
-		boolean noExist=(!userAccountClient.isEmailExist(propertyForm.getEmail()))&&
-				(!userAccountClient.isPhoneExist(propertyForm.getPhone()))&&
-				(!userAccountClient.isCompanyNameExist(propertyForm.getCompanyName()));
-		log.info("是否所有的输入信息都符合规定 ： "+allCorrect+" ， 是否所有输入的信息，在系统中都不存在 ： "+noExist);
-		
-		if(!(allCorrect&&noExist)){
-			throw new PropertySaveException("输入信息不合法，或者提供的手机号，email，公司名字已经注册过!");
-		}
+		Assert.isTrue(!userAccountClient.isEmailExist(propertyForm.getEmail()), "email已经注册过，请直接登录！");
+		Assert.isTrue(!userAccountClient.isPhoneExist(propertyForm.getPhone()), "phone已经注册，请直接登录！");
+		Assert.isTrue(!userAccountClient.isCompanyNameExist(propertyForm.getCompanyName()), "公司名字已经注册，请直接登录！");
 		
 	}
 
