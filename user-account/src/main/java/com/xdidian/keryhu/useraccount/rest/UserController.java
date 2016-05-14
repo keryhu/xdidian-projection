@@ -2,6 +2,7 @@ package com.xdidian.keryhu.useraccount.rest;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,7 +125,7 @@ public class UserController {
 	/**
 	 * @throws Exception 
 	 * 
-	* @Title: findRolesByEmail
+	* @Title: findRolesByLoginName
 	* @Description: TODO(根据提供的loginName，查询到数据库中此用户拥有的roles)
 	* @param @param loginName
 	* @param @return    设定文件
@@ -132,23 +133,23 @@ public class UserController {
 	* @throws
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/roles")
-	public List<String> findRolesByEmail(@RequestParam(value="", required=true) String loginName) {
+	public List<String> findRolesByLoginName(@RequestParam(value="", required=true) String loginName) {
 				
-		List<String> roles=null;
-		try {
-			roles = userService.findByLoginName(loginName)
+		if(!userService.findByLoginName(loginName).isPresent()||
+				userService.findByLoginName(loginName).get().getRoles().isEmpty()){
+			return new ArrayList<String>();
+		}
+		
+		
+		return userService.findByLoginName(loginName)
 					                      .map(e->e.getRoles())
-					                      .get()			                     
+					                      .get()
 					                      .stream()
 					                      .map(e->e.toString())
 					                      .collect(Collectors.toList());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 				                      		                     
 
-		return roles;
+		
 	}
 	
 	/**

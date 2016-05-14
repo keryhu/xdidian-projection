@@ -54,7 +54,6 @@ public class UserDetailsService implements org.springframework.security.core.use
 		
 		return (UserDetails) userService.findByLoginName(username).map(a -> {
 			
-	
 			if (StringUtils.isNullOrEmpty(a.getId())) {
 				throw new UsernameNotFoundException("新地点不存在此账户，请先注册！");
 			}

@@ -23,7 +23,6 @@ import com.xdidian.keryhu.emailActivate.client.UserClient;
 import com.xdidian.keryhu.emailActivate.domain.ActivatedProperties;
 import com.xdidian.keryhu.emailActivate.exception.CannotRestException;
 import com.xdidian.keryhu.emailActivate.exception.EmailNotFoundException;
-import com.xdidian.keryhu.emailActivate.repository.ActivatedTokenRepository;
 import com.xdidian.keryhu.emailActivate.service.TokenService;
 import com.xdidian.keryhu.util.StringValidate;
 
@@ -40,8 +39,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TokenRest {
-	
-	private final ActivatedTokenRepository repository;
 	
 	private final UserClient userClient;
 
@@ -60,13 +57,11 @@ public class TokenRest {
 			throw new EmailNotFoundException("您输入的不是eamil，请检查后再试 ！ ");
 		}
 		
-		//如果email不存在，跳转注册页面，然后显示email未注册，提示先注册
-		boolean notInToken=!repository.findByEmail(email).isPresent();
-		boolean notInUser=!userClient.isEmailExist(email);
 		ModelAndView mav=new ModelAndView();
-		
-		if(notInToken||notInUser){
-			 String redirectUrl=activatedProperties.getReregisterUrl();
+		//如果email不存在于user-account数据库，跳转注册页面，然后显示email未注册，提示先注册
+		boolean notInUser=!userClient.isEmailExist(email);
+		if(notInUser){
+			 String redirectUrl=activatedProperties.getDefaultRegisterUrl();
 			 String message=new StringBuffer("尊敬的 ：").append(email)
 					 .append("  用户，您提交的email还未注册，请先注册！").toString();
 			 
@@ -75,8 +70,6 @@ public class TokenRest {
 			 mav.setViewName(redirectUrl);
 			 return mav;		 
 		}		
-					
-		
 		
 		//如果email已经激活，则直接跳转login页面
 		 if(userClient.emailStatus(email)){
@@ -87,6 +80,7 @@ public class TokenRest {
 			 mav.setViewName(redirectUrl);
 			 return mav;		 
 		 }
+		
 		
 		//将email没有激活的情况处理，封装在这个service里
 		tokenService.ConfirmUrl(email,token,mav,attr);

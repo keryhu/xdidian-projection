@@ -63,6 +63,6 @@ activatedProperties:
   maxSendTimes: 6
   resendUrl: http://${domain.name:localhost}:8080/email-activate/email/resend?email=
   reregisterUrl: http://${domain.name:localhost}:8080/email-activate/email/reregister?email=
-  loginUrl: redirect:http://${domain.name:localhost}:9999/uaa
+  loginUrl: redirect:http://${domain.name:localhost}:9999/uaa/login
   defaultRegisterUrl: redirect:http://${domain.name:localhost}:8080/register
   registerResultUrl: redirect:http://${domain.name:localhost}:8080/register/result

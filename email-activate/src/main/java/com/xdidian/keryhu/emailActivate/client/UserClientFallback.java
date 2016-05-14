@@ -44,14 +44,14 @@ public class UserClientFallback implements UserClient {
 	}
 
 	/**
-	* <p>Title: findRolesByEmail</p>
+	* <p>Title: findRolesByLoginName</p>
 	* <p>Description: </p>
-	* @param email
+	* @param loginName
 	* @return
 	* @see com.xdidian.keryhu.emailActivate.client.UserClient#findRolesByEmail(java.lang.String)
 	*/ 
 	@Override
-	public List<String> findRolesByEmail(String email) {
+	public List<String> findRolesByLoginName(String loginName) {
 		// TODO Auto-generated method stub
 		return new ArrayList<String>();
 				

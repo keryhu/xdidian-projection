@@ -162,7 +162,7 @@ public class TokenServiceImpl  implements TokenService{
 				return e.getToken().equals(token);
 			  }
 			    return false;
-		   }).get();
+		   }).orElseThrow(()->new EmailNotFoundException("您要激活的email不存在！"));
 		
 	}
 	
@@ -184,7 +184,7 @@ public class TokenServiceImpl  implements TokenService{
 		  removeUserProducer.send(email);
 		  log.info("发出message，删除此 {} 所在的user数据 。",email);
 		  
-		  List<String> roles=userClient.findRolesByEmail(email);
+		  List<String> roles=userClient.findRolesByLoginName(email);
 		  
 		  log.info("客户之前注册权限是 ： {} , 后续会根据不同的权限，分配不同的注册页面。",roles);
 		  
@@ -260,7 +260,7 @@ public class TokenServiceImpl  implements TokenService{
 	@Override
 	public boolean sendTimesOver(String email){
 		return repository.findByEmail(email).map(
-				e->e.getSentTimes()>activatedProperties.getMaxSendTimes())
+				e->e.getSentTimes()>=activatedProperties.getMaxSendTimes())
 		        .orElseThrow(()->new EmailNotFoundException("您要激活的email不存在于数据库"));
 	}
 		

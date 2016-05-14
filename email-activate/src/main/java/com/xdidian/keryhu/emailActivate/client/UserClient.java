@@ -46,15 +46,15 @@ public interface UserClient {
 	
 	/**
 	 * 
-	* @Title: findRolesByEmail
+	* @Title: findRolesByLoginName
 	* @Description: TODO(根据当前的email，查询user拥有的权限，返回的是 String 类型的数组。)
-	* @param @param email
+	* @param @param loginName
 	* @param @return    设定文件
 	* @return List<String>  返回类型
 	* @throws
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/roles")
-	public List<String> findRolesByEmail(@RequestParam("email") String email);
+	public List<String> findRolesByLoginName(@RequestParam("loginName") String loginName);
 }
 
 
