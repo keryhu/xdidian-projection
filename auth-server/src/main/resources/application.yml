@@ -17,6 +17,11 @@ spring:
       uri: mongodb://test:123456@${mongo.host:localhost}:27017/test
       repositories:
         enabled: true
+        
+  messages:
+    basename: locale/messages_zh_CN
+    encoding: UTF-8
+    cache-seconds: 3600
     
       
   cloud:

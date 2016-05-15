@@ -26,7 +26,6 @@ public class MainRest {
 	}
 	
 	@PreAuthorize("hasAuthority('ROLE_TENANT')")
-	//@PreAuthorize("isAuthenticated()")
 	@RequestMapping(method=RequestMethod.GET,value="/tenant")
 	public String tenant(){
 		return "this is test page , it should be ROLE_TENANT ";

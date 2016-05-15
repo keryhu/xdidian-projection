@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.xdidian.keryhu.domain.Role;
+
 /**
  * feign 连接失败的一个默认方法。
  * @author hushuming
@@ -51,9 +53,9 @@ public class UserClientFallback implements UserClient {
 	* @see com.xdidian.keryhu.emailActivate.client.UserClient#findRolesByEmail(java.lang.String)
 	*/ 
 	@Override
-	public List<String> findRolesByLoginName(String loginName) {
+	public List<Role> findRolesByLoginName(String loginName) {
 		// TODO Auto-generated method stub
-		return new ArrayList<String>();
+		return new ArrayList<Role>();
 				
 	}
 

@@ -37,17 +37,14 @@ public class PropertyRegisterConsumer {
 	
 	@StreamListener(PropertyRegisterInputChannel.NAME)
 	public void saveProperty(PropertyRegisterDto dto){
-		//公司名字存在的情况下
-		boolean m=!(dto.getCompanyName()==null||dto.getCompanyName().isEmpty());
-		
-		if(dto!=null&&m){
+			
 			log.info("user-account 已经收到了物业公司的注册信息，具体信息为 ： "+dto);
 
 			  User user=converterUtil.propertyRegisterDtoToUser.apply(dto);
 			  //保存数据库
 			  userService.save(user);
 			
-		}	
+		
 	}
 
 }

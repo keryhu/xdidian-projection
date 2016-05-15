@@ -28,8 +28,6 @@ public class RemoveUserConsumer {
 	@Autowired
 	private UserService userService;
 	
-	
-	
 	@StreamListener(RemoveUserInputChannel.NAME)
 	public void removeUser(String id){
 		log.info("id is : {}",id);

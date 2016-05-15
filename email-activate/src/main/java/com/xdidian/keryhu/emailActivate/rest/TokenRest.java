@@ -10,6 +10,9 @@ package com.xdidian.keryhu.emailActivate.rest;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.xdidian.keryhu.domain.Role;
 import com.xdidian.keryhu.emailActivate.client.UserClient;
-import com.xdidian.keryhu.emailActivate.domain.ActivatedProperties;
 import com.xdidian.keryhu.emailActivate.service.TokenService;
 import com.xdidian.keryhu.util.StringValidate;
 
@@ -40,9 +44,7 @@ public class TokenRest {
 	private final UserClient userClient;
 
 	private final TokenService tokenService; 
-	
-	private final ActivatedProperties activatedProperties;
-	
+			
 	@RequestMapping(method=RequestMethod.GET,value="/email/emailActivatedConfirm")
 	public ModelAndView urlConfirm(@RequestParam("email") final String email,
 			@RequestParam("token") final String token,RedirectAttributes attr){
@@ -50,35 +52,21 @@ public class TokenRest {
 		Assert.hasText(token, "token不能为空");
 		Assert.isTrue(StringValidate.isEmail(email), "您输入的不是eamil，请检查后再试 ！");
 	
-		ModelAndView mav=new ModelAndView();
 		//如果email不存在于user-account数据库，跳转注册页面，然后显示email未注册，提示先注册
-		boolean notInUser=!userClient.isEmailExist(email);
-		if(notInUser){
-			 String redirectUrl=activatedProperties.getDefaultRegisterUrl();
-			 String message=new StringBuffer("尊敬的 ：").append(email)
-					 .append("  用户，您提交的email还未注册，请先注册！").toString();
-			 
-			 attr.addAttribute("notRegister",message);
-			 
-			 mav.setViewName(redirectUrl);
-			 return mav;		 
+		
+		if(!userClient.isEmailExist(email)){
+			List<Role> roles=new ArrayList<Role>();
+			return tokenService.notRegister(email, attr,roles);
 		}		
 		
 		//如果email已经激活，则直接跳转login页面
 		 if(userClient.emailStatus(email)){
-			 String message=new StringBuffer("尊敬的 ：").append(email)
-					 .append("  用户，您已成功激活，请直接登录！").toString();
-			 String redirectUrl=activatedProperties.getLoginUrl();
-			 attr.addAttribute("emailActivated",message);
-			 mav.setViewName(redirectUrl);
-			 return mav;		 
+			 return tokenService.hasRegister(email, attr);		 
 		 }
 		
-		
 		//将email没有激活的情况处理，封装在这个service里
-		tokenService.ConfirmUrl(email,token,mav,attr);
-
-		return mav;
+		return tokenService.ConfirmUrl(email,token,attr);
+	
     }
 	
 	
@@ -99,23 +87,27 @@ public class TokenRest {
 	@RequestMapping(method=RequestMethod.GET,value="/email/notActivedWhilelogin")
 	public ModelAndView emailNotActived (@RequestParam("email")  String email
 			,RedirectAttributes attr){
-		ModelAndView mav=new ModelAndView();
 		log.info("正在调用email-activate");
 		Assert.hasText(email, "email不能为空");
-		Assert.isTrue(StringValidate.isEmail(email), "您输入的不是eamil，请检查后再试 ！");
+		Assert.isTrue(StringValidate.isEmail(email), "您输入的不是eamil或者数据库中不存在，请查正后再试 ！");
 		
+		//如果email已经激活，则直接跳转login页面
+		 if(userClient.emailStatus(email)){
+			 return tokenService.hasRegister(email, attr);		 
+		 }
+
 		//如果激活时间没有过期，那么跳转  hostname/8080/register/result 页面，并且附带email参数
 		if(!tokenService.activateExpired(email)){
 			log.info("您登录的时候，发现email未激活，且未过期，我们正在为您导航到'再次发送或重新注册页面'！");
-			tokenService.doWhenNotExpired(email, mav, attr);
+			return tokenService.doWhenNotExpired(email, attr);
 		}
 		
 		//如果激活时间已经过期，那么执行激活过期的单独方法。
 		else if(tokenService.activateExpired(email)){
 			log.info("激活时间已经过期。。。");
-			tokenService.doWhenExpired(email, mav, attr);
+			return tokenService.doWhenExpired(email, attr);
 		}  
-		return mav;
+		return new ModelAndView();
 	}
 	
 	
@@ -124,7 +116,12 @@ public class TokenRest {
 	/**
 	 * 
 	* @Title: resend
-	* @Description: TODO(当用户点击“再次发送激活邮件”的时候，调用的此方法)
+	* @Description: TODO(当用户点击“再次发送激活邮件”的时候，调用的此方法
+	* 分为两段 
+	* 执行发送次数是否超的判断和消息提示，另外就是更新验证码和发送次数＋1，并保存数据库 －－就是
+	* tokenService.doWithResend(email)执行的方法
+	* 
+	* 另外一段是： 如果没有过期，页面跳转 result页面 tokenService.doWhenNotExpired )
 	* @param @param email
 	* @param @param attr
 	* @param @return    设定文件
@@ -134,35 +131,17 @@ public class TokenRest {
 	@RequestMapping(method=RequestMethod.GET,value="/email/resend")
 	public ModelAndView resend(@RequestParam("email") final String email
 			,RedirectAttributes attr){
-		//所有代码封装在service 里
-		 tokenService.doWithResend(email);
-		 ModelAndView mav=new ModelAndView();
-		 String redirectUrl=activatedProperties.getRegisterResultUrl();
-		//重新发送的url
-		String resend=new StringBuffer(activatedProperties.getResendUrl())
-					.append(email)
-					.toString();		
-					
-			//重新注册的url
-		String reregister=new StringBuffer(activatedProperties.getReregisterUrl())
-					.append(email)
-					.toString();	
-			
-				
-		attr.addAttribute("resend", resend);
-		attr.addAttribute("reregister", reregister);
-		 
-		attr.addAttribute("resendInfo","再次发送邮件成功！");
 		
-		 mav.setViewName(redirectUrl);
-		 return mav;
+		 tokenService.doWithResend(email);
+		
+		 return tokenService.doWhenNotExpired(email, attr);
 	}
 	
 	
 	/**
 	 * 
 	* @Title: reregister
-	* @Description: TODO(当用户点击“重新注册”时候，调用的此方法)
+	* @Description: TODO(当用户点击“重新注册”时候，调用的此方法，执行的方法和激活过期一样的)
 	* @param @param email
 	* @param @param attr
 	* @param @return    设定文件
@@ -174,15 +153,8 @@ public class TokenRest {
 			,RedirectAttributes attr){
 		Assert.hasText(email, "email不能为空");
 		
-		ModelAndView mav=new ModelAndView();
-		//执行和激活过期相同的代码
-		tokenService.doWhenExpired(email, mav, attr);
-		
-		 
-		mav.setViewName(activatedProperties.getDefaultRegisterUrl());
-		return mav;
+		return  tokenService.doWhenExpired(email, attr);
 	}
-	
 	
 }
 	

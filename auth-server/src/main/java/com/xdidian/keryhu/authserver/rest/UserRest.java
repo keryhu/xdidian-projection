@@ -3,10 +3,12 @@ package com.xdidian.keryhu.authserver.rest;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.function.Consumer;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,6 @@ import com.xdidian.keryhu.authserver.repository.LoginAttemptUserRepository;
 import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
 import com.xdidian.keryhu.authserver.service.UserService;
 import com.xdidian.keryhu.util.StringValidate;
-
 import lombok.RequiredArgsConstructor;
 
 
@@ -43,6 +44,8 @@ public class UserRest {
 	private final UserService userService;
 	
 	private final LoginAttemptUserService loginAttemptService;
+	
+	private final MessageSource messageSource;
 	
 	/**
 	 * 
@@ -113,28 +116,51 @@ public class UserRest {
     public  ResponseEntity<?> validateLoginName(@RequestParam("loginName") String loginName,
     		HttpServletRequest request){
 		
-		Assert.hasText(loginName,"登录名loginName不能为空");
+		Assert.hasText(loginName,messageSource.getMessage("message.loginName.notNull", null, 
+				LocaleContextHolder.getLocale()));
+		
 		Map<String,Object> result=new HashMap<String,Object>();
 		
 		String ip=userService.getIP(request);
 		
-		if(loginAttemptService.isBlocked(ip)){
-			result.put("error", "由于您操作太过频繁，您当前的ip已经被冻结！请稍后再试。");
-			return ResponseEntity.ok(result);
-		}
-		else if(StringValidate.isEmail(loginName)){
-			if(!userClient.isEmailExist(loginName)){
-				result.put("error", "email不存在于数据库");
-				return ResponseEntity.ok(result);
+		Consumer<String> errorM=x->{
+			
+			if(loginAttemptService.isBlocked(ip)){
+				Object[] args={loginAttemptProperties.getTimeOfPerid(),loginAttemptProperties.getMaxAttemptTimes(),
+						loginAttemptProperties.getTimeOfLock()};
+			    String err= messageSource.getMessage("message.ip.blocked", 
+						args, "您的IP已经被锁定，请稍后再试！", LocaleContextHolder.getLocale());
+			    result.put("error", err);
 			}
-		}
-		else if(StringValidate.isPhone(loginName)){
-			if(!userClient.isPhoneExist(loginName)){
-				result.put("error", "phone不存在于数据库");
-				return ResponseEntity.ok(result);
+			else if(!(StringValidate.isEmail(x)||StringValidate.isPhone(x))){
+				Object[] args={x};
+				String err= messageSource.getMessage("message.loginName.neitherEmailNorPhone", 
+						args, LocaleContextHolder.getLocale());
+				result.put("error", err);
 			}
-		}
-		result.put("emailStatus", userClient.emailStatus(loginName));
+			else if(StringValidate.isEmail(x)){
+				if(!userClient.isEmailExist(x)){
+					Object[] args={x};
+					String err= messageSource.getMessage("message.loginName.emailNotExist", 
+							args, LocaleContextHolder.getLocale());
+					result.put("error", err);
+				}
+				result.put("emailStatus", userClient.emailStatus(x));
+			}
+			else if(StringValidate.isPhone(x)){
+				if(!userClient.isPhoneExist(x)){
+					Object[] args={x};
+					String err= messageSource.getMessage("message.loginName.phoneNotExist", 
+							args, LocaleContextHolder.getLocale());
+					result.put("error", err);
+				}
+				result.put("emailStatus", userClient.emailStatus(x));
+			} 
+				
+		};
+		
+		errorM.accept(loginName);
+		
 		return ResponseEntity.ok(result);
 	}
 	

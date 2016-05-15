@@ -45,7 +45,11 @@ spring:
       #When used with acknowledgeMode AUTO, the container will attempt to process up to this number of messages before sending an ack 
       transaction-size: 50
   
-      
+  messages:
+    basename: locale/messages_zh_CN
+    encoding: UTF-8
+    cache-seconds: 3600
+          
 security:
   oauth2:
     resource:

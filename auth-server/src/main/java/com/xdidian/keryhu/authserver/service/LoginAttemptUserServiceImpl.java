@@ -85,7 +85,7 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 		    } else {
 		    	//如果输错次数已经等同于规定的最大次数－1
 		    	
-		    	if(e.getAlreadyAttemptTimes()==loginAttemptProperties.getMaxAttemptTimes()-1){
+		    	if(e.getAlreadyAttemptTimes()>=loginAttemptProperties.getMaxAttemptTimes()-1){
 		    		e.setLocked(true);
 		    		e.setLockedTime(LocalDateTime.now());    		
 		    	}

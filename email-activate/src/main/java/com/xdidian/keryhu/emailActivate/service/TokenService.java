@@ -8,9 +8,12 @@
 */ 
 package com.xdidian.keryhu.emailActivate.service;
 
+import java.util.List;
+
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.xdidian.keryhu.domain.Role;
 import com.xdidian.keryhu.emailActivate.domain.ActivatedToken;
 
 /**
@@ -41,12 +44,11 @@ public interface TokenService {
 	* 删除emailActivate 服务器里面的此user数据，并且后台导航页面到login页面（提示激活成功），否则报错
 	* @param @param email
 	* @param @param token
-	* @param @param mav     需要这个参数，进行相应的页面导航
 	* @param @param attr    设定文件   需要这个参数，传递导航的提示信息
-	* @return void    返回类型
+	* @return ModelAndView    返回类型
 	* @throws
 	 */
-	public void ConfirmUrl(String email,String token,ModelAndView mav,RedirectAttributes attr);
+	public ModelAndView ConfirmUrl(String email,String token,RedirectAttributes attr);
 	
 	/**
 	 * 
@@ -64,12 +66,11 @@ public interface TokenService {
 	* @Title: doWhenExpired
 	* @Description: TODO(如果email激活码已经过期，需要执行的程序)
 	* @param @param email
-	* @param @param mav
 	* @param @param attr    设定文件
-	* @return void    返回类型
+	* @return ModelAndView    返回类型
 	* @throws
 	 */
-	public void doWhenExpired(final String email,final ModelAndView mav,
+	public ModelAndView doWhenExpired(final String email,
 			final RedirectAttributes attr);
 	
 	
@@ -79,12 +80,11 @@ public interface TokenService {
 	* @Description: TODO(当激活码没有过期，需要执行的方法，就是将email参数，一起redirect到 
 	* hostname/8080/register/result 页面，方便用户点击“再次发送”和“重新注册”)
 	* @param @param email
-	* @param @param mav
 	* @param @param attr    设定文件
-	* @return void    返回类型
+	* @return ModelAndView    返回类型
 	* @throws
 	 */
-	public void doWhenNotExpired(final String email,final ModelAndView mav,
+	public ModelAndView doWhenNotExpired(final String email,
 			final RedirectAttributes attr);
 
 	/**
@@ -97,14 +97,30 @@ public interface TokenService {
 	 */
 	public void doWithResend(final String email);
 	
+	
+	
 	/**
 	 * 
-	* @Title: sendTimesOver
-	* @Description: TODO(查看当前的用户，激活时间有没有过期。)
+	* @Title: notRegister
+	* @Description: TODO(当用户email未注册的时候，需要导航到页面，和提示信息)
 	* @param @param email
+	* @param @param attr
 	* @param @return    设定文件
-	* @return boolean    返回类型
+	* @return ModelAndView    返回类型
 	* @throws
 	 */
-	public boolean sendTimesOver(String email);
+	public ModelAndView notRegister(final String email,final RedirectAttributes attr,
+			List<Role> roles);
+	
+	/**
+	 * 
+	* @Title: hasRegister
+	* @Description: TODO(当email已经注册时候，需要导航到的页面和提示信息)
+	* @param @param email
+	* @param @param attr
+	* @param @return    设定文件
+	* @return ModelAndView    返回类型
+	* @throws
+	 */
+	public ModelAndView hasRegister(final String email,final RedirectAttributes attr);
 }

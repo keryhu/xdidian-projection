@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.xdidian.keryhu.domain.Role;
+
 /**
  *
 * @ClassName: UserAccountClient
@@ -50,11 +52,11 @@ public interface UserClient {
 	* @Description: TODO(根据当前的email，查询user拥有的权限，返回的是 String 类型的数组。)
 	* @param @param loginName
 	* @param @return    设定文件
-	* @return List<String>  返回类型
+	* @return List<Role>  返回类型
 	* @throws
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/users/query/roles")
-	public List<String> findRolesByLoginName(@RequestParam("loginName") String loginName);
+	public List<Role> findRolesByLoginName(@RequestParam("loginName") String loginName);
 }
 
 

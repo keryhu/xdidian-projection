@@ -94,7 +94,6 @@ public class UserServiceImpl implements UserService {
 	
 
 	/**
-	
 	 * Title: save
 	 * Description: 保存需要被保存的user 对象到mongo数据库 ,因为此方法不对外公开，所以所有的合法性验证都放在上一步的dto处理
 	 * @param user
@@ -113,7 +112,6 @@ public class UserServiceImpl implements UserService {
 	
 	 * Title: EmailIsExist
 	 * Description: 查看数据库中是否有此email
-	
 	 * @param email   传入需要被查询的email参数
 	 * @return 返回是否有此email，如果有，返回true，否则false
 	 * @see com.xdidian.keryhu.useraccount.service.UserService#EmailIsExist(java.lang.String)
@@ -128,7 +126,6 @@ public class UserServiceImpl implements UserService {
 	
 	 * Title: phoneIsExist
 	 * Description: 查询数据库中是否有此phone对象
-	
 	 * @param phone          需要被查询的phone对象
 	 * @return 如果数据库中存在此phone，则返回true，否则false
 	 * @see com.xdidian.keryhu.useraccount.service.UserService#phoneIsExist(java.lang.String)
@@ -198,9 +195,5 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(()-> new EmailNotFoundException("您要查找的email不存在！"));
 		
 	}
-
-
-
-	
 
 }

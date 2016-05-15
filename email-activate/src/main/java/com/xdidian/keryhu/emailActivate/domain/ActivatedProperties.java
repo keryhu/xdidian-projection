@@ -38,4 +38,15 @@ public class ActivatedProperties implements Serializable{
 	private String defaultRegisterUrl;
 	
 
+	public String getResendUrl(String email){
+		return new StringBuffer(this.getResendUrl())
+				.append(email)
+				.toString();
+	}
+	
+	public String  getReregisterUrl(String email){
+		return new StringBuffer(this.getReregisterUrl())
+				.append(email)
+				.toString();
+	}
 }
