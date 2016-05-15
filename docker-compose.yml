@@ -98,6 +98,7 @@ services:
     environment:
       MONGO_HOST: mongo
       DOMAIN_NAME: 192.168.1.110
+      RABBIT_HOST: rabbitmq
     networks:
       - wfij
     depends_on: 
@@ -114,6 +115,7 @@ services:
       - "9999:9999"
     environment:
       DOMAIN_NAME: 192.168.1.110
+      RABBIT_HOST: rabbitmq
     networks:
       - wfij
     depends_on: 
@@ -133,6 +135,7 @@ services:
      - "8003:8003"
     environment:
       DOMAIN_NAME: 192.168.1.110
+      RABBIT_HOST: rabbitmq
     networks:
       - wfij
     depends_on: 
@@ -147,6 +150,7 @@ services:
      - "8002:8002"
     environment:
       DOMAIN_NAME: 192.168.1.110
+      RABBIT_HOST: rabbitmq
     networks:
       - wfij
     depends_on: 
@@ -161,6 +165,7 @@ services:
      - "8004:8004"
     environment:
       MONGO_HOST: mongo
+      RABBIT_HOST: rabbitmq
       DOMAIN_NAME: 192.168.1.110
     networks:
       - wfij
