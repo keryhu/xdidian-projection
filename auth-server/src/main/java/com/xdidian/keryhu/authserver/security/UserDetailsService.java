@@ -52,7 +52,9 @@ public class UserDetailsService implements org.springframework.security.core.use
 		
 		
 		return (UserDetails) userService.findByLoginName(username).map(a -> {
-			Assert.hasText(a.getId(),"新地点不存在此账户，请先注册！");
+			if(a.getId()==null||a.getId().isEmpty()){
+				throw new UsernameNotFoundException("新地点不存在此账户，请先注册！");
+			}
 			
 			String msg=new StringBuffer("您在").append(loginAttemptProperties.getTimeOfPerid())
 					.append("个小时内，登陆失败了").append(loginAttemptProperties.getMaxAttemptTimes())

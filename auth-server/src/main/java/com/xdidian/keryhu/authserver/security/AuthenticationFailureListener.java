@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
 * @ClassName: AuthenticationFailureListener
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 */
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class AuthenticationFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent>  {
 
 	private final LoginAttemptUserService loginAttemptUserService;
@@ -44,7 +46,7 @@ public class AuthenticationFailureListener implements ApplicationListener<Authen
 		String loginName=e.getAuthentication().getName();
 		
 		String ip=auth.getRemoteAddress();
-		
+		log.info("用户登录失败， loginName is ： {} ",loginName);
 		loginAttemptUserService.loginFail(ip, loginName);
 		
 		
