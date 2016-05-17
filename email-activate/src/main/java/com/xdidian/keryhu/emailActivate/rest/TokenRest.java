@@ -10,9 +10,6 @@ package com.xdidian.keryhu.emailActivate.rest;
 
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.xdidian.keryhu.domain.Role;
 import com.xdidian.keryhu.emailActivate.client.UserClient;
-import com.xdidian.keryhu.emailActivate.service.TokenService;
-import com.xdidian.keryhu.util.StringValidate;
+import com.xdidian.keryhu.emailActivate.domain.TokenType;
+import com.xdidian.keryhu.emailActivate.service.ActivatedConfirm;
+import com.xdidian.keryhu.emailActivate.service.ActivatedExpired;
+import com.xdidian.keryhu.emailActivate.service.RedirectService;
+import com.xdidian.keryhu.emailActivate.service.ResendService;
+import com.xdidian.keryhu.emailActivate.service.VerifyUrl;
 
+import static com.xdidian.keryhu.util.StringValidate.isEmail;
+import static com.xdidian.keryhu.emailActivate.domain.Constants.EMAIL_NOT_ACTIVATED_AND_TOKEN_EXIST_AND_NOT_EXPIRED;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,30 +43,29 @@ import lombok.extern.slf4j.Slf4j;
 public class TokenRest {
 	
 	private final UserClient userClient;
-
-	private final TokenService tokenService; 
+	private final VerifyUrl verifyUrl;
+	private final RedirectService redirectService;
+	private final ActivatedExpired activatedExpired;
+	private final ResendService resendService;
+	private final ActivatedConfirm activatedConfirm ;
 			
 	@RequestMapping(method=RequestMethod.GET,value="/email/emailActivatedConfirm")
 	public ModelAndView urlConfirm(@RequestParam("email") final String email,
 			@RequestParam("token") final String token,RedirectAttributes attr){
 		
-		Assert.hasText(token, "token不能为空");
-		Assert.isTrue(StringValidate.isEmail(email), "您输入的不是eamil，请检查后再试 ！");
-	
-		//如果email不存在于user-account数据库，跳转注册页面，然后显示email未注册，提示先注册
+		//验证url
+		Object obj=verifyUrl.verify(email, token, attr, TokenType.CONFIRM);
+		if(obj instanceof ModelAndView){
+			return (ModelAndView) obj;
+		}
+		else if(obj instanceof String&&obj.equals(
+				EMAIL_NOT_ACTIVATED_AND_TOKEN_EXIST_AND_NOT_EXPIRED)){
+			activatedConfirm.exceptRedirect(email);
+			
+			return redirectService.redirectLoginPage(email, attr);
+		}
 		
-		if(!userClient.isEmailExist(email)){
-			List<Role> roles=new ArrayList<Role>();
-			return tokenService.notRegister(email, attr,roles);
-		}		
-		
-		//如果email已经激活，则直接跳转login页面
-		 if(userClient.emailStatus(email)){
-			 return tokenService.hasRegister(email, attr);		 
-		 }
-		
-		//将email没有激活的情况处理，封装在这个service里
-		return tokenService.ConfirmUrl(email,token,attr);
+		return new ModelAndView();
 	
     }
 	
@@ -89,23 +89,25 @@ public class TokenRest {
 			,RedirectAttributes attr){
 		log.info("正在调用email-activate");
 		Assert.hasText(email, "email不能为空");
-		Assert.isTrue(StringValidate.isEmail(email), "您输入的不是eamil或者数据库中不存在，请查正后再试 ！");
+		Assert.isTrue(isEmail(email), "您输入的不是eamil或者数据库中不存在，请查正后再试 ！");
 		
 		//如果email已经激活，则直接跳转login页面
-		 if(userClient.emailStatus(email)){
-			 return tokenService.hasRegister(email, attr);		 
+		 if(userClient.emailStatus(email)){	 
+			 return redirectService.redirectLoginPage(email, attr);	 
 		 }
 
-		//如果激活时间没有过期，那么跳转  hostname/8080/register/result 页面，并且附带email参数
-		if(!tokenService.activateExpired(email)){
+		 
+		//如果激活时间没有过期，那么跳转带有重新发送url的页面  hostname/8080/register/result 页面，
+		 //并且附带email参数
+		if(!verifyUrl.activatedExpired(email)){
 			log.info("您登录的时候，发现email未激活，且未过期，我们正在为您导航到'再次发送或重新注册页面'！");
-			return tokenService.doWhenNotExpired(email, attr);
+			return redirectService.redirectResendPage(email, attr);
 		}
 		
 		//如果激活时间已经过期，那么执行激活过期的单独方法。
-		else if(tokenService.activateExpired(email)){
+		else if(verifyUrl.activatedExpired(email)){
 			log.info("激活时间已经过期。。。");
-			return tokenService.doWhenExpired(email, attr);
+			return activatedExpired.executeExpired(email, attr);
 		}  
 		return new ModelAndView();
 	}
@@ -123,18 +125,28 @@ public class TokenRest {
 	* 
 	* 另外一段是： 如果没有过期，页面跳转 result页面 tokenService.doWhenNotExpired )
 	* @param @param email
+	* @param @param token 表示重新发送url的需要被验证的token
 	* @param @param attr
 	* @param @return    设定文件
 	* @return ModelAndView    返回类型
 	* @throws
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/email/resend")
-	public ModelAndView resend(@RequestParam("email") final String email
-			,RedirectAttributes attr){
+	public ModelAndView resend(@RequestParam("email") final String email,
+			@RequestParam("token") final String token,RedirectAttributes attr){		
 		
-		 tokenService.doWithResend(email);
-		
-		 return tokenService.doWhenNotExpired(email, attr);
+		Object obj=verifyUrl.verify(email, token, attr, TokenType.RESEND);
+		if(obj instanceof ModelAndView){
+			return (ModelAndView) obj;
+		}
+		else if(obj instanceof String&&obj.equals(
+				EMAIL_NOT_ACTIVATED_AND_TOKEN_EXIST_AND_NOT_EXPIRED)){
+			//点击“重新发送激活邮件”时间为冷却，过滤操作次数过多，和数据库处理
+			resendService.exec(email);
+			 //跳转到 重新发送 的页面
+			return redirectService.redirectResendPage(email, attr);
+		}
+		 return new ModelAndView();
 	}
 	
 	
@@ -143,17 +155,25 @@ public class TokenRest {
 	* @Title: reregister
 	* @Description: TODO(当用户点击“重新注册”时候，调用的此方法，执行的方法和激活过期一样的)
 	* @param @param email
+	* @param @param token 表示重新注册url的需要被验证的token
 	* @param @param attr
 	* @param @return    设定文件
 	* @return ModelAndView    返回类型
 	* @throws
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/email/reregister")
-	public ModelAndView reregister(@RequestParam("email") final String email
-			,RedirectAttributes attr){
-		Assert.hasText(email, "email不能为空");
+	public ModelAndView reregister(@RequestParam("email") final String email,
+			@RequestParam("token") final String token,RedirectAttributes attr){
 		
-		return  tokenService.doWhenExpired(email, attr);
+		Object obj=verifyUrl.verify(email, token, attr, TokenType.REREGISTER);
+		if(obj instanceof ModelAndView){
+			return (ModelAndView) obj;
+		}
+		else if(obj instanceof String&&obj.equals(
+				EMAIL_NOT_ACTIVATED_AND_TOKEN_EXIST_AND_NOT_EXPIRED)){
+			return  activatedExpired.executeExpired(email, attr);
+		}
+		return  new ModelAndView();
 	}
 	
 }

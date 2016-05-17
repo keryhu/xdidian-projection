@@ -31,6 +31,7 @@
 		<module>mail-server</module>
 		<module>pc-gateway</module>
 		<module>email-activate</module>
+		<module>password-reset</module>
 	</modules>
 
 

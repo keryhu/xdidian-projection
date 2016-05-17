@@ -126,8 +126,6 @@ services:
       - useraccount
 
 
- 
-    
   propertyregister:
     image: property-register:0.0.1-SNAPSHOT
     container_name: propertyregister
@@ -164,6 +162,22 @@ services:
     restart: always
     ports:
      - "8004:8004"
+    environment:
+      MONGO_HOST: mongo
+      RABBIT_HOST: rabbitmq
+      DOMAIN_NAME: 192.168.1.110
+    networks:
+      - wfij
+    depends_on: 
+      - eureka
+      - configserver
+      
+  passwordreset:
+    image: password-reset:0.0.1-SNAPSHOT
+    container_name: passwordreset
+    restart: always
+    ports:
+     - "8005:8005"
     environment:
       MONGO_HOST: mongo
       RABBIT_HOST: rabbitmq

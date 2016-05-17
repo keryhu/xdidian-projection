@@ -11,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+
+import com.xdidian.keryhu.domain.EmailActivatedDto;
 import com.xdidian.keryhu.propertyregister.client.UserAccountClient;
 import com.xdidian.keryhu.propertyregister.domain.HostProperty;
 import com.xdidian.keryhu.propertyregister.domain.PropertyForm;
@@ -51,16 +53,17 @@ public class MainRest {
 	* @throws
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/property/register")
-	public ModelAndView  createUser(@RequestBody PropertyForm propertyForm,RedirectAttributes attr) {
-		
-		log.info("正在调用property－register service 的 save get方法。");
+	public ModelAndView  createUser(@RequestBody final PropertyForm propertyForm,final RedirectAttributes attr) {
 		
 		//验证输入信息的合法性
 		userService.vlidateBeforSave(propertyForm);
 			
+		EmailActivatedDto emailActivatedDto=
+				converterUtil.propertyFormToEmailActivatedDto.apply(propertyForm);
 		//发送email激活的message出去。
-		emailActivatedProducer.send(converterUtil.propertyFormToEmailActivatedDto.apply(propertyForm));
+		emailActivatedProducer.send(emailActivatedDto);
 				
+		
 		//用户注册完，发送dto具体信息的message 给 user-account,用于保存
 		saveproducer.send(converterUtil.propertyFormToRegisterDto.apply(propertyForm));
 		
@@ -70,12 +73,16 @@ public class MainRest {
 		String resend=new StringBuffer(hostProperty.getHostName())
 				.append(":8080/email-activate/email/resend?email=")
 				.append(propertyForm.getEmail())
+				.append("&token=")
+				.append(emailActivatedDto.getResendToken())
 				.toString();		
 				
 		//重新注册的url
 		String reregister=new StringBuffer(hostProperty.getHostName())
 				.append(":8080/email-activate/email/reregister?email=")
 				.append(propertyForm.getEmail())
+				.append("&token=")
+				.append(emailActivatedDto.getReregisterToken())
 				.toString();	
 		//注册完后，导航到的页面
 		
@@ -101,7 +108,7 @@ public class MainRest {
 	* @throws
 	 */
 	@RequestMapping(value="/query/isEmailExist",method=RequestMethod.GET)
-	public ResponseEntity<?> isEmailExist(@RequestParam("email") String email){
+	public ResponseEntity<?> isEmailExist(@RequestParam("email") final String email){
 		log.info("查到的email 是否存在于 数据库 ：{} ",userClient.isEmailExist(email));
 		return ResponseEntity.ok(userClient.isEmailExist(email));
 	}
@@ -117,7 +124,7 @@ public class MainRest {
 	* @throws
 	 */
 	@RequestMapping(value="/query/isPhoneExist",method=RequestMethod.GET)
-	public ResponseEntity<?> isPhoneExist(@RequestParam("phone") String phone){
+	public ResponseEntity<?> isPhoneExist(@RequestParam("phone")final String phone){
 		log.info("查到的手机号是否存在于数据库： {}",userClient.isPhoneExist(phone));
 		return ResponseEntity.ok(userClient.isPhoneExist(phone));
 	}
@@ -133,7 +140,7 @@ public class MainRest {
 	* @throws
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/query/isCompanyNameExist")
-    public ResponseEntity<?> isCompanyNameExist(@RequestParam(value="", required=true) String companyName){
+    public ResponseEntity<?> isCompanyNameExist(@RequestParam("companyName") final String companyName){
 		
 	    log.info("查的公司名字是否在数据库中：{} ",userClient.isCompanyNameExist(companyName));
 		return ResponseEntity.ok(userClient.isCompanyNameExist(companyName));

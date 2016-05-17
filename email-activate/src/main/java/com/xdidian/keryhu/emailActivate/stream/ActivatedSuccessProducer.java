@@ -15,6 +15,8 @@ import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
 * @ClassName: EmailActivatedExpiredProducer
@@ -25,6 +27,7 @@ import org.springframework.util.Assert;
 */
 @Component
 @EnableBinding(ActivatedSuccessOutputChannel.class)
+@Slf4j
 public class ActivatedSuccessProducer {
 	
 	@Autowired
@@ -44,6 +47,7 @@ public class ActivatedSuccessProducer {
 				              .send(MessageBuilder.withPayload(email).build());
 		
 		Assert.isTrue(result, "发送激活成功的email message出去失败！");
+		log.info("email {} 激活成功，现在发送通知出去！",email);
 		
 	}
 

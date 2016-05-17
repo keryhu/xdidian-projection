@@ -28,7 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	 @Autowired
 	 private  UserDetailsService userDetailsService; 
 	 
-	 
+	 @Autowired
+	 private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 	
 	 @Override
 	 @Bean
@@ -49,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			http
 				.formLogin().loginPage("/login")
 				.failureUrl("/login?error")
+				.failureHandler(customAuthenticationFailureHandler)
 				.permitAll()
 			.and()
 				.requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
@@ -69,7 +71,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	 
 	 @Override
 		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-			auth.userDetailsService(userDetailsService)
+			auth
+			    .userDetailsService(userDetailsService)
 			    .passwordEncoder(passwordEncoder());
 		}
 

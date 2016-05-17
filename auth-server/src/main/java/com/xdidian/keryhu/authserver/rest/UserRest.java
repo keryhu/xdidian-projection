@@ -21,7 +21,9 @@ import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
 import com.xdidian.keryhu.authserver.repository.LoginAttemptUserRepository;
 import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
 import com.xdidian.keryhu.authserver.service.UserService;
-import com.xdidian.keryhu.util.StringValidate;
+import static com.xdidian.keryhu.util.StringValidate.isEmail;
+import static com.xdidian.keryhu.util.StringValidate.isPhone;
+
 import lombok.RequiredArgsConstructor;
 
 
@@ -132,13 +134,13 @@ public class UserRest {
 						args, "您的IP已经被锁定，请稍后再试！", LocaleContextHolder.getLocale());
 			    result.put("error", err);
 			}
-			else if(!(StringValidate.isEmail(x)||StringValidate.isPhone(x))){
+			else if(!(isEmail(x)||isPhone(x))){
 				Object[] args={x};
 				String err= messageSource.getMessage("message.loginName.neitherEmailNorPhone", 
 						args, LocaleContextHolder.getLocale());
 				result.put("error", err);
 			}
-			else if(StringValidate.isEmail(x)){
+			else if(isEmail(x)){
 				if(!userClient.isEmailExist(x)){
 					Object[] args={x};
 					String err= messageSource.getMessage("message.loginName.emailNotExist", 
@@ -147,7 +149,7 @@ public class UserRest {
 				}
 				result.put("emailStatus", userClient.emailStatus(x));
 			}
-			else if(StringValidate.isPhone(x)){
+			else if(isPhone(x)){
 				if(!userClient.isPhoneExist(x)){
 					Object[] args={x};
 					String err= messageSource.getMessage("message.loginName.phoneNotExist", 

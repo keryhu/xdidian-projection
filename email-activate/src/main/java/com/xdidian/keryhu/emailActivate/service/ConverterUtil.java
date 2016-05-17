@@ -33,18 +33,22 @@ public class ConverterUtil {
 				 activatedToken.setEmail(x.getEmail());
 				 activatedToken.setExpiryDate(x.getExpireDate());
 				 activatedToken.setSentTimes(0);
-				 activatedToken.setToken(x.getToken());
+				 activatedToken.setEmailToken(x.getEmailToken());
+				 activatedToken.setReregisterToken(x.getReregisterToken());
+				 activatedToken.setResendToken(x.getResendToken());
 				 return activatedToken;
 			};
 			
 			/**
-			 * 将本地的对象ActivatedToken，转为EmailActivatedDto；
+			 * 将本地的对象ActivatedToken，转为EmailActivatedDto；这个用户重新发送的时候。
 			 */
 	public Function<ActivatedToken,EmailActivatedDto> activatedTokenToEmailActivatedDto=
 			x->{
 				EmailActivatedDto dto=new EmailActivatedDto();
 				dto.setEmail(x.getEmail());
-				dto.setToken(x.getToken());
+				dto.setEmailToken(x.getEmailToken());
+				dto.setReregisterToken(x.getReregisterToken());
+				dto.setResendToken(x.getResendToken());
 				dto.setExpireDate(x.getExpiryDate());
 				return dto;
 			};

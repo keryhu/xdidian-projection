@@ -51,6 +51,7 @@ public class EmailActivatedController  {
 	@RequestMapping(method=RequestMethod.GET,value="/query/emailNotActived")
 	public ModelAndView callEmailActivatedValidate(@RequestParam("loginName") String loginName){
 		Assert.hasText(loginName,"登录名loginName不能为空");
+		
 		ModelAndView mav=new ModelAndView();
 		String email=userClient.loginNameToEmail(loginName);
 		String redirectUrl=new StringBuffer("redirect:")

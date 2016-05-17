@@ -14,6 +14,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
 * @ClassName: LoginAttemptProperties
@@ -23,7 +25,8 @@ import lombok.Data;
 */
 @Component
 @ConfigurationProperties(prefix="LoginAttempt")
-@Data
+@Getter
+@Setter
 public class LoginAttemptProperties implements Serializable{
 
 	

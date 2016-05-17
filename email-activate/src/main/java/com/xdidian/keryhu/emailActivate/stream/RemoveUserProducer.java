@@ -14,6 +14,8 @@ import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
 * @ClassName: EmailActivatedExpiredProducer
@@ -23,6 +25,7 @@ import org.springframework.util.Assert;
 */
 @Component
 @EnableBinding(RemoveUserOutputChannel.class)
+@Slf4j
 public class RemoveUserProducer {
 	
 	@Autowired
@@ -42,6 +45,7 @@ public class RemoveUserProducer {
 				              .send(MessageBuilder.withPayload(id).build());
 		
 		Assert.isTrue(result, "发送 remove user messge 失败！！");
+		log.info("成功发出删除 user Email 为 {} 的message ",id);
 		
 	}
 

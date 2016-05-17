@@ -14,7 +14,11 @@ import org.springframework.util.Assert;
 
 import com.xdidian.keryhu.propertyregister.client.UserAccountClient;
 import com.xdidian.keryhu.propertyregister.domain.PropertyForm;
-import com.xdidian.keryhu.util.StringValidate;
+import static com.xdidian.keryhu.util.StringValidate.isCompanyName;
+import static com.xdidian.keryhu.util.StringValidate.isEmail;
+import static com.xdidian.keryhu.util.StringValidate.isPassword;
+import static com.xdidian.keryhu.util.StringValidate.isPeopleName;
+import static com.xdidian.keryhu.util.StringValidate.isPhone;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,11 +45,11 @@ public class UserServiceImpl implements UserService {
 	public void vlidateBeforSave(PropertyForm propertyForm) {
 		// TODO Auto-generated method stub
 		log.info("需要验证的propertyForm is ： "+propertyForm);
-		Assert.isTrue(StringValidate.isEmail(propertyForm.getEmail()), "email格式不正确！");
-		Assert.isTrue(StringValidate.isPhone(propertyForm.getPhone()),"phone格式不正确！");
-		Assert.isTrue(StringValidate.isPassword(propertyForm.getPassword()), "手机格式不正确！");
-		Assert.isTrue(StringValidate.isCompanyName(propertyForm.getCompanyName()), "公司名字格式不正确！");
-		Assert.isTrue(StringValidate.isPeopleName(propertyForm.getDirectName()), "姓名格式不正确！");
+		Assert.isTrue(isEmail(propertyForm.getEmail()), "email格式不正确！");
+		Assert.isTrue(isPhone(propertyForm.getPhone()),"phone格式不正确！");
+		Assert.isTrue(isPassword(propertyForm.getPassword()), "手机格式不正确！");
+		Assert.isTrue(isCompanyName(propertyForm.getCompanyName()), "公司名字格式不正确！");
+		Assert.isTrue(isPeopleName(propertyForm.getDirectName()), "姓名格式不正确！");
 		
 		Assert.isTrue(!userAccountClient.isEmailExist(propertyForm.getEmail()), "email已经注册过，请直接登录！");
 		Assert.isTrue(!userAccountClient.isPhoneExist(propertyForm.getPhone()), "phone已经注册，请直接登录！");

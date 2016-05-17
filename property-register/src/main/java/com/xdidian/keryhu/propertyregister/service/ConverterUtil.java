@@ -48,7 +48,9 @@ public class ConverterUtil {
 		LocalDateTime expireDate=LocalDateTime.now().plusHours(activatedProperties.getExpiredTime());
 		EmailActivatedDto dto=new EmailActivatedDto();
 		dto.setEmail(x.getEmail());
-		dto.setToken(UUID.randomUUID().toString());
+		dto.setEmailToken(UUID.randomUUID().toString());
+		dto.setReregisterToken(UUID.randomUUID().toString());
+		dto.setResendToken(UUID.randomUUID().toString());
 		dto.setExpireDate(expireDate);
 		return dto;
 	};

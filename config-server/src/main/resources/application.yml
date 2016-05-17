@@ -29,6 +29,8 @@ security:
   user:
     name: 15900455491
     password: skdjf7782c
+  ignored:
+    - /encrypt*
 
 
 

@@ -12,7 +12,8 @@ import java.io.Serializable;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
 * @ClassName: HostProperty
@@ -23,7 +24,8 @@ import lombok.Data;
 */
 @Component
 @ConfigurationProperties(prefix="hostProperty")
-@Data
+@Getter
+@Setter
 public class HostProperty implements Serializable{
 	
 	private static final long serialVersionUID = -6904038768907594026L;

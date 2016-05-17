@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import com.xdidian.keryhu.util.StringValidate;
+import static com.xdidian.keryhu.util.StringValidate.checkType;
 
 import com.xdidian.keryhu.useraccount.domain.User;
 import com.xdidian.keryhu.useraccount.exception.EmailNotFoundException;
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
         if(loginName==null||loginName.isEmpty()){
         	return Optional.empty();
         }
-		switch (StringValidate.checkType(loginName)) {
+		switch (checkType(loginName)) {
 		case EMAIL:
 			user= repository.findByEmail(loginName.toLowerCase());
 			break;
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 	        if(id==null||id.isEmpty()){
 	        	return Optional.empty();
 	        }
-			switch (StringValidate.checkType(id)) {
+			switch (checkType(id)) {
 			case EMAIL:
 				user= repository.findByEmail(id.toLowerCase());
 				break;

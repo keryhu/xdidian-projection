@@ -14,6 +14,9 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import com.xdidian.keryhu.domain.EmailActivatedDto;
 import com.xdidian.keryhu.emailActivate.service.TokenService;
+
+import lombok.extern.slf4j.Slf4j;
+
 import com.xdidian.keryhu.emailActivate.service.ConverterUtil;
 
 
@@ -26,6 +29,7 @@ import com.xdidian.keryhu.emailActivate.service.ConverterUtil;
 * @date 2016年5月7日 下午5:38:02
 */
 @EnableBinding(EmailActivatedInputChannel.class)
+@Slf4j
 public class EmailActivatedConsumer {
 	
 	@Autowired
@@ -39,6 +43,7 @@ public class EmailActivatedConsumer {
 		
 		activatedTokenService
 		   .save(converterUtil.EmailActivatedDtoToActivatedToken.apply(dto));
+		log.info("email激活服务器，接受到刚刚注册的 dto is ： {}",dto);
 		
 	}
 }

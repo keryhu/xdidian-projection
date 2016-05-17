@@ -42,7 +42,7 @@ public class EmailActivatedConsumer {
 				.append(":8080/email-activate/email/emailActivatedConfirm?email=")
 				.append(dto.getEmail())
 				.append("&token=")
-				.append(dto.getToken())
+				.append(dto.getEmailToken())
 				.toString();
 		Context context = new Context();
 		context.setVariable("dto", dto);

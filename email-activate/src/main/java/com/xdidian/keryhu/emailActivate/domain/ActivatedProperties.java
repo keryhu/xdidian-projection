@@ -31,6 +31,7 @@ public class ActivatedProperties implements Serializable{
 	private static final long serialVersionUID = 6219341996080208763L;
 	
 	private int maxSendTimes;
+	private int sendCycleMinutes;   //点击“再次发送激活邮件的 间隔时间  单位分钟数
 	private String resendUrl;
 	private String reregisterUrl;
 	private String registerResultUrl;
@@ -38,15 +39,19 @@ public class ActivatedProperties implements Serializable{
 	private String defaultRegisterUrl;
 	
 
-	public String getResendUrl(String email){
+	public String getResendUrl(String email,String resendToken){
 		return new StringBuffer(this.getResendUrl())
 				.append(email)
+				.append("&token=")
+				.append(resendToken)
 				.toString();
 	}
 	
-	public String  getReregisterUrl(String email){
+	public String  getReregisterUrl(String email,String reregisterToken){
 		return new StringBuffer(this.getReregisterUrl())
 				.append(email)
+				.append("&token=")
+				.append(reregisterToken)
 				.toString();
 	}
 }

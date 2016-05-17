@@ -45,5 +45,15 @@ public class ExceptionControllerAdvice {
 	        
 	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
 	        return new ErrorMessage(HttpStatus.NOT_FOUND.value(),ex.getMessage());
+	    }	
+	 
+	//捕获tokennotfound。
+	 @ExceptionHandler(TokenNotFoundException.class)
+	 @ResponseBody
+	 @ResponseStatus(HttpStatus.NOT_FOUND)
+	 ErrorMessage handleTokenNotFoundException( Throwable ex) {
+	        
+	        //每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
+	        return new ErrorMessage(HttpStatus.NOT_FOUND.value(),ex.getMessage());
 	    }		 
 }
