@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>通过何种方式重置密码</title>
+</head>
+<body>
+<!--希望通过何种方式重置密码 ，目前只支持email-->
+   
+   
+	<div class="container">
+		
+		
+		<form role="form" th:action="@{/newPassword}" method="post">
+			
+			<div class="form-group">
+				<input type="radio" th:name="${'method[' + item + ']'}" value="手机" />
+			</div>
+			<div class="form-group">
+				<input type="radio" th:name="${'method[' + item + ']'}" value="email" />
+			</div>
+			<input type="hidden" th:value="${param.id[0]" name="id" />
+			<input type="hidden" id="csrf_token" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
+
+			<button type="submit" class="btn btn-primary">提交</button>
+		</form>
+		
+
+	</div>
+</body>
+</html>

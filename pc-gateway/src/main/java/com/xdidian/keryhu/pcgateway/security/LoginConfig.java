@@ -35,6 +35,7 @@ public class LoginConfig extends WebSecurityConfigurerAdapter  {
 			 .antMatchers(HttpMethod.POST,"/property-register/property/register").permitAll()
 			 .antMatchers(HttpMethod.GET, "/user-account/users/query/**").permitAll()
 			 .antMatchers(HttpMethod.GET, "/email-activate/email/**").permitAll()
+			 .antMatchers(HttpMethod.GET, "/recover/code").permitAll()
 			 .anyRequest().authenticated()
 			 .and().csrf().csrfTokenRepository(csrfTokenRepository())
 			 .and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);

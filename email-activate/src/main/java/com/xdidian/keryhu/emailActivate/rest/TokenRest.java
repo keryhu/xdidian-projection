@@ -98,7 +98,6 @@ public class TokenRest {
 
 		 
 		//如果激活时间没有过期，那么跳转带有重新发送url的页面  hostname/8080/register/result 页面，
-		 //并且附带email参数
 		if(!verifyUrl.activatedExpired(email)){
 			log.info("您登录的时候，发现email未激活，且未过期，我们正在为您导航到'再次发送或重新注册页面'！");
 			return redirectService.redirectResendPage(email, attr);

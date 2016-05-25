@@ -26,3 +26,52 @@ target
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+#npm ignore
+# Runtime data
+pc-front/pids
+pc-front/*.pid
+pc-front/*.seed
+
+# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
+pc-front/*.grunt
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+pc-front/build/Release
+
+# Users Environment Variables
+pc-front/.lock-wscript
+
+# OS generated files #
+pc-front/.DS_Store
+pc-front/ehthumbs.db
+pc-front/Icon?
+pc-front/Thumbs.db
+
+# Node Files #
+pc-front/node_modules
+pc-front/bower_components
+
+
+# Typing TSD #
+pc-front/src/typings/tsd/
+pc-front/typings/
+pc-front/tsd_typings/
+
+
+# Dist #
+pc-front/dist
+pc-front/public/__build__/
+pc-front/src/*/__build__/
+pc-front/__build__/**
+pc-front/.webpack.json
+
+
+# IDE #
+pc-front/.idea/
+pc-front/*.iml
+
+
+# generated documents
+pc-front/doc
+

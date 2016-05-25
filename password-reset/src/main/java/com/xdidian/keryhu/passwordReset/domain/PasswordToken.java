@@ -37,7 +37,9 @@ public class PasswordToken implements Serializable {
 	@Id
 	private String id;
 	
-	private String token;  //重设密码时，需要设置的随机码
+	private String passwordToken;  //重设密码时，需要设置的随机码
+	
+	private String resendToken ;   //跟随重新发送邮件的token
 	
 	private String userId;  // user-accouont中的id，用途是关联此domain 与 user
 	
@@ -53,7 +55,8 @@ public class PasswordToken implements Serializable {
 	 */
 	public PasswordToken(){
 		this.id=UUID.randomUUID().toString();
-		this.token =null;
+		this.passwordToken=null;
+		this.resendToken=null;
 		this.expiryDate=null;
 	    this.userId=null;
 	}

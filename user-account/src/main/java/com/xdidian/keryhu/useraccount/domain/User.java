@@ -65,7 +65,9 @@ public class User implements Serializable{
 	
 	private String directName; //负责人姓名,物业公司更换负责人姓名，手机号，email必须上传公司证明（盖章）
 	
-	@Indexed(unique = true)
+	//公司名字，不需要设成独立的，只需要在物业公司注册时候，强制检查这个公司名字没有注册过
+	//后续，可以在公司名字已经注册的情况下，由公司负责人添加  公司的抄表员账户，这个账户附在这个公司名下
+	@Indexed
 	private String companyName; //公司名字,必须和营业执照一致，否则无法通过（如需更换，必须提供营业执照，书面申请盖章证明）
 	
 	

@@ -31,6 +31,7 @@ zuul:
     user-account: /user-account/**
     auth-server: /auth-server/**
     email-activate: /email-activate/**
+    #password-reset: /recover/**
     
       
   

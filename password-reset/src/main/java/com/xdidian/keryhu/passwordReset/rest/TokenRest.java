@@ -43,19 +43,21 @@ public class TokenRest {
 	/**
 	 * 
 	* @Title: validateEmail
-	* @Description: TODO(忘记密码时，如果通过email重设密码，那么需要先填写合法的email，以方便
-	* 发送email重置的url链接，需要验证的有2个
-	* 1 字符串是否符合email格式
-	* 2 email是否在user-account存在
+	* @Description: TODO(忘记密码时，如果通过email重设密码，用户打开重设密码的链接
+	* 需要验证的步骤
+	* 1 id，即userId是否存在于数据库
+	* 2 token是否和id匹配于user-account系统
 	* 
 	* 返回的是错误的提示，如果错误提示没有任何信息，那么证明通过了验证)
-	* @param @param email
+	* @param  id    userId
+	* @param token  就是passwordToken
 	* @param @return    设定文件
 	* @return ResponseEntity<?>    返回类型
 	* @throws
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="/password/validateEmail")
-	public ResponseEntity<?> validateEmail(@RequestParam("email") final String email){
+	@RequestMapping(method=RequestMethod.GET,value="/code")
+	public ResponseEntity<?> validateEmail(@RequestParam("id") final String id,
+			@RequestParam("token") final String token){
 		Map<String,Integer> result=new HashMap<String,Integer>();
 		
 		
