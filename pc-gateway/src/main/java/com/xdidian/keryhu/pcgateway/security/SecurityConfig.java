@@ -21,8 +21,7 @@ import org.springframework.web.util.WebUtils;
 
 @Configuration
 @EnableOAuth2Sso
-
-public class LoginConfig extends WebSecurityConfigurerAdapter  {
+public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 	
     
 	@Override
@@ -30,7 +29,8 @@ public class LoginConfig extends WebSecurityConfigurerAdapter  {
 		http 
 		     .logout().permitAll()
 		     .and().antMatcher("/**").authorizeRequests()
-			 .antMatchers("/","/register","/register/**","/webjars/**","/favicon.ico","/script/**").permitAll()
+			 .antMatchers("/","/register","/register/**","/webjars/**","/favicon.ico","/script/**"
+					 ,"/login").permitAll()
 				//只有未登陆用户，才能提交注册。
 			 .antMatchers(HttpMethod.POST,"/property-register/property/register").permitAll()
 			 .antMatchers(HttpMethod.GET, "/user-account/users/query/**").permitAll()

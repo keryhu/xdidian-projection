@@ -27,6 +27,7 @@ security:
   
 zuul:
   routes:
+    
     property-register: /property-register/**
     user-account: /user-account/**
     auth-server: /auth-server/**
@@ -39,6 +40,7 @@ zuul:
 logging:
   level:
     org.springframework.security: DEBUG
+  file: myapplication.log
 
 
       

@@ -1,0 +1,61 @@
+/*login 的css*/
+  .login-head{
+ background-color:#11D5EF;
+ margin-left:16%;
+ width:68%;
+ padding-top:2%;
+ padding-bottom:2%;
+ padding-left:18%;
+ 
+ 
+ }
+.login-hean h1{
+	margin-bottom:0;
+	font-weight:800; 
+	padding-left:23%;
+	
+}
+
+.login{
+	margin-bottom:8%;
+	margin-top:0;
+	margin-left:16%;
+	width:68%;
+	padding:2% 2%;
+	border-width:1px;
+	border-color:#E8DFEA;
+	border-style:solid;
+	
+}
+
+ 
+.login .remember-forget{
+	display:inline;
+	line-height: 30px;
+}
+ .login .form-actions{
+	float:left;
+	margin-right:30%;
+	padding-right:45%;
+	padding-bottom:2%;
+	front-size:200%;
+	width:100%;
+	
+	
+}
+ .login  .control-group input{
+	
+	width:55%;
+	margin-bottom:4%;	
+	line-height: 35px;	
+}
+
+
+
+ .login .help-inline{
+	margin-left:10%;
+	color:red;
+	font-weight:900; 
+}
+
+
