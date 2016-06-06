@@ -28,6 +28,24 @@
 	
 }
 
+.login .loginError{
+	color:red;
+	font-weight:900;
+	padding-bottom:2%;
+}
+
+.login .blockError{
+	color:red;
+	font-weight:900;
+	padding-bottom:2%;
+}
+
+.login .emailActivated{
+	color:green;
+	font-weight:900;
+	padding-bottom:2%;
+}
+
  
 .login .remember-forget{
 	display:inline;
@@ -45,7 +63,7 @@
 }
  .login  .control-group input{
 	
-	width:55%;
+	width:50%;
 	margin-bottom:4%;	
 	line-height: 35px;	
 }
@@ -53,7 +71,7 @@
 
 
  .login .help-inline{
-	margin-left:10%;
+	margin-left:5%;
 	color:red;
 	font-weight:900; 
 }

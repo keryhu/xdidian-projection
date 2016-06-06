@@ -12,19 +12,24 @@
 	<div class="container-fluid body-login ">
 		<div class="row-fluid">
 
-			<div th:if="${param.error != null}"
-				th:text="${session[SPRING_SECURITY_LAST_EXCEPTION].message}">error</div>
-			<!-- begin －－－下面这个是用户注册成功后，点击邮箱中的激活邮件，跳转到login页面，附带的“用户注册成功的提示信息” -->
-			<div th:text="${param.emailActivated[0]}"
-				th:unless="${param.emailActivated==null}">点击邮件中的帐号激活出现的提示</div>
-			<!--  end -->
-
 			<div class="login-head">
 				<h1>登&nbsp;&nbsp;陆</h1>
 			</div>
+
+
 			<div class="col-md-12 login">
 				<form id="loginForm" role="form" th:action="@{/login}" method="post">
 					<fieldset>
+
+						<div class="loginError" th:if="${param.error != null}"
+							th:text="${errorMsg}">用户名，密码登录错误</div>
+						
+						<div class="blockError"  th:text="${blockMsg}">IP被冻结 </div>
+						
+						<!-- begin －－－下面这个是用户注册成功后，点击邮箱中的激活邮件，跳转到login页面，附带的“用户注册成功的提示信息” -->
+						<div class="emailActivated" th:text="${param.emailActivated[0]}"
+							th:unless="${param.emailActivated==null}">点击邮件中的帐号激活出现的提示</div>
+						<!--  end -->
 
 
 						<div class="control-group">
@@ -57,8 +62,8 @@
 
 							<div class="remember">
 								<input type="checkbox" value="1" name="remember_me"
-									checked="checked"/> <span>记住我</span> &nbsp; &nbsp;
-								&nbsp; &nbsp; <span class="forget-password"> <a href="">忘记密码?</a>
+									checked="checked" /> <span>记住我</span> &nbsp; &nbsp; &nbsp;
+								&nbsp; <span class="forget-password"> <a href="">忘记密码?</a>
 									&nbsp; &nbsp; <a href="register">注册</a>
 
 								</span>

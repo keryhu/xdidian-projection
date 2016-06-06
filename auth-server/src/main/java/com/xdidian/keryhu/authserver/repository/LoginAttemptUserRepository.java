@@ -8,11 +8,8 @@
 */ 
 package com.xdidian.keryhu.authserver.repository;
 
-import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.mongodb.repository.MongoRepository;
-
 import com.xdidian.keryhu.authserver.domain.LoginAttemptUser;
 
 /**
@@ -34,16 +31,6 @@ public interface LoginAttemptUserRepository extends MongoRepository<LoginAttempt
 	 */
 	public Optional<LoginAttemptUser>  findByRemoteIp(String remoteIp);
 	
-	/**
-	 * 
-	* @Title: findByUserId
-	* @Description: TODO(根据用户的登陆名，来查询相应的LoginAttemptUser数据)
-	* @param @param userId
-	* @param @return    设定文件
-	* @return Optional<LoginAttemptUser>    返回类型
-	* @throws
-	 */
-	public Optional<LoginAttemptUser>  findByLoginName(List<String> loginName);
 	
 	/**
 	 * 

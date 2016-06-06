@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
@@ -34,6 +36,7 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 
 	private final LoginAttemptProperties loginAttemptProperties;
 	private final LoginAttemptUserRepository repository;
+	private final UserService userService;
 	
 
 	/**
@@ -50,7 +53,6 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 		// TODO Auto-generated method stub
 		//如果IP不存在于数据库
 		if(!repository.findByRemoteIp(ip).isPresent()){
-			
 			LoginAttemptUser loginAttemptUser=new LoginAttemptUser();
 			 Optional.of(loginAttemptUser).ifPresent(e->{
 				    e.setRemoteIp(ip);
@@ -64,39 +66,40 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 					repository.save(e);
 			 });
 		}
-		
-		
-		repository.findByRemoteIp(ip).ifPresent(e->{
-			
-			//如果FirstAttemptTime 为null的话，就设置为当前时间
-			if(e.getFirstAttemptTime()==null){
-				e.setFirstAttemptTime(LocalDateTime.now());
-			}
-			
-			//指定的输错自动恢复的周期时间，是否已到(例如设定了3个小时内最多输入10次，就锁定账户，那么只要3个小时内次数没有超过10次，
-			//就可以继续登录平台，过了3个小时，输入次数恢复到0，第一次输错时间恢复为null
-			
-		    boolean isPeriodExpired=LocalDateTime.now().isAfter(
-		    		e.getFirstAttemptTime().plusHours(loginAttemptProperties.getTimeOfPerid()));
-		    if(isPeriodExpired){
-		    	//如果已经到了恢复时间，那么就恢复到初始值＋第一次输错的时间和次数
-		    	e.setFirstAttemptTime(LocalDateTime.now());
-		    	e.setAlreadyAttemptTimes(1);	
-		    } else {
-		    	//如果输错次数已经等同于规定的最大次数－1
-		    	
-		    	if(e.getAlreadyAttemptTimes()>=loginAttemptProperties.getMaxAttemptTimes()-1){
-		    		e.setLocked(true);
-		    		e.setLockedTime(LocalDateTime.now());    		
-		    	}
-		    	AtomicInteger atomic=new AtomicInteger(e.getAlreadyAttemptTimes());
-		    	//原子性＋1
-		    	e.setAlreadyAttemptTimes(atomic.incrementAndGet());  	
-		    }
-		    addLoginName(loginName,e);
-		    repository.save(e);
-			
-		});
+		// 否则ip存在的情况下
+		else {
+			repository.findByRemoteIp(ip).ifPresent(e->{
+				
+				//如果FirstAttemptTime 为null的话，就设置为当前时间
+				if(e.getFirstAttemptTime()==null){
+					e.setFirstAttemptTime(LocalDateTime.now());
+				}
+				
+				//指定的输错自动恢复的周期时间，是否已到(例如设定了3个小时内最多输入10次，就锁定账户，那么只要3个小时内次数没有超过10次，
+				//就可以继续登录平台，过了3个小时，输入次数恢复到0，第一次输错时间恢复为null
+				
+			    boolean isPeriodExpired=LocalDateTime.now().isAfter(
+			    		e.getFirstAttemptTime().plusHours(loginAttemptProperties.getTimeOfPerid()));
+			    if(isPeriodExpired){
+			    	//如果已经到了恢复时间，那么就恢复到初始值＋第一次输错的时间和次数
+			    	e.setFirstAttemptTime(LocalDateTime.now());
+			    	e.setAlreadyAttemptTimes(1);	
+			    } else {
+			    	//如果输错次数已经等同于规定的最大次数－1
+			    	
+			    	if(e.getAlreadyAttemptTimes()>=loginAttemptProperties.getMaxAttemptTimes()-1){
+			    		e.setLocked(true);
+			    		e.setLockedTime(LocalDateTime.now());    		
+			    	}
+			    	AtomicInteger atomic=new AtomicInteger(e.getAlreadyAttemptTimes());
+			    	//原子性＋1
+			    	e.setAlreadyAttemptTimes(atomic.incrementAndGet());  	
+			    }
+			    addLoginName(loginName,e);
+			    repository.save(e);
+				
+			});
+		}	
 		
 	}
 	
@@ -216,4 +219,23 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 				   loginAttemptUser.getLockedTime().plusHours(loginAttemptProperties.getTimeOfLock()));
 		  
 	 }
+
+
+
+	/**
+	* <p>Title: leftLoginTimes</p>
+	* <p>Description: </p>
+	* @param request
+	* @return
+	* @see com.xdidian.keryhu.authserver.service.LoginAttemptUserService#leftLoginTimes(javax.servlet.http.HttpServletRequest)
+	*/ 
+	@Override
+	public int leftLoginTimes(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		
+		return repository.findByRemoteIp(userService.getIP(request))
+				.map(e->loginAttemptProperties.getMaxAttemptTimes()-
+			    		   e.getAlreadyAttemptTimes())
+				.orElse(loginAttemptProperties.getMaxAttemptTimes());
+	}
 }

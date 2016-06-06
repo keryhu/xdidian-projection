@@ -8,6 +8,8 @@
 */ 
 package com.xdidian.keryhu.authserver.service;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
 * @ClassName: LoginAttemptUserService
 * @Description: TODO(设定LoginAttemptUser service 方法。)
@@ -50,5 +52,16 @@ public interface LoginAttemptUserService {
 	* @throws
 	 */
 	public boolean isBlocked(String ip) ;
+	
+	/**
+	 * 
+	* @Title: leftLoginTimes
+	* @Description: TODO(查看目前还剩下几次登录错误的次数)
+	* @param @param request
+	* @param @return    设定文件
+	* @return int    返回类型
+	* @throws
+	 */
+	public int leftLoginTimes(HttpServletRequest request);
 
 }

@@ -1,17 +1,24 @@
 'use strict';
 
 $(document).ready(function() {
+	var e=$('.blockError').text().trim();
+	if(isEmpty(e)){	
+		$("input").prop('disabled', false);
+	}else {
+		$("input").prop('disabled', true);
+	}
+	
+	
 
 	blur();
+	
 	
 	$('#loginForm input').on('keyup blur', function() {
 		//所有的输入框为非空，且错误提示为0
 		if(allValidate()){
-			console.log(' validate ');
 			$('button.btn').prop('disabled', false);
 		}
 	    else {
-	    	console.log(' invalidate ');
 			$('button.btn').prop('disabled', 'disabled');
 		}
 				

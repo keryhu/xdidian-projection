@@ -150,5 +150,7 @@ public class UserController {
 	public String loginNameToEmail(@RequestParam("loginName") String loginName){	
 		return userService.loginNameToEmail(loginName);
 	}
+	
+	
 
 }

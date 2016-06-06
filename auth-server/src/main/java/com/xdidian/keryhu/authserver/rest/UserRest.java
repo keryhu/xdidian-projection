@@ -4,23 +4,17 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.xdidian.keryhu.authserver.client.UserClient;
-import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
-import com.xdidian.keryhu.authserver.repository.LoginAttemptUserRepository;
-import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
-import com.xdidian.keryhu.authserver.service.UserService;
 import static com.xdidian.keryhu.util.StringValidate.isEmail;
 import static com.xdidian.keryhu.util.StringValidate.isPhone;
 
@@ -39,14 +33,6 @@ public class UserRest {
 	
 	private final UserClient userClient;
 	
-	private final LoginAttemptUserRepository repository;
-	
-	private final LoginAttemptProperties loginAttemptProperties;
-	
-	private final UserService userService;
-	
-	private final LoginAttemptUserService loginAttemptService;
-	
 	private final MessageSource messageSource;
 	
 	/**
@@ -62,36 +48,6 @@ public class UserRest {
 	@ResponseBody
 	public Principal user(Principal user) {
 		return user;
-	}
-	
-	
-	/**
-	 * 
-	* @Title: queryLoginAttemptInfo
-	* @Description: TODO(查询当前ip用户，在冻结账户之前，还剩几次输错机会。)
-	* @param @return    设定文件
-	* @return ResponseEntity<?>    返回类型
-	* @throws
-	 */
-	@RequestMapping(value="/query/leftLoginAttemptTimes",method=RequestMethod.GET)
-	public ResponseEntity<?> queryLoginAttemptInfo(HttpServletRequest request){
-		
-	    //设置一个默认值，只有当ip不存在的时候，返回这个值
-	    Map<String,Integer> result=new HashMap<String,Integer>();
-	    result.put("leftLoginAttemptTimes", loginAttemptProperties.getMaxAttemptTimes());
-	    
-	   return repository.findByRemoteIp(userService.getIP(request)).map(e->{
-		   //目前还剩几此输错的机会
-	       int leftLoginAttemptTimes=loginAttemptProperties.getMaxAttemptTimes()-
-	    		   e.getAlreadyAttemptTimes();
-	       //将结果转为map对象。
-		    Map<String,Integer> result1=new HashMap<String,Integer>();
-		    result1.put("leftLoginAttemptTimes",leftLoginAttemptTimes);
-	       
-		    return ResponseEntity.ok(result1);
-	    }).orElse(ResponseEntity.ok(result));
-	        
-	    
 	}
 	
 	
@@ -115,48 +71,38 @@ public class UserRest {
 	* @throws
 	 */
 	@RequestMapping(value="/query/validateLoginName",method=RequestMethod.GET)
-    public  ResponseEntity<?> validateLoginName(@RequestParam("loginName") String loginName,
-    		HttpServletRequest request){
-		
-		Assert.hasText(loginName,messageSource.getMessage("message.loginName.notNull", null, 
-				LocaleContextHolder.getLocale()));
-		
-		Map<String,Object> result=new HashMap<String,Object>();
-		
-		String ip=userService.getIP(request);
-		
-		Consumer<String> errorM=x->{
+    public  ResponseEntity<?> validateLoginName(@RequestParam("loginName") String loginName){
 			
-			if(loginAttemptService.isBlocked(ip)){
-				Object[] args={loginAttemptProperties.getTimeOfPerid(),loginAttemptProperties.getMaxAttemptTimes(),
-						loginAttemptProperties.getTimeOfLock()};
-			    String err= messageSource.getMessage("message.ip.blocked", 
-						args, "您的IP已经被锁定，请稍后再试！", LocaleContextHolder.getLocale());
-			    result.put("error", err);
-			}
-			else if(!(isEmail(x)||isPhone(x))){
-				Object[] args={x};
-				String err= messageSource.getMessage("message.loginName.neitherEmailNorPhone", 
-						args, LocaleContextHolder.getLocale());
+		Map<String,Object> result=new HashMap<String,Object>();
+				
+		Consumer<String> errorM=x->{
+		
+		  if(isEmail(x)){
+			    String err="";
+				if(!userClient.isEmailExist(x)){
+				    err= messageSource.getMessage("message.loginName.emailNotExist", 
+							null, LocaleContextHolder.getLocale());
+					
+				}
+				else if(!userClient.emailStatus(x)&&userClient.isEmailExist(x)){
+					err= messageSource.getMessage("message.email.notActivated", 
+							null, LocaleContextHolder.getLocale());
+				}
 				result.put("error", err);
 			}
-			else if(isEmail(x)){
-				if(!userClient.isEmailExist(x)){
-					Object[] args={x};
-					String err= messageSource.getMessage("message.loginName.emailNotExist", 
-							args, LocaleContextHolder.getLocale());
-					result.put("error", err);
-				}
-				result.put("emailStatus", userClient.emailStatus(x));
-			}
 			else if(isPhone(x)){
+				String err="";
 				if(!userClient.isPhoneExist(x)){
-					Object[] args={x};
-					String err= messageSource.getMessage("message.loginName.phoneNotExist", 
-							args, LocaleContextHolder.getLocale());
+					err= messageSource.getMessage("message.loginName.phoneNotExist", 
+							null, LocaleContextHolder.getLocale());
 					result.put("error", err);
 				}
-				result.put("emailStatus", userClient.emailStatus(x));
+				
+				else if(!userClient.emailStatus(x)&&userClient.isPhoneExist(x)){
+					err= messageSource.getMessage("message.email.notActivated", 
+							null, LocaleContextHolder.getLocale());
+				}
+				result.put("error", err);
 			} 
 				
 		};

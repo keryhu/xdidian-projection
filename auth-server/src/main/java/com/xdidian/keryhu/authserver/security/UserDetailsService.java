@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import com.xdidian.keryhu.authserver.domain.AuthUserDto;
-import com.xdidian.keryhu.authserver.domain.LoginAttemptProperties;
 import com.xdidian.keryhu.authserver.exception.BlockedException;
 import com.xdidian.keryhu.authserver.exception.EmailNotActivatedException;
 import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
@@ -34,11 +30,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 	private final HttpServletRequest request;
 	
 	private final LoginAttemptUserService loginAttemptUserService;
-	
-	private final LoginAttemptProperties loginAttemptProperties;
-	
-	private final MessageSource messageSource;
-	
+		
 	/**
 	 * <p>
 	 * Title: loadUserByUsername
@@ -62,32 +54,21 @@ public class UserDetailsService implements org.springframework.security.core.use
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		
-		
-		Object[] args={loginAttemptProperties.getTimeOfPerid(),loginAttemptProperties.getMaxAttemptTimes(),
-				loginAttemptProperties.getTimeOfLock()};
-		String message=messageSource.getMessage("message.ip.blocked", 
-				args, "您的IP已经被锁定，请稍后再试！", LocaleContextHolder.getLocale());
-		
 		if(loginAttemptUserService.isBlocked(userService.getIP(request))){
 			log.info("您的IP已经被锁定账户了");
-			throw new BlockedException(message);
+			throw new BlockedException("您的IP已经被锁定账户了");
 		}
 		
 		
 		return (UserDetails) userService.findByLoginName(username).map(a -> {
-			Object[] args1={username};
-			String accountNotExist=messageSource.getMessage("message.account.noAccount",
-					args1 ,"您的账户不存在，请先注册！",LocaleContextHolder.getLocale());
 			
 			if(a.getId()==null||a.getId().isEmpty()){
-				throw new UsernameNotFoundException(accountNotExist);
+				throw new UsernameNotFoundException("您的账户不存在，请先注册！");
 			}
 			
-			String emailNotActivated=messageSource.getMessage("message.email.notActivated",null ,
-					"您的email尚未激活，请查看邮箱，或垃圾邮件，或重新注册！",LocaleContextHolder.getLocale());
 			//email 未激活拦截
 			if(!a.isEmailStatus()){
-				throw new EmailNotActivatedException(emailNotActivated);
+				throw new EmailNotActivatedException("您的email尚未激活，请查看邮箱，或垃圾邮件，或重新注册！");
 			}
 				
 			return new org.springframework.security.core.userdetails.User(a.getId(), a.getPassword(), true, true, true,
