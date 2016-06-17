@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserRest {
-	
+
 	private final UserClient userClient;
 	
 	private final MessageSource messageSource;

@@ -18,7 +18,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<lombok.version>1.16.6</lombok.version>
+		<lombok.version>1.16.8</lombok.version>
 		<jackson.datatype.jsr310>2.7.3</jackson.datatype.jsr310>
 	</properties>
 
@@ -76,7 +76,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Brixton.RELEASE</version>
+				<version>Brixton.SR1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

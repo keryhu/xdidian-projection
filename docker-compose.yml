@@ -197,6 +197,7 @@ services:
       - "8080:8080"
     environment:
       DOMAIN_NAME: 192.168.1.110
+      REDIS_HOST: redis
     networks:
       - wfij
     depends_on: 

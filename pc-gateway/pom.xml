@@ -12,10 +12,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<properties>
-		<webjars.jquery>2.2.0</webjars.jquery>
-		<webjars.bootstrap>3.3.6</webjars.bootstrap>
-		<webjars.angular>1.4.8</webjars.angular>
-		<webjars.angular.ui.router>0.2.15</webjars.angular.ui.router>
+		<okhttp.version>3.2.0</okhttp.version>
 	</properties>
 
 	<dependencies>
@@ -68,29 +65,16 @@
 			<artifactId>httpclient</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- webjars -->
-
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery</artifactId>
-			<version>${webjars.jquery}</version>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>${okhttp.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>bootstrap</artifactId>
-			<version>${webjars.bootstrap}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>angularjs</artifactId>
-			<version>${webjars.angular}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-redis</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>angular-ui-router</artifactId>
-			<version>${webjars.angular.ui.router}</version>
-		</dependency>
 
 	</dependencies>
 	<build>
@@ -113,7 +97,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 
 </project>

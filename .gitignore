@@ -1,4 +1,4 @@
-*.class
+
 .DS_Store
 *.DS_Store
 target
@@ -86,3 +86,5 @@ pc-front/doc
 /property-register/property-register.iml
 /user-account/user-account.iml
 xdidian-micro-docker.iml
+
+
