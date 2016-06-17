@@ -49,10 +49,6 @@ front:
   asset-manifest-url: http://${domain.name:localhost}/manifest.json      
   
 
-logging:
-  level:
-    org.springframework.security: DEBUG
-  file: myapplication.log
 
 
       

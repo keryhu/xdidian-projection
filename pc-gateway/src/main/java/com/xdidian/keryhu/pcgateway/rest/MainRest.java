@@ -2,6 +2,7 @@ package com.xdidian.keryhu.pcgateway.rest;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@EnableConfigurationProperties(FrontUrl.class)
 public class MainRest {
 
     private final FrontUrl frontUrl;

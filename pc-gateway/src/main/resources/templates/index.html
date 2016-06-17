@@ -11,11 +11,15 @@
     </style>
 </head>
 <body>
-<mpt-app/>
+<mpt-app></mpt-app>
+
+<!--/*@thymesVar id="assetHost" type="com.xdidian.keryhu.pcgateway.domain.FrontUrl"*/-->
+<!--/*@thymesVar id="manifest" type="com.xdidian.keryhu.pcgateway.domain.AssetManifest"*/-->
+
 <script th:src="|//${assetHost}/${manifest.get('polyfills.js')}|"></script>
 <script th:src="|//${assetHost}/${manifest.get('vendor.js')}|"></script>
 <script th:src="|//${assetHost}/${manifest.get('main.js')}|"></script>
-<!-- Google Analytics: change UA-74585747-1 to be your site's ID -->
+
 
 </body>
 </html>

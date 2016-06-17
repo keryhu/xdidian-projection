@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.io.IOException;
 @Service("assetManifestService")
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@EnableConfigurationProperties(FrontUrl.class)
 public class AssetManifestServiceImpl implements AssetManifestService {
 
     private final FrontUrl frontUrl;
