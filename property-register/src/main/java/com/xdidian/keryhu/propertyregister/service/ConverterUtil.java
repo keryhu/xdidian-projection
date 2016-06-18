@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 
 /**
- * Description : 类型转换
+ * Description : 类型转换 不能使用 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
  * Date : 2016年06月18日 上午11:08
  * Author : keryHu keryhu@hotmail.com
  */
@@ -27,7 +27,8 @@ import java.util.function.Function;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ConverterUtil {
 
-    private final ActivatedProperties activatedProperties;
+	@Autowired
+    private ActivatedProperties activatedProperties;
 
     /**
      * 将web前端提交的物业公司注册数据，转换为 dto，因为需要远程http，所以在传输之前，就先加密密码。

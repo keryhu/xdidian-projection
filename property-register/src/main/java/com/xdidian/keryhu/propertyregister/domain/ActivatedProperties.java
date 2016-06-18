@@ -21,7 +21,7 @@ public class ActivatedProperties implements Serializable {
 
     private static final long serialVersionUID = -917850265000066502L;
 
-    private int expiredTime = 10;//默认单位是小时,默认值是1
+    private int expiredTime ;//默认单位是小时
 
 
 }
