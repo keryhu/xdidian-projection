@@ -1,11 +1,3 @@
-/**
- * @Title: RemoveUserConsumer.java
- * @Package com.xdidian.keryhu.useraccount.stream
- * @Description: TODO(用一句话描述该文件做什么)
- * @author keryhu  keryhu@hotmail.com
- * @date 2016年5月6日 下午9:42:16
- * @version V1.0
- */
 package com.xdidian.keryhu.useraccount.stream;
 
 import com.xdidian.keryhu.useraccount.service.UserService;
@@ -15,28 +7,27 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 
 /**
- * Description : 接受到需要删除User消息时，具体的实施方法,传递过来的参数id，可能是uuid，也可能是email，
- * 还可能是phone，需要先判断。然后将他们都转为user 的 id
- * Date : 2016年06月18日 上午11:31
- * Author : keryHu keryhu@hotmail.com
+ * @Description : 接受到需要删除User消息时，具体的实施方法,传递过来的参数id，可能是uuid，也可能是email， 还可能是phone，需要先判断。然后将他们都转为user 的
+ *              id
+ * @date : 2016年6月18日 下午9:26:15
+ * @author : keryHu keryhu@hotmail.com
  */
 @EnableBinding(RemoveUserInputChannel.class)
 @Slf4j
 public class RemoveUserConsumer {
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    @StreamListener(RemoveUserInputChannel.NAME)
-    public void removeUser(String id) {
-        log.info("id is : {}", id);
-        if (!(id == null || id.isEmpty())) {
+  @StreamListener(RemoveUserInputChannel.NAME)
+  public void removeUser(String id) {
+    log.info("id is : {}", id);
+    if (!(id == null || id.isEmpty())) {
 
-            userService.findById(id)
-                    .ifPresent(e -> userService.deleteUser(e));
+      userService.findById(id).ifPresent(e -> userService.deleteUser(e));
 
-            log.info("user-account 成功删除了此user 的 id is ：{} ", id);
-        }
+      log.info("user-account 成功删除了此user 的 id is ：{} ", id);
     }
+  }
 
 }

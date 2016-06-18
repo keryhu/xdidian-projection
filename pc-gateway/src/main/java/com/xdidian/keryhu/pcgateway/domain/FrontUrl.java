@@ -7,16 +7,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * Description : 前台angular2 host 和 相关配置的设置
- * Date : 2016年06月18日 上午10:44
- * Author : keryHu keryhu@hotmail.com
+ * @Description : 前台angular2 host 和 相关配置的设置
+ * @date : 2016年6月18日 下午9:10:38
+ * @author : keryHu keryhu@hotmail.com
  */
 @Component
 @ConfigurationProperties(prefix = "front")
 @Getter
 @Setter
 public class FrontUrl {
-    private String assetHost;
-    private String assetManifestUrl;
+  private String assetHost;
+  private String assetManifestUrl;
 
 }

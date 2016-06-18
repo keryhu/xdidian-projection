@@ -10,15 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
 /**
- * Description : 首页rest配置
- * Date : 2016年06月18日 上午10:46
- * Author : keryHu keryhu@hotmail.com
+ * @Description : 首页rest配置
+ * @date : 2016年6月18日 下午9:11:14
+ * @author : keryHu keryhu@hotmail.com
  */
 @Controller
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @EnableConfigurationProperties(FrontUrl.class)
-public class MainRest {
+public class HomeController {
 
     private final FrontUrl frontUrl;
 

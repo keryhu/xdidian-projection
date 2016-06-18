@@ -14,47 +14,46 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 
 import static com.xdidian.keryhu.util.Constants.READ_AND_WRITE_RESOURCE_ID;
 
+
 /**
- * Description : spring OAuth2 resource 验证方法
- * Date : 2016年06月18日 上午11:07
- * Author : keryHu keryhu@hotmail.com
+ * @Description : spring OAuth2 resource 验证方法
+ * @date : 2016年6月18日 下午9:16:01
+ * @author : keryHu keryhu@hotmail.com
  */
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    @Autowired
-    private RoleHierarchyImpl roleHierarchy;
+  @Autowired
+  private RoleHierarchyImpl roleHierarchy;
 
-    /**
-     * 调用spring security role 权限大小排序bean
-     */
-    private SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
-        DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new
-                DefaultWebSecurityExpressionHandler();
-        defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy);
-        return defaultWebSecurityExpressionHandler;
-    }
+  /**
+   * 调用spring security role 权限大小排序bean
+   */
+  private SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
+    DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler =
+        new DefaultWebSecurityExpressionHandler();
+    defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy);
+    return defaultWebSecurityExpressionHandler;
+  }
 
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http
+  @Override
+  public void configure(HttpSecurity http) throws Exception {
+    http
 
-                .authorizeRequests()
-                .and().authorizeRequests().expressionHandler(webExpressionHandler())  //权限排序
-                .antMatchers("/favicon.ico", "/query/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/property/register").permitAll()
+        .authorizeRequests().and().authorizeRequests().expressionHandler(webExpressionHandler()) // 权限排序
+        .antMatchers("/favicon.ico", "/query/**").permitAll()
+        .antMatchers(HttpMethod.POST, "/property/register").permitAll()
 
-                .anyRequest().authenticated()
-        ;
+        .anyRequest().authenticated();
 
-    }
+  }
 
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+  @Override
+  public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 
-        resources.resourceId(READ_AND_WRITE_RESOURCE_ID);
-    }
+    resources.resourceId(READ_AND_WRITE_RESOURCE_ID);
+  }
 
 }

@@ -21,62 +21,57 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Description : sso 主方法
- * Date : 2016年06月18日 上午10:53
- * Author : keryHu keryhu@hotmail.com
+ * @Description : SSO 主方法
+ * @date : 2016年6月18日 下午9:12:22
+ * @author : keryHu keryhu@hotmail.com
  */
 @Configuration
 @EnableOAuth2Sso
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http
-                .logout().permitAll()
-                .and().antMatcher("/**").authorizeRequests()
-                .antMatchers("/", "/register", "/register/**", "/webjars/**", "/favicon.ico", "/script/**"
-                        , "/login").permitAll()
-                //只有未登陆用户，才能提交注册。
-                .antMatchers(HttpMethod.POST, "/property-register/property/register").permitAll()
-                .antMatchers(HttpMethod.GET, "/user-account/users/query/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/email-activate/email/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/recover/code").permitAll()
-                .anyRequest().authenticated()
-                .and().csrf().csrfTokenRepository(csrfTokenRepository())
-                .and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
-    }
+  @Override
+  public void configure(HttpSecurity http) throws Exception {
+    http.logout().permitAll().and().antMatcher("/**").authorizeRequests()
+        .antMatchers("/", "/register", "/register/**", "/webjars/**", "/favicon.ico", "/script/**",
+            "/login")
+        .permitAll()
+        // 只有未登陆用户，才能提交注册。
+        .antMatchers(HttpMethod.POST, "/property-register/property/register").permitAll()
+        .antMatchers(HttpMethod.GET, "/user-account/users/query/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/email-activate/email/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/recover/code").permitAll().anyRequest().authenticated().and()
+        .csrf().csrfTokenRepository(csrfTokenRepository()).and()
+        .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
+  }
 
-    /**
-     * csrf配置
-     */
-    private Filter csrfHeaderFilter() {
-        return new OncePerRequestFilter() {
-            @Override
-            protected void doFilterInternal(HttpServletRequest request,
-                                            HttpServletResponse response, FilterChain filterChain)
-                    throws ServletException, IOException {
-                CsrfToken csrf = (CsrfToken) request
-                        .getAttribute(CsrfToken.class.getName());
-                if (csrf != null) {
-                    Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
-                    String token = csrf.getToken();
-                    if (cookie == null
-                            || token != null && !token.equals(cookie.getValue())) {
-                        cookie = new Cookie("XSRF-TOKEN", token);
-                        cookie.setPath("/");
-                        response.addCookie(cookie);
-                    }
-                }
-                filterChain.doFilter(request, response);
-            }
-        };
-    }
+  /**
+   * csrf配置
+   */
+  private Filter csrfHeaderFilter() {
+    return new OncePerRequestFilter() {
+      @Override
+      protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+          FilterChain filterChain) throws ServletException, IOException {
+        CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+        if (csrf != null) {
+          Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
+          String token = csrf.getToken();
+          if (cookie == null || token != null && !token.equals(cookie.getValue())) {
+            cookie = new Cookie("XSRF-TOKEN", token);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+          }
+        }
+        filterChain.doFilter(request, response);
+      }
+    };
+  }
 
-    private CsrfTokenRepository csrfTokenRepository() {
-        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-        repository.setHeaderName("X-XSRF-TOKEN");
-        return repository;
-    }
+  private CsrfTokenRepository csrfTokenRepository() {
+    HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+    repository.setHeaderName("X-XSRF-TOKEN");
+    return repository;
+  }
 
 }

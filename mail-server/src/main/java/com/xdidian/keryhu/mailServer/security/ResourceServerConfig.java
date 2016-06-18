@@ -13,46 +13,43 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 
 import static com.xdidian.keryhu.util.Constants.READ_AND_WRITE_RESOURCE_ID;
 
+
 /**
- * Description : spring OAuth2 Resource 验证方法
- * 注意不要使用 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
- * Date : 2016年06月18日 上午10:31
- * Author : keryHu keryhu@hotmail.com
+ * @Description : pring OAuth2 Resource 验证方法 注意不要使用 @RequiredArgsConstructor(onConstructor
+ *              = @__(@Autowired))
+ * @date : 2016年6月18日 下午9:06:29
+ * @author : keryHu keryhu@hotmail.com
  */
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    @Autowired
-    private RoleHierarchyImpl roleHierarchy;
+  @Autowired
+  private RoleHierarchyImpl roleHierarchy;
 
-    /**
-     * 调用spring security role 权限大小排序bean
-     */
-    private SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
-        DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new
-                DefaultWebSecurityExpressionHandler();
-        defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy);
-        return defaultWebSecurityExpressionHandler;
-    }
+  /**
+   * 调用spring security role 权限大小排序bean
+   */
+  private SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
+    DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler =
+        new DefaultWebSecurityExpressionHandler();
+    defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy);
+    return defaultWebSecurityExpressionHandler;
+  }
 
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .and().authorizeRequests().expressionHandler(webExpressionHandler())  //权限排序
-                .antMatchers("/favicon.ico", "/webjars/**").permitAll()
-                .anyRequest().authenticated()
-        ;
+  @Override
+  public void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests().and().authorizeRequests().expressionHandler(webExpressionHandler()) // 权限排序
+        .antMatchers("/favicon.ico", "/webjars/**").permitAll().anyRequest().authenticated();
 
-    }
+  }
 
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+  @Override
+  public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 
-        resources.resourceId(READ_AND_WRITE_RESOURCE_ID);
-    }
+    resources.resourceId(READ_AND_WRITE_RESOURCE_ID);
+  }
 
 
 }

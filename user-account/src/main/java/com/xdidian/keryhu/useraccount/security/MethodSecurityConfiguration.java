@@ -8,23 +8,26 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 
+
 /**
- * Description : spring mehtod security 方法
- * Date : 2016年06月18日 上午11:23
- * Author : keryHu keryhu@hotmail.com
+ * @Description : spring mehtod security 方法
+ * @date : 2016年6月18日 下午9:21:53
+ * @author : keryHu keryhu@hotmail.com
  */
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true, proxyTargetClass = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true,
+    proxyTargetClass = true)
 public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
-    @Autowired
-    private RoleHierarchyImpl roleHierarchy;
+  @Autowired
+  private RoleHierarchyImpl roleHierarchy;
 
-    @Override
-    protected MethodSecurityExpressionHandler createExpressionHandler() {
-        final DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
-        handler.setRoleHierarchy(roleHierarchy);
-        return handler;
-    }
+  @Override
+  protected MethodSecurityExpressionHandler createExpressionHandler() {
+    final DefaultMethodSecurityExpressionHandler handler =
+        new DefaultMethodSecurityExpressionHandler();
+    handler.setRoleHierarchy(roleHierarchy);
+    return handler;
+  }
 
 }

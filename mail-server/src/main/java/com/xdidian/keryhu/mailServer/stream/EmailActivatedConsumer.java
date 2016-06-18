@@ -1,11 +1,3 @@
-/**
- * @Title: EmailActivatedConsumer.java
- * @Package com.xdidian.keryhu.mailServer.stream
- * @Description: TODO(用一句话描述该文件做什么)
- * @author keryhu  keryhu@hotmail.com
- * @date 2016年5月7日 下午5:38:02
- * @version V1.0
- */
 package com.xdidian.keryhu.mailServer.stream;
 
 
@@ -20,38 +12,35 @@ import org.thymeleaf.context.Context;
 
 
 /**
- * Description : email激活所促发的应用
- * Date : 2016年06月18日 上午10:32
- * Author : keryHu keryhu@hotmail.com
+ * @Description : email激活所促发的应用
+ * @date : 2016年6月18日 下午9:06:51
+ * @author : keryHu keryhu@hotmail.com
  */
 @EnableBinding(EmailActivatedInputChannel.class)
 @EnableConfigurationProperties(HostProperty.class)
 public class EmailActivatedConsumer {
 
-    @Autowired
-    private EmailHtmlSender mailSender;
+  @Autowired
+  private EmailHtmlSender mailSender;
 
-    @Autowired
-    private HostProperty hostProperty;
+  @Autowired
+  private HostProperty hostProperty;
 
-    @StreamListener(EmailActivatedInputChannel.NAME)
-    public void receive(EmailActivatedDto dto) {
+  @StreamListener(EmailActivatedInputChannel.NAME)
+  public void receive(EmailActivatedDto dto) {
 
-        //通过zuul 中转到 user-account，这样前台 点击 url，后台user-account使用 get 方法来处理
+    // 通过zuul 中转到 user-account，这样前台 点击 url，后台user-account使用 get 方法来处理
 
-        String url = new StringBuffer(hostProperty.getHostName())
-                .append(":8080/email-activate/email/emailActivatedConfirm?email=")
-                .append(dto.getEmail())
-                .append("&token=")
-                .append(dto.getEmailToken())
-                .toString();
-        Context context = new Context();
-        context.setVariable("dto", dto);
-        context.setVariable("url", url);
+    String url = new StringBuffer(hostProperty.getHostName())
+        .append(":8080/email-activate/email/emailActivatedConfirm?email=").append(dto.getEmail())
+        .append("&token=").append(dto.getEmailToken()).toString();
+    Context context = new Context();
+    context.setVariable("dto", dto);
+    context.setVariable("url", url);
 
 
-        mailSender.send(dto.getEmail(), "新地点帐号激活", "emailActivated", context);
+    mailSender.send(dto.getEmail(), "新地点帐号激活", "emailActivated", context);
 
 
-    }
+  }
 }

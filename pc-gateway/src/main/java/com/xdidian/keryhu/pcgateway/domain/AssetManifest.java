@@ -10,33 +10,34 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+
+
 /**
- * Description : pc 前台angular2 配置信息的class
- * Date : 2016年06月18日 上午10:43
- * Author : keryHu keryhu@hotmail.com
+ * @Description : pc 前台angular2 配置信息的class
+ * @date : 2016年6月18日 下午9:10:25
+ * @author : keryHu keryhu@hotmail.com
  */
 @Component
 public class AssetManifest implements Serializable {
 
-    private static final long serialVersionUID = 7608704396065800832L;
-    private final Map<String, String> manifest;
+  private static final long serialVersionUID = 7608704396065800832L;
+  private final Map<String, String> manifest;
 
-    public AssetManifest() {
-        manifest = new HashMap<>();
-    }
+  public AssetManifest() {
+    manifest = new HashMap<>();
+  }
 
-    private AssetManifest(Map<String, String> manifest) {
-        this.manifest = manifest;
-    }
+  private AssetManifest(Map<String, String> manifest) {
+    this.manifest = manifest;
+  }
 
-    public static AssetManifest newInstance(String jsonStr) throws IOException {
-        TypeReference<Map<String, String>> typeRef = new TypeReference<Map<String, String>>() {
-        };
-        Map<String, String> manifest = new ObjectMapper().readValue(jsonStr, typeRef);
-        return new AssetManifest(manifest);
-    }
+  public static AssetManifest newInstance(String jsonStr) throws IOException {
+    TypeReference<Map<String, String>> typeRef = new TypeReference<Map<String, String>>() {};
+    Map<String, String> manifest = new ObjectMapper().readValue(jsonStr, typeRef);
+    return new AssetManifest(manifest);
+  }
 
-    public String get(String key) {
-        return Optional.ofNullable(manifest.get(key)).orElse(key);
-    }
+  public String get(String key) {
+    return Optional.ofNullable(manifest.get(key)).orElse(key);
+  }
 }

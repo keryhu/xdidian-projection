@@ -15,49 +15,47 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 import static com.xdidian.keryhu.util.Constants.READ_AND_WRITE_RESOURCE_ID;
 
 /**
- * Description : pring OAuth2 resource 验证方法
- * 注意不要使用 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
- * Date : 2016年06月17日 下午10:19
- * Author : keryHu keryhu@hotmail.com
+ * 
+ * @Description : pring OAuth2 resource 验证方法 注意不要使用 @RequiredArgsConstructor(onConstructor
+ *              = @__(@Autowired))
+ * @date : 2016年6月18日 下午8:03:35
+ * @author : keryHu keryhu@hotmail.com
  */
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    @Autowired
-    private RoleHierarchyImpl roleHierarchy;
+  @Autowired
+  private RoleHierarchyImpl roleHierarchy;
 
-    /**
-     * 调用spring security role 权限大小排序bean
-     */
-    private SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
-        DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new
-                DefaultWebSecurityExpressionHandler();
-        defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy);
-        return defaultWebSecurityExpressionHandler;
-    }
+  /**
+   * 调用spring security role 权限大小排序bean
+   */
+  private SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
+    DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler =
+        new DefaultWebSecurityExpressionHandler();
+    defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy);
+    return defaultWebSecurityExpressionHandler;
+  }
 
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .and().authorizeRequests().expressionHandler(webExpressionHandler())  //权限排序
-                //对于auth－server里面的url控制，有2种方法，一个是在这个方法里面添加控制，注意不要加到WebSecurityConfig class 里，那个里面没有用。
-                // login*  能够匹配 带参数的 login  url
-                .antMatchers("/webjars/**", "/favicon.ico").permitAll()
-                .antMatchers(HttpMethod.GET, "/query/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/loginAttemptUsers").hasRole("ADMIN")
-                .anyRequest().authenticated()
-        ;
+  @Override
+  public void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests().and().authorizeRequests().expressionHandler(webExpressionHandler()) // 权限排序
+        // 对于auth－server里面的url控制，有2种方法，一个是在这个方法里面添加控制，注意不要加到WebSecurityConfig class 里，那个里面没有用。
+        // login* 能够匹配 带参数的 login url
+        .antMatchers("/webjars/**", "/favicon.ico").permitAll()
+        .antMatchers(HttpMethod.GET, "/query/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/loginAttemptUsers").hasRole("ADMIN").anyRequest()
+        .authenticated();
 
-    }
+  }
 
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+  @Override
+  public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 
-        resources.resourceId(READ_AND_WRITE_RESOURCE_ID);
-    }
+    resources.resourceId(READ_AND_WRITE_RESOURCE_ID);
+  }
 
 
 }

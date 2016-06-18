@@ -1,13 +1,5 @@
-/**
- * @Title: SimpleCORSFilter.java
- * @Package com.xdidian.keryhu.authserver.security
- * @Description: TODO(用一句话描述该文件做什么)
- * @author keryhu  keryhu@hotmail.com
- * @date 2016年4月28日 下午6:48:04
- * @version V1.0
- */
-package com.xdidian.keryhu.authserver.security;
 
+package com.xdidian.keryhu.authserver.security;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -20,39 +12,38 @@ import java.io.IOException;
 
 
 /**
- * Description : 建立auth－server CORS Filter，方便pc－gateway logout
- * Date : 2016年06月17日 下午10:21
- * Author : keryHu keryhu@hotmail.com
+ * 
+ * @Description : 建立auth－server CORS Filter，方便pc－gateway logout
+ * @date : 2016年6月18日 下午8:04:57
+ * @author : keryHu keryhu@hotmail.com
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SimpleCORSFilter implements Filter {
 
-    public SimpleCORSFilter() {
-    }
+  public SimpleCORSFilter() {}
 
-    @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        HttpServletResponse response = (HttpServletResponse) res;
-        HttpServletRequest request = (HttpServletRequest) req;
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, Authorization");
+  @Override
+  public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+      throws IOException, ServletException {
+    HttpServletResponse response = (HttpServletResponse) res;
+    HttpServletRequest request = (HttpServletRequest) req;
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    response.setHeader("Access-Control-Max-Age", "3600");
+    response.setHeader("Access-Control-Allow-Headers", "x-requested-with, Authorization");
 
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            chain.doFilter(req, res);
-        }
+    if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+      response.setStatus(HttpServletResponse.SC_OK);
+    } else {
+      chain.doFilter(req, res);
     }
+  }
 
-    @Override
-    public void init(FilterConfig filterConfig) {
-    }
+  @Override
+  public void init(FilterConfig filterConfig) {}
 
-    @Override
-    public void destroy() {
-    }
+  @Override
+  public void destroy() {}
 
 }

@@ -1,11 +1,11 @@
-/**  
-* @Title: AuthenticationFailureListener.java
-* @Package com.xdidian.keryhu.authserver.security
-* @Description: TODO(用一句话描述该文件做什么)
-* @author keryhu  keryhu@hotmail.com  
-* @date 2016年4月29日 下午9:23:42
-* @version V1.0  
-*/ 
+/**
+ * @Title: AuthenticationFailureListener.java
+ * @Package com.xdidian.keryhu.authserver.security
+ * @Description: TODO(用一句话描述该文件做什么)
+ * @author keryhu keryhu@hotmail.com
+ * @date 2016年4月29日 下午9:23:42
+ * @version V1.0
+ */
 package com.xdidian.keryhu.authserver.security;
 
 import com.xdidian.keryhu.authserver.service.LoginAttemptUserService;
@@ -17,36 +17,36 @@ import org.springframework.security.authentication.event.AuthenticationFailureBa
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
-
 /**
- * Description : 用户监听auth－service 用户输入登陆账户，密码错误时，自动运行的class
- * Date : 2016年06月17日 下午9:11
- * Author : keryHu keryhu@hotmail.com
+ * 
+ * @Description : 用户监听auth－service 用户输入登陆账户，密码错误时，自动运行的class
+ * @date : 2016年6月18日 下午8:00:45
+ * @author : keryHu keryhu@hotmail.com
  */
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
-public class AuthenticationFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent>  {
+public class AuthenticationFailureListener
+    implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
-	private final LoginAttemptUserService loginAttemptUserService;
+  private final LoginAttemptUserService loginAttemptUserService;
 
-	/**
-	 *  监听登陆信息输入有误时，自动运行的方法。
-	*/ 
-	@Override
-	public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent e) {
-		// TODO Auto-generated method stub
-		WebAuthenticationDetails auth = (WebAuthenticationDetails) 
-		          e.getAuthentication().getDetails();
-		
-		//获取登陆的用户名
-		String loginName=e.getAuthentication().getName();
-		
-		String ip=auth.getRemoteAddress();
-		log.info("用户登录失败， loginName is ： {} ",loginName);
-		loginAttemptUserService.loginFail(ip, loginName);
-		
-		
-	}
+  /**
+   * 监听登陆信息输入有误时，自动运行的方法。
+   */
+  @Override
+  public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent e) {
+    // TODO Auto-generated method stub
+    WebAuthenticationDetails auth = (WebAuthenticationDetails) e.getAuthentication().getDetails();
+
+    // 获取登陆的用户名
+    String loginName = e.getAuthentication().getName();
+
+    String ip = auth.getRemoteAddress();
+    log.info("用户登录失败， loginName is ： {} ", loginName);
+    loginAttemptUserService.loginFail(ip, loginName);
+
+
+  }
 
 }

@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 public class Application {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		SpringApplication.run(Application.class, args);
-	}
+  public static void main(String[] args) {
+    // TODO Auto-generated method stub
+    SpringApplication.run(Application.class, args);
+  }
 
 }

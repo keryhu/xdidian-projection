@@ -1,11 +1,3 @@
-/**
- * @Title: EmailActivatedProducer.java
- * @Package com.xdidian.keryhu.useraccount.stream
- * @Description: TODO(用一句话描述该文件做什么)
- * @author keryhu  keryhu@hotmail.com
- * @date 2016年5月7日 下午4:36:03
- * @version V1.0
- */
 package com.xdidian.keryhu.propertyregister.stream;
 
 import com.xdidian.keryhu.domain.EmailActivatedDto;
@@ -16,28 +8,28 @@ import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+
 /**
- * Description : 发出"email激活" 消息的 主方法
- * Date : 2016年06月18日 上午11:14
- * Author : keryHu keryhu@hotmail.com
+ * @Description : 发出"email激活" 消息的 主方法
+ * @date : 2016年6月18日 下午9:18:07
+ * @author : keryHu keryhu@hotmail.com
  */
 @Component
 @EnableBinding(EmailActivatedOutputChannel.class)
 @Slf4j
 public class EmailActivatedProducer {
 
-    @Autowired
-    private EmailActivatedOutputChannel channel;
+  @Autowired
+  private EmailActivatedOutputChannel channel;
 
-    public void send(EmailActivatedDto dto) {
+  public void send(EmailActivatedDto dto) {
 
-        boolean result = channel.emailActivatedOutput()
-                .send(MessageBuilder.withPayload(dto).build());
+    boolean result = channel.emailActivatedOutput().send(MessageBuilder.withPayload(dto).build());
 
-        Assert.isTrue(result, "服务器发送email激活的message消息失败！");
+    Assert.isTrue(result, "服务器发送email激活的message消息失败！");
 
-        log.info("物业公司会员注册成功，现在发送email激活的message出去。");
-    }
+    log.info("物业公司会员注册成功，现在发送email激活的message出去。");
+  }
 
 
 }

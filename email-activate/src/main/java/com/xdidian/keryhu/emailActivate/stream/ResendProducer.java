@@ -1,11 +1,3 @@
-/**
- * @Title: ResendProducer.java
- * @Package com.xdidian.keryhu.useraccount.stream
- * @Description: TODO(当用户点击再次发送email激活账户的时候，促发此message的具体执行)
- * @author keryhu  keryhu@hotmail.com
- * @date 2016年5月7日 下午4:36:03
- * @version V1.0
- */
 package com.xdidian.keryhu.emailActivate.stream;
 
 import com.xdidian.keryhu.domain.EmailActivatedDto;
@@ -17,28 +9,28 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 
+
 /**
- * Description : 当用户点击再次发送email激活账户的时候，促发此message的具体执行
- * Date : 2016年06月18日 上午9:47
- * Author : keryHu keryhu@hotmail.com
+ * @Description : 当用户点击再次发送email激活账户的时候，促发此message的具体执行
+ * @date : 2016年6月18日 下午9:03:15
+ * @author : keryHu keryhu@hotmail.com
  */
 @Component
 @EnableBinding(ResendOutputChannel.class)
 @Slf4j
 public class ResendProducer {
 
-    @Autowired
-    private ResendOutputChannel channel;
+  @Autowired
+  private ResendOutputChannel channel;
 
-    public void send(EmailActivatedDto dto) {
+  public void send(EmailActivatedDto dto) {
 
-        boolean result = channel.resend()
-                .send(MessageBuilder.withPayload(dto).build());
+    boolean result = channel.resend().send(MessageBuilder.withPayload(dto).build());
 
-        Assert.isTrue(result, "用户用户点击'再次发送邮件激活的需求，再次发送的请求message发出失败！");
+    Assert.isTrue(result, "用户用户点击'再次发送邮件激活的需求，再次发送的请求message发出失败！");
 
-        log.info("用户用户点击'再次发送邮件激活的需求，再次发送的请求message发出！'");
-    }
+    log.info("用户用户点击'再次发送邮件激活的需求，再次发送的请求message发出！'");
+  }
 
 
 }

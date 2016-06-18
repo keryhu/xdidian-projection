@@ -7,10 +7,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
+
+
 /**
- * Description : 激活信息的配置属性
- * Date : 2016年06月18日 上午11:03
- * Author : keryHu keryhu@hotmail.com
+ * @Description : 激活信息的配置属性
+ * @date : 2016年6月18日 下午9:14:20
+ * @author : keryHu keryhu@hotmail.com
  */
 @Getter
 @Setter
@@ -19,9 +21,9 @@ import java.io.Serializable;
 public class ActivatedProperties implements Serializable {
 
 
-    private static final long serialVersionUID = -917850265000066502L;
+  private static final long serialVersionUID = -917850265000066502L;
 
-    private int expiredTime ;//默认单位是小时
+  private int expiredTime;// 默认单位是小时
 
 
 }

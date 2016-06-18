@@ -1,11 +1,11 @@
-/**  
-* @Title: LoginAttemptProperties.java
-* @Package com.xdidian.keryhu.authserver.domain
-* @Description: TODO(用一句话描述该文件做什么)
-* @author keryhu  keryhu@hotmail.com  
-* @date 2016年4月30日 下午1:06:32
-* @version V1.0  
-*/ 
+/**
+ * @Title: LoginAttemptProperties.java
+ * @Package com.xdidian.keryhu.authserver.domain
+ * @Description: TODO(用一句话描述该文件做什么)
+ * @author keryhu keryhu@hotmail.com
+ * @date 2016年4月30日 下午1:06:32
+ * @version V1.0
+ */
 package com.xdidian.keryhu.authserver.domain;
 
 import lombok.Getter;
@@ -17,29 +17,29 @@ import java.io.Serializable;
 
 
 /**
- * Description : 通过application.yml来配置一些 loginAttempt 的属性值
- * Date : 2016年06月17日 下午9:03
- * Author : keryHu keryhu@hotmail.com
+ * 
+ * @Description : 通过application.yml来配置一些 loginAttempt 的属性值
+ * @date : 2016年6月18日 下午7:55:13
+ * @author : keryHu keryhu@hotmail.com
  */
 @Component
-@ConfigurationProperties(prefix="LoginAttempt")
+@ConfigurationProperties(prefix = "LoginAttempt")
 @Getter
 @Setter
-public class LoginAttemptProperties implements Serializable{
+public class LoginAttemptProperties implements Serializable {
 
-	
-	private static final long serialVersionUID = 9188216543512476830L;
-	
-	//设置最大的loginAttemplt 次数。
-	private int maxAttemptTimes;
-	
-	//设置固定的LoginAttemptTimes 清零时间，单位为：“小时” ，正数倍
-	private int timeOfPerid;
-	
-	//设置锁定ip，登陆的小时数。
-	private int timeOfLock;
-	
-	
-	
+
+  private static final long serialVersionUID = 9188216543512476830L;
+
+  // 设置最大的loginAttemplt 次数。
+  private int maxAttemptTimes;
+
+  // 设置固定的LoginAttemptTimes 清零时间，单位为：“小时” ，正数倍
+  private int timeOfPerid;
+
+  // 设置锁定ip，登陆的小时数。
+  private int timeOfLock;
+
+
 
 }
