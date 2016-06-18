@@ -9,7 +9,11 @@
 package com.xdidian.keryhu.emailActivate.rest;
 
 
-
+import com.xdidian.keryhu.emailActivate.client.UserClient;
+import com.xdidian.keryhu.emailActivate.domain.TokenType;
+import com.xdidian.keryhu.emailActivate.service.*;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,25 +22,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.xdidian.keryhu.emailActivate.client.UserClient;
-import com.xdidian.keryhu.emailActivate.domain.TokenType;
-import com.xdidian.keryhu.emailActivate.service.ActivatedConfirm;
-import com.xdidian.keryhu.emailActivate.service.ActivatedExpired;
-import com.xdidian.keryhu.emailActivate.service.RedirectService;
-import com.xdidian.keryhu.emailActivate.service.ResendService;
-import com.xdidian.keryhu.emailActivate.service.VerifyUrl;
 
-import static com.xdidian.keryhu.util.StringValidate.isEmail;
 import static com.xdidian.keryhu.emailActivate.domain.Constants.EMAIL_NOT_ACTIVATED_AND_TOKEN_EXIST_AND_NOT_EXPIRED;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import static com.xdidian.keryhu.util.StringValidate.isEmail;
 
 /**
-* @ClassName: ActivatedTokenRest
-* @Description: TODO(email激活token对外提供的rest接口)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年5月11日 下午10:11:51
-*/
+ * Description : email激活token对外提供的rest接口
+ * Date : 2016年06月18日 上午8:41
+ * Author : keryHu keryhu@hotmail.com
+ */
 @RestController
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -73,16 +67,10 @@ public class TokenRest {
 	
 	
 	/**
-	 * 
-	* @Title: emailNotActived
-	* @Description: TODO(当用户login的时候，如果遇到email未激活，那么auth-server ，通过web调用auth-server
+	 *
+	 * 当用户login的时候，如果遇到email未激活，那么auth-server ，通过web调用auth-server
 	* 后台的一个rest方法，/query/emailNotActived，此方法会再次调用本方法，来实现后续email未激活的验证逻辑
 	* 省去了auth-server的重复处理，只要auth-server在后台真正登录的时候，遇到email未激活，进行拦截就可以了。)
-	* @param @param email
-	* @param @param attr
-	* @param @return    设定文件
-	* @return ModelAndView    返回类型
-	* @throws
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/email/notActivedWhilelogin")
 	public ModelAndView emailNotActived (@RequestParam("email")  String email
@@ -115,20 +103,13 @@ public class TokenRest {
 	
 	
 	/**
-	 * 
-	* @Title: resend
-	* @Description: TODO(当用户点击“再次发送激活邮件”的时候，调用的此方法
+	 *
+	 * 当用户点击“再次发送激活邮件”的时候，调用的此方法
 	* 分为两段 
 	* 执行发送次数是否超的判断和消息提示，另外就是更新验证码和发送次数＋1，并保存数据库 －－就是
 	* tokenService.doWithResend(email)执行的方法
 	* 
 	* 另外一段是： 如果没有过期，页面跳转 result页面 tokenService.doWhenNotExpired )
-	* @param @param email
-	* @param @param token 表示重新发送url的需要被验证的token
-	* @param @param attr
-	* @param @return    设定文件
-	* @return ModelAndView    返回类型
-	* @throws
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/email/resend")
 	public ModelAndView resend(@RequestParam("email") final String email,
@@ -150,15 +131,8 @@ public class TokenRest {
 	
 	
 	/**
-	 * 
-	* @Title: reregister
-	* @Description: TODO(当用户点击“重新注册”时候，调用的此方法，执行的方法和激活过期一样的)
-	* @param @param email
-	* @param @param token 表示重新注册url的需要被验证的token
-	* @param @param attr
-	* @param @return    设定文件
-	* @return ModelAndView    返回类型
-	* @throws
+	 *
+	 * 当用户点击“重新注册”时候，调用的此方法，执行的方法和激活过期一样的
 	 */
 	@RequestMapping(method=RequestMethod.GET,value="/email/reregister")
 	public ModelAndView reregister(@RequestParam("email") final String email,

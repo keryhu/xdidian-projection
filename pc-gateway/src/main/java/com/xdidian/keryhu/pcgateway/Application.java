@@ -7,19 +7,18 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
 
 /**
-* @ClassName: Application
-* @Description: TODO(pc gateway 主程序)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年4月26日 上午9:22:06
+ * Description : pc gateway 主程序
+ * Date : 2016年06月18日 上午10:55
+ * Author : keryHu keryhu@hotmail.com
  */
 @SpringBootApplication
 @EnableZuulProxy
 @EnableFeignClients
 public class Application {
-	
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
 }
 

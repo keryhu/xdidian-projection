@@ -1,38 +1,28 @@
 package com.xdidian.keryhu.authserver.service;
 
 
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.xdidian.keryhu.authserver.domain.AuthUserDto;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
+
+
 /**
-* @ClassName: UserService
-* @Description: TODO(Auth-service的一些方法接口)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年4月25日 下午9:34:44
+ * Description : Auth-service的一些方法接口
+ * Date : 2016年06月17日 下午10:28
+ * Author : keryHu keryhu@hotmail.com
  */
 public interface UserService {
-	
-	/**
-	 * 
-	 * @param identity ,传入的参数是 uuid，email，phone的一种，
-	 * @return  根据参数查询user－account，返回AuthUser对象
-	 */
-	public Optional<AuthUserDto> findByLoginName(String loginName) ;
-	
-	/**
-	 * 
-	* @Title: getIP
-	* @Description: TODO(获取当前ip地址)
-	* @param @param request
-	* @param @return    设定文件
-	* @return String    返回类型
-	* @throws
-	 */
-	public String  getIP(HttpServletRequest request);
-	
-	
+
+    /**
+     * 根据登录名来查询数据库的user
+     */
+    public Optional<AuthUserDto> findByLoginName(String loginName);
+
+    /**
+     * 获取客户端当前ip
+     */
+    public String getIP(HttpServletRequest request);
+
 
 }

@@ -1,11 +1,11 @@
-/**  
-* @Title: Application.java
-* @Package com.xdidian.keryhu.emailActivate
-* @Description: TODO(用一句话描述该文件做什么)
-* @author keryhu  keryhu@hotmail.com  
-* @date 2016年5月11日 上午10:54:19
-* @version V1.0  
-*/ 
+/**
+ * @Title: Application.java
+ * @Package com.xdidian.keryhu.emailActivate
+ * @Description: TODO(用一句话描述该文件做什么)
+ * @author keryhu  keryhu@hotmail.com
+ * @date 2016年5月11日 上午10:54:19
+ * @version V1.0
+ */
 package com.xdidian.keryhu.emailActivate;
 
 import org.springframework.boot.SpringApplication;
@@ -14,20 +14,19 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 /**
-* @ClassName: Application
-* @Description: TODO(这个service主要功能： 提供用户注册完后，email激活账户)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年5月11日 上午10:54:19
-*/
+ * Description : 这个service主要功能： 提供用户注册完后，email激活账户
+ * Date : 2016年06月18日 上午9:48
+ * Author : keryHu keryhu@hotmail.com
+ */
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
 public class Application {
-	
-    public static void main(String[] args) {	
-		
-		SpringApplication.run(Application.class, args);
-	}
-	
+
+    public static void main(String[] args) {
+
+        SpringApplication.run(Application.class, args);
+    }
+
 
 }

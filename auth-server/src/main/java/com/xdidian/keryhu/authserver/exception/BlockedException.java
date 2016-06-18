@@ -1,11 +1,10 @@
 package com.xdidian.keryhu.authserver.exception;
 
+
 /**
- * 
-* @ClassName: BlockedException
-* @Description: TODO(当客户端登录时，ip被冻结出现的错误)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年5月15日 上午11:05:25
+ * Description : 当客户端登录时，ip被冻结出现的错误
+ * Date : 2016年06月17日 下午9:05
+ * Author : keryHu keryhu@hotmail.com
  */
 public class BlockedException extends RuntimeException {
 

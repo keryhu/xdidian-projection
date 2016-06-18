@@ -5,13 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.config.server.EnableConfigServer;
 
-
-
 /**
-* @ClassName: Application
-* @Description: TODO(spring cloud config server class)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年4月25日 下午3:33:19
+ * Description : spring cloud config server class
+ * Date : 2016年06月18日 上午8:21
+ * Author : keryHu keryhu@hotmail.com
  */
 @SpringBootApplication
 @EnableDiscoveryClient

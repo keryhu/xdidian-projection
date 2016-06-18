@@ -8,21 +8,19 @@
 */ 
 package com.xdidian.keryhu.authserver.domain;
 
-import java.io.Serializable;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import java.io.Serializable;
+
 
 /**
-* @ClassName: LoginAttemptProperties
-* @Description: TODO(通过application.yml来配置一些 loginAttempt 的属性值)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年4月30日 下午1:06:32
-*/
+ * Description : 通过application.yml来配置一些 loginAttempt 的属性值
+ * Date : 2016年06月17日 下午9:03
+ * Author : keryHu keryhu@hotmail.com
+ */
 @Component
 @ConfigurationProperties(prefix="LoginAttempt")
 @Getter

@@ -10,6 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Description : pc 前台angular2 配置信息的class
+ * Date : 2016年06月18日 上午10:43
+ * Author : keryHu keryhu@hotmail.com
+ */
 @Component
 public class AssetManifest implements Serializable {
 

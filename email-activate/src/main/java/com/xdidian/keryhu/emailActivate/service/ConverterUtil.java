@@ -8,19 +8,18 @@
 */ 
 package com.xdidian.keryhu.emailActivate.service;
 
-import java.util.function.Function;
-
-import org.springframework.stereotype.Component;
-
 import com.xdidian.keryhu.domain.EmailActivatedDto;
 import com.xdidian.keryhu.emailActivate.domain.ActivatedToken;
+import org.springframework.stereotype.Component;
+
+import java.util.function.Function;
+
 
 /**
-* @ClassName: ConverterUtil
-* @Description: TODO(用于email激活的时候，类型的转换)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年5月11日 下午9:16:46
-*/
+ * Description : 用于email激活的时候，类型的转换
+ * Date : 2016年06月18日 上午9:26
+ * Author : keryHu keryhu@hotmail.com
+ */
 @Component
 public class ConverterUtil {
 	

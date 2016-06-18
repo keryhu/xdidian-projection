@@ -1,59 +1,43 @@
 package com.xdidian.keryhu.propertyregister.client;
 
 
-
 import org.springframework.stereotype.Component;
 
-
 /**
-* @ClassName: CreateUserClientFallback
-* @Description: TODO(userAccount rest service 方法。)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年4月26日 上午9:25:12
+ * Description : userAccount rest service 方法
+ * Date : 2016年06月18日 上午11:02
+ * Author : keryHu keryhu@hotmail.com
  */
 @Component
 public class UserAccountClientFallback implements UserAccountClient {
 
 
+    /**
+     * 查看email是否存在
+     */
+    @Override
+    public Boolean isEmailExist(String email) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	/**
-	* <p>Title: isEmailExist</p>
-	* <p>Description: </p>
-	* @param email
-	* @return
-	* @see com.xdidian.keryhu.propertyregister.client.UserAccountClient#isEmailExist(java.lang.String)
-	*/ 
-	@Override
-	public Boolean isEmailExist(String email) {
-		// TODO Auto-generated method stub
-		return false;
-		}
+    /**
+     * 查看phone是否存在
+     */
+    @Override
+    public Boolean isPhoneExist(String phone) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	/**
-	* <p>Title: isPhoneExist</p>
-	* <p>Description: </p>
-	* @param phone
-	* @return
-	* @see com.xdidian.keryhu.propertyregister.client.UserAccountClient#isPhoneExist(java.lang.String)
-	*/ 
-	@Override
-	public Boolean isPhoneExist(String phone) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    /**
+     * 查看公司名字是否存在
+     */
+    @Override
+    public Boolean isCompanyNameExist(String companyName) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	/**
-	* <p>Title: isCompanyNameExist</p>
-	* <p>Description: </p>
-	* @param companyName
-	* @return
-	* @see com.xdidian.keryhu.propertyregister.client.UserAccountClient#isCompanyNameExist(java.lang.String)
-	*/ 
-	@Override
-	public Boolean isCompanyNameExist(String companyName) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
-	
 }

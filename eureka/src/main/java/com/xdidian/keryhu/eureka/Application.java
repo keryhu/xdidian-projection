@@ -4,14 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
-
-
-
 /**
-* @ClassName: Application
-* @Description: TODO(spring cloud eureka server)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年4月25日 下午3:06:42
+ * Description : pring cloud eureka server
+ * Date : 2016年06月18日 上午10:20
+ * Author : keryHu keryhu@hotmail.com
  */
 @SpringBootApplication
 @EnableEurekaServer

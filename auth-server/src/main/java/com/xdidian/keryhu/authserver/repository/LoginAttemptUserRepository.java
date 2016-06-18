@@ -1,59 +1,42 @@
-/**  
-* @Title: LoginAttemptUserRepository.java
-* @Package com.xdidian.keryhu.authserver.repository
-* @Description: TODO(用一句话描述该文件做什么)
-* @author keryhu  keryhu@hotmail.com  
-* @date 2016年4月30日 下午1:55:49
-* @version V1.0  
-*/ 
+/**
+ * @Title: LoginAttemptUserRepository.java
+ * @Package com.xdidian.keryhu.authserver.repository
+ * @Description: TODO(用一句话描述该文件做什么)
+ * @author keryhu  keryhu@hotmail.com
+ * @date 2016年4月30日 下午1:55:49
+ * @version V1.0
+ */
 package com.xdidian.keryhu.authserver.repository;
 
-import java.util.Optional;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import com.xdidian.keryhu.authserver.domain.LoginAttemptUser;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.util.Optional;
+
 
 /**
-* @ClassName: LoginAttemptUserRepository
-* @Description: TODO(记录LoginAttemptUser的 mongo data rest repository)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年4月30日 下午1:55:49
-*/
-public interface LoginAttemptUserRepository extends MongoRepository<LoginAttemptUser,String> {
-	
-	/**
-	 * 
-	* @Title: findByRemoteIp
-	* @Description: TODO(根据remoteIp寻找系统的记录)
-	* @param @param remoteIp
-	* @param @return    设定文件
-	* @return Optional<LoginAttemptUser>    返回类型
-	* @throws
-	 */
-	public Optional<LoginAttemptUser>  findByRemoteIp(String remoteIp);
-	
-	
-	/**
-	 * 
-	* @Title: findById
-	* @Description: TODO(根据LoginAttemptUser本身的id来查询。)
-	* @param @param id
-	* @param @return    设定文件
-	* @return Optional<LoginAttemptUser>    返回类型
-	* @throws
-	 */
-	public Optional<LoginAttemptUser> findById(String id);
-	
-	/**
-	 * 
-	* @Title: findByUserId
-	* @Description: TODO(如果userId存在的情况下，通过此参数查询数据库)
-	* @param @param userId
-	* @param @return    设定文件
-	* @return Optional<LoginAttemptUser>    返回类型
-	* @throws
-	 */
-	public Optional<LoginAttemptUser> findByUserId(String userId);
+ * Description : 记录LoginAttemptUser的 mongo data rest repository
+ * Date : 2016年06月17日 下午9:07
+ * Author : keryHu keryhu@hotmail.com
+ */
+public interface LoginAttemptUserRepository extends MongoRepository<LoginAttemptUser, String> {
 
-	
+    /**
+     * 根据remoteIp寻找系统的记录
+     */
+
+    public Optional<LoginAttemptUser> findByRemoteIp(String remoteIp);
+
+
+    /**
+     * 根据LoginAttemptUser本身的id来查询。
+     */
+    public Optional<LoginAttemptUser> findById(String id);
+
+    /**
+     * 如果userId存在的情况下，通过此参数查询数据库
+     */
+    public Optional<LoginAttemptUser> findByUserId(String userId);
+
 
 }

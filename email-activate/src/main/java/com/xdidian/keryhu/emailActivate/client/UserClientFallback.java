@@ -1,64 +1,48 @@
 package com.xdidian.keryhu.emailActivate.client;
 
+import com.xdidian.keryhu.domain.Role;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
-import org.springframework.stereotype.Component;
-
-import com.xdidian.keryhu.domain.Role;
-
 /**
- * feign 连接失败的一个默认方法。
- * @author hushuming
- *
+ * Description : feign 连接失败的一个默认方法。
+ * Date : 2016年06月18日 上午8:28
+ * Author : keryHu keryhu@hotmail.com
  */
 @Component
 public class UserClientFallback implements UserClient {
-	
-	
 
-	/**
-	* <p>Title: isEmailExist</p>
-	* <p>Description: 如果调用UserAccountClient 对应的spring feign 网络失败，则此方法生效</p>
-	* @param email
-	* @return
-	* @see com.xdidian.keryhu.UserClient.client.UserAccountClient#isEmailExist(java.lang.String)
-	*/ 
-	@Override
-	public Boolean isEmailExist(String email) {
-		// TODO Auto-generated method stub
-		return false;
-		}
 
-	/**
-	* <p>Title: emailStatus</p>
-	* <p>Description: 当局登录名loginName，前台web，ajax查询当前loginName所在的数据库，email是否激活
-	* 这个是默认的失败调用</p>
-	* @param loginName
-	* @return
-	* @see com.xdidian.keryhu.emailActivate.client.UserClient#emailStatus(java.lang.String)
-	*/ 
-	@Override
-	public Boolean emailStatus(String loginName) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    /**
+     * 如果调用UserAccountClient 对应的spring feign 网络失败，则此方法生效
+     */
+    @Override
+    public Boolean isEmailExist(String email) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	/**
-	* <p>Title: findRolesByLoginName</p>
-	* <p>Description: </p>
-	* @param loginName
-	* @return
-	* @see com.xdidian.keryhu.emailActivate.client.UserClient#findRolesByEmail(java.lang.String)
-	*/ 
-	@Override
-	public List<Role> findRolesByLoginName(String loginName) {
-		// TODO Auto-generated method stub
-		return new ArrayList<Role>();
-				
-	}
+    /**
+     * 当局登录名loginName，前台web，ajax查询当前loginName所在的数据库，email是否激活
+     * 这个是默认的失败调用
+     */
+    @Override
+    public Boolean emailStatus(String loginName) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	
+    /**
+     * 根据登录名查询用户所拥有的role权限
+     */
+    @Override
+    public List<Role> findRolesByLoginName(String loginName) {
+        // TODO Auto-generated method stub
+        return new ArrayList<Role>();
+
+    }
+
 
 }

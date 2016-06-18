@@ -8,8 +8,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 public class RoleHierarchyConfig {
 	
 	/**
-	* @Title: roleHierarchy
-	* @Description: TODO(设定管理员>客服人员> 物业公司注册人员 或 物业租户)
+	 * 设定管理员>客服人员> 物业公司注册人员 或 物业租户)
 	* @return RoleHierarchyImpl    返回类型
 	 */
 	@Bean

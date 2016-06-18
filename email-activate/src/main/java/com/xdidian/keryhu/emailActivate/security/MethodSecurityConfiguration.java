@@ -9,12 +9,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 
 /**
- * 
-* @ClassName: MethodSecurityConfiguration
-* @Description: TODO(spring mehtod security 方法)
-* 注意不要使用 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年4月26日 上午10:46:00
+ * Description : spring mehtod security 方法
+ * Date : 2016年06月18日 上午8:42
+ * Author : keryHu keryhu@hotmail.com
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true,jsr250Enabled=true, proxyTargetClass = true)

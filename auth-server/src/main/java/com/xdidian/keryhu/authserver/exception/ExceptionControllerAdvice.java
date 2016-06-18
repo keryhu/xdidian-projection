@@ -8,21 +8,18 @@
 */ 
 package com.xdidian.keryhu.authserver.exception;
 
+import com.xdidian.keryhu.domain.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.xdidian.keryhu.domain.ErrorMessage;
-
-
 /**
-* @ClassName: ExceptionControllerAdvice
-* @Description: TODO(用户登录成功后，发送userId出去，发送失败)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年4月30日 上午10:33:45
-*/
+ * Description : 用户登录成功后，发送userId出去，发送失败
+ * Date : 2016年06月17日 下午9:06
+ * Author : keryHu keryhu@hotmail.com
+ */
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 	

@@ -34,7 +34,7 @@ spring:
   
 
 #重复发送email激活的次数
-activatedProperties:
+activated:
   maxSendTimes: 6
   sendCycleMinutes: 2
   resendUrl: http://${domain.name:localhost}:8080/email-activate/email/resend?email=

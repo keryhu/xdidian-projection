@@ -8,32 +8,30 @@
 */ 
 package com.xdidian.keryhu.authserver.domain;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-import lombok.Data;
 
 /**
-* @ClassName: LoginAttemptUser
-* @Description: TODO(专门用来记录试图访问auth－service  ／login 的remote 客户，
-* 最主要的是防范黑客暴力攻击，和暴力破解账户密码。)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年4月30日 下午12:52:19
-*/
+ * Description : 专门用来记录试图访问auth－service  ／login 的remote 客户，
+ * 最主要的是防范黑客暴力攻击，和暴力破解账户密码。
+ * Date : 2016年06月17日 下午9:04
+ * Author : keryHu keryhu@hotmail.com
+ */
 @Data
 public class LoginAttemptUser  implements Serializable {
 	

@@ -9,24 +9,22 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 
 /**
-* @ClassName: MethodSecurityConfiguration
-* @Description: TODO(spring method security 方法)
-* 注意不要使用 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年4月26日 上午10:44:26
+ * Description : spring method security 方法
+ * Date : 2016年06月18日 上午11:07
+ * Author : keryHu keryhu@hotmail.com
  */
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true,jsr250Enabled=true, proxyTargetClass = true)
-public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration  {
-	
-	 @Autowired
-	 private  RoleHierarchyImpl roleHierarchy;
-	
-	 @Override
-	  protected MethodSecurityExpressionHandler createExpressionHandler() {
-		 final DefaultMethodSecurityExpressionHandler handler=new DefaultMethodSecurityExpressionHandler();
-			handler.setRoleHierarchy(roleHierarchy);
-			return handler;
-	  }
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true, proxyTargetClass = true)
+public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration {
+
+    @Autowired
+    private RoleHierarchyImpl roleHierarchy;
+
+    @Override
+    protected MethodSecurityExpressionHandler createExpressionHandler() {
+        final DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
+        handler.setRoleHierarchy(roleHierarchy);
+        return handler;
+    }
 
 }

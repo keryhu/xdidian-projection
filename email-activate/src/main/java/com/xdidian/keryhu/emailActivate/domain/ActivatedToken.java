@@ -8,24 +8,25 @@
 */ 
 package com.xdidian.keryhu.emailActivate.domain;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.UUID;
-import org.springframework.data.annotation.Id;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 
 /**
-* @ClassName: EmailActivatedToken
-* @Description: TODO(用于email激活，点击“再次发送激活邮件”，“重新注册”应用的具体保存数据库的 实体类)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年5月11日 上午10:56:32
-*/
+ * Description : 用于email激活，点击“再次发送激活邮件”，“重新注册”应用的具体保存数据库的 实体类
+ * Date : 2016年06月18日 上午8:32
+ * Author : keryHu keryhu@hotmail.com
+ */
 @Data
 public class ActivatedToken implements Serializable {
 
@@ -56,10 +57,8 @@ public class ActivatedToken implements Serializable {
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime sendExpiryDate; //点击重新发送过期时间
 	/**
-	 * 
-	* <p>Title: </p>
-	* <p>Description: 传递userId，初始化EmailActivatedToken</p>
-	* @param userId
+	 *
+	 * 传递userId，初始化EmailActivatedToken
 	 */
 	public ActivatedToken(){
 		this.id=UUID.randomUUID().toString();

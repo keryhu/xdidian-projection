@@ -1,22 +1,19 @@
 package com.xdidian.keryhu.useraccount.domain;
 
-import java.io.Serializable;
-import java.util.List;
 import com.xdidian.keryhu.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
+import java.util.List;
 
 /**
- * 
-* @ClassName: AuthUserDto
-* @Description: TODO(user 登录的时候，需要验证的选项，出了密码，password，还需要验证 
-* emailActivatedSendTimes有没有超过规定的次数，不过这个次数可以通过远程rest获取， emailActivatedStatus 
-* 是否已经email激活验证了)
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年5月6日 上午9:47:42
+ * Description : user 登录的时候，需要验证的选项，出了密码，password，还需要验证
+ * emailActivatedSendTimes有没有超过规定的次数，不过这个次数可以通过远程rest获取， emailActivatedStatus
+ * 是否已经email激活验证了
+ * Date : 2016年06月18日 上午11:17
+ * Author : keryHu keryhu@hotmail.com
  */
-
 @AllArgsConstructor
 @Data
 public class AuthUserDto implements Serializable {

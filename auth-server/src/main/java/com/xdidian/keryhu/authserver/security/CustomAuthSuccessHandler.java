@@ -8,26 +8,23 @@
 */
 package com.xdidian.keryhu.authserver.security;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 
 /**
- * @ClassName: CustomAuthSuccessHandler
- * @Description: TODO(自定义用户成功登陆有，页面跳转component，一般用户只跳转之前请求失败的页面，
- *               但是admin用户，登陆后，直接跳转admin 页面)
- * @author keryhu keryhu@hotmail.com
- * @date 2016年4月27日 下午8:17:44
+ * Description : 自定义用户成功登陆有，页面跳转component，一般用户只跳转之前请求失败的页面，
+ *               但是admin用户，登陆后，直接跳转admin 页面
+ * Date : 2016年06月17日 下午9:13
+ * Author : keryHu keryhu@hotmail.com
  */
 @Component
 @Slf4j
@@ -35,21 +32,7 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
 
 
 	/**
-	 * <p>
-	 * Title: onAuthenticationSuccess
-	 * </p>
-	 * <p>
-	 * Description: 用户登陆成功后的执行的方法。
-	 * </p>
-	 * 
-	 * @param request
-	 * @param response
-	 * @param authentication
-	 * @throws IOException
-	 * @throws ServletException
-	 * @see org.springframework.security.web.authentication.AuthenticationSuccessHandler#onAuthenticationSuccess(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse,
-	 *      org.springframework.security.core.Authentication)
+	 * 用户登陆成功后的执行的方法。
 	 */
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,

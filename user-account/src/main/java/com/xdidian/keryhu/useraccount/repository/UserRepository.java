@@ -1,9 +1,9 @@
 package com.xdidian.keryhu.useraccount.repository;
 
-import java.util.Optional;
+import com.xdidian.keryhu.useraccount.domain.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.xdidian.keryhu.useraccount.domain.User;
+import java.util.Optional;
 
 
 /**
@@ -30,6 +30,11 @@ import com.xdidian.keryhu.useraccount.domain.User;
  *curl -X DELETE http://localhost:8080/people/53149b8e3004990b1af9f229
  */
 
+/**
+ * Description : user 的数据库操作
+ * Date : 2016年06月18日 上午11:20
+ * Author : keryHu keryhu@hotmail.com
+ */
 
 public interface UserRepository extends MongoRepository<User,String>{
 

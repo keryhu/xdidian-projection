@@ -9,21 +9,20 @@
 package com.xdidian.keryhu.useraccount.stream;
 
 
-import java.time.LocalDateTime;
+import com.xdidian.keryhu.useraccount.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import com.xdidian.keryhu.useraccount.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
+
+import java.time.LocalDateTime;
 
 /**
-* @ClassName: SinkMoudle
-* @Description: TODO(当用户登录成功后，auth－server会发送消息，此接口用来接受消息
-* 注意这个clas ，不能使用 lombok.RequiredArgsConstructor  )
-* @author keryhu  keryhu@hotmail.com
-* @date 2016年5月3日 下午9:29:17
-*/
-
+ * Description : 当用户登录成功后，auth－server会发送消息，此接口用来接受消息
+ * 注意这个clas ，不能使用 lombok.RequiredArgsConstructor
+ * Date : 2016年06月18日 上午11:30
+ * Author : keryHu keryhu@hotmail.com
+ */
 @EnableBinding(LoginSuccessInputChannel.class)
 @Slf4j
 public class LoginSuccessConsumer {
