@@ -46,13 +46,17 @@ public class ConverterUtil {
      */
 
     public Function<PropertyForm, EmailActivatedDto> propertyFormToEmailActivatedDto = x -> {
-        LocalDateTime expireDate = LocalDateTime.now().plusHours(activatedProperties.getExpiredTime());
         EmailActivatedDto dto = new EmailActivatedDto();
+        if (activatedProperties != null && activatedProperties.getExpiredTime() > 0) {
+            LocalDateTime expireDate = LocalDateTime.now().plusHours(activatedProperties.getExpiredTime());
+            dto.setExpireDate(expireDate);
+
+        }
         dto.setEmail(x.getEmail());
         dto.setEmailToken(UUID.randomUUID().toString());
         dto.setReregisterToken(UUID.randomUUID().toString());
         dto.setResendToken(UUID.randomUUID().toString());
-        dto.setExpireDate(expireDate);
+
         return dto;
     };
 
