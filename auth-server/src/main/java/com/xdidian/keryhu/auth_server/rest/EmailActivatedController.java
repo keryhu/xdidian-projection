@@ -10,7 +10,7 @@ package com.xdidian.keryhu.auth_server.rest;
 
 
 import com.xdidian.keryhu.auth_server.client.UserClient;
-import com.xdidian.keryhu.auth_server.domain.HostProperty;
+import com.xdidian.keryhu.auth_server.domain.Host;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,12 +32,12 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@EnableConfigurationProperties(HostProperty.class)
+@EnableConfigurationProperties(Host.class)
 @Slf4j
 public class EmailActivatedController {
 
   private final UserClient userClient;
-  private final HostProperty hostProperty;
+  private final Host hostProperty;
 
 
 

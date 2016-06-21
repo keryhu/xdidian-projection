@@ -25,6 +25,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private UserDetailsService userDetailsService;
+  
+  @Autowired
+  private CustomAuthSuccessHandler customAuthSuccessHandler;
 
 
   @Override
@@ -40,8 +43,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     // @formatter:off
-    http.formLogin().loginPage("/login").failureUrl("/login?error").permitAll().and()
-        .requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access").and()
+    http.formLogin().loginPage("/login")
+        .failureUrl("/login?error")
+        .successHandler(customAuthSuccessHandler)
+        .permitAll()
+        .and()
+        .requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
+        .and()
         .authorizeRequests().antMatchers("/login*").permitAll().anyRequest().authenticated();
 
     // @formatter:on

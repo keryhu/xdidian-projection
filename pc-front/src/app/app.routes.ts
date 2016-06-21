@@ -5,13 +5,15 @@
  */
 
 import { RouterConfig, provideRouter } from '@angular/router';
-import { HomeRoutes } from './components/home/home.route';
-import { NotFoundRoutes } from './components/404/not-found.route';
-import { PropertySignupRoute } from './components/signup/property/property-signup.route';
+import { HomeRoutes } from './components/home';
+import { NotFoundRoutes } from './components/404';
+import { PropertySignupRoute } from './components/signup/property';
+import { PropertyHomeRoute } from './components/property/home';
 
 const APP_ROUTES:RouterConfig = [
   ...HomeRoutes,
   ...PropertySignupRoute,
+  ...PropertyHomeRoute,
   ...NotFoundRoutes
 ];
 

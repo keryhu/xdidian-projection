@@ -1,10 +1,15 @@
 package com.xdidian.keryhu.pc_gateway.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.expression.SecurityExpressionHandler;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
@@ -28,6 +33,20 @@ import java.io.IOException;
 @Configuration
 @EnableOAuth2Sso
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+  
+  @Autowired
+  private RoleHierarchyImpl roleHierarchy;
+  
+  /**
+   * 调用spring security role 权限大小排序bean
+   */
+  private SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
+    DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler =
+        new DefaultWebSecurityExpressionHandler();
+    defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy);
+    return defaultWebSecurityExpressionHandler;
+  }
+
 
 
   @Override
@@ -42,7 +61,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.POST, "/property-signup/register").permitAll()
         .antMatchers(HttpMethod.GET, "/user-account/users/query/**").permitAll()
         .antMatchers(HttpMethod.GET, "/email-activate/email/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/recover/code").permitAll().anyRequest().authenticated().and()
+        .antMatchers(HttpMethod.GET, "/recover/code").permitAll()
+        .antMatchers(HttpMethod.GET, "/property/**").hasRole("PROPERTY")
+        .and()
+        .authorizeRequests().expressionHandler(webExpressionHandler()) // 权限排序
+        .anyRequest().authenticated().and()
         .csrf().csrfTokenRepository(csrfTokenRepository()).and()
         .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
   }

@@ -41,13 +41,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
   @Override
   public void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests().and().authorizeRequests().expressionHandler(webExpressionHandler()) // 权限排序
+    http.authorizeRequests().and()
+        .authorizeRequests().expressionHandler(webExpressionHandler()) // 权限排序
         // 对于auth－server里面的url控制，有2种方法，一个是在这个方法里面添加控制，注意不要加到WebSecurityConfig class 里，那个里面没有用。
         // login* 能够匹配 带参数的 login url
         .antMatchers("/webjars/**", "/favicon.ico").permitAll()
         .antMatchers(HttpMethod.GET, "/query/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/loginAttemptUsers").hasRole("ADMIN").anyRequest()
-        .authenticated();
+        .antMatchers(HttpMethod.GET, "/loginAttemptUsers").hasRole("ADMIN")
+        .anyRequest().authenticated();
 
   }
 

@@ -22,11 +22,11 @@ import java.io.Serializable;
  * @date : 2016年6月18日 下午7:54:10
  * @author : keryHu keryhu@hotmail.com
  */
-@Component
+@Component("hostProperty")
 @ConfigurationProperties(prefix = "hostProperty")
 @Getter
 @Setter
-public class HostProperty implements Serializable {
+public class Host implements Serializable {
 
   private static final long serialVersionUID = -6904038768907594026L;
 

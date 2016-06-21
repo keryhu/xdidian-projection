@@ -19,7 +19,8 @@
 
 四 、 增加了点击“登陆”时，用户名，密码输入错误，跳转到 /login?error 页面，并且显示错误信息－－用户名，密码输入错误，重新输入或注册。
 
-五 、 增加了successHandler，就是用户登陆后，如果是admin用户，就会成功跳转admin 首页，目前注释掉了。随时可以开启。
+五 、 增加了successHandler，就是用户登陆后，目前的设置是，role是admin或property的用户登录成功后，后台自动跳转
+8080端口的／property页面
 
 六 、 开启了csrf 验证，在login 登陆页面，也开启了csrf，
 

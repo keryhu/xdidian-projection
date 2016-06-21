@@ -7,8 +7,7 @@ import { Component } from  '@angular/core';
 
 @Component({
   selector: 'home',
-  //template: require('./home.component.html'),
-  template: `nihao`,
+  template: require('./home.component.html'),
   styles: [require('./home.component.css')]
 })
 

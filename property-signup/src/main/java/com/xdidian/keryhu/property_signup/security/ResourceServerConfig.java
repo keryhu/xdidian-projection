@@ -42,7 +42,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
   public void configure(HttpSecurity http) throws Exception {
     http
 
-        .authorizeRequests().and().authorizeRequests().expressionHandler(webExpressionHandler()) // 权限排序
+        .authorizeRequests().and()
+        .authorizeRequests().expressionHandler(webExpressionHandler()) // 权限排序
         .antMatchers("/favicon.ico", "/query/**").permitAll()
         .antMatchers(HttpMethod.POST, "/signup").permitAll()
 

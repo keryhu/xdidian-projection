@@ -69,22 +69,12 @@ pc-front/.webpack.json
 
 # IDE #
 pc-front/.idea/
-pc-front/*.iml
 
 
 # generated documents
 pc-front/doc
 
 /.idea/
-/auth-server/auth-server.iml
-/config-server/config-server.iml
-/email-activate/email-activate.iml
-/eureka/eureka.iml
-/mail-server/mail-server.iml
-/password-reset/password-reset.iml
-/pc-gateway/pc-gateway.iml
-/property-register/property-register.iml
-/user-account/user-account.iml
-xdidian-micro-docker.iml
 
-
+*.factorypath
+*.iml

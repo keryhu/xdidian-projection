@@ -38,7 +38,7 @@ public class TokenRest {
       @RequestParam("token") final String token) {
     Map<String, Integer> result = new HashMap<String, Integer>();
 
-
+    log.info("");
     return ResponseEntity.ok(result);
   }
 
