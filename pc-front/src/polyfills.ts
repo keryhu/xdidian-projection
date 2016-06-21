@@ -1,7 +1,7 @@
 import "core-js/es6";
 import "core-js/es7/reflect";
-import "ts-helpers";
 require('zone.js/dist/zone');
+import 'ts-helpers';
 
 if ('production' === process.env.ENV) {
 } else {

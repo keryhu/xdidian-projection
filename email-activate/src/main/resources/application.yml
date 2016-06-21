@@ -35,10 +35,10 @@ spring:
 
 #重复发送email激活的次数
 activated:
-  maxSendTimes: 6
-  sendCycleMinutes: 2
-  resendUrl: http://${domain.name:localhost}:8080/email-activate/email/resend?email=
-  reregisterUrl: http://${domain.name:localhost}:8080/email-activate/email/reregister?email=
-  loginUrl: redirect:http://${domain.name:localhost}:9999/uaa/login
-  defaultRegisterUrl: redirect:http://${domain.name:localhost}:8080/register
-  registerResultUrl: redirect:http://${domain.name:localhost}:8080/register/result
+  max_send_times: 6
+  send_cycle_minutes: 2
+  resend_url: http://${domain.name:localhost}:8080/email-activate/email/resend?email=
+  re_signup_url: http://${domain.name:localhost}:8080/email-activate/email/signup?email=
+  login_url: redirect:http://${domain.name:localhost}:9999/uaa/login
+  default_signup_url: redirect:http://${domain.name:localhost}:8080/signup
+  after_signup_url: redirect:http://${domain.name:localhost}:8080/signup/result

@@ -75,9 +75,9 @@ services:
       - wfij
     
       
-  configserver:
+  config_server:
     image: config-server:0.0.1-SNAPSHOT
-    container_name: configserver
+    container_name: config_server
     restart: always
     ports:
       - "8888:8888"
@@ -89,9 +89,9 @@ services:
       - eureka
       
       
-  useraccount:
+  user_account:
     image: user-account:0.0.1-SNAPSHOT
-    container_name: useraccount
+    container_name: user_account
     restart: always
     ports:
       - "8001:8001"
@@ -104,12 +104,12 @@ services:
     depends_on: 
       - mongo
       - eureka
-      - configserver
+      - config_server
       
       
-  authserver:
+  auth_server:
     image: auth-server:0.0.1-SNAPSHOT
-    container_name: authserver
+    container_name: auth_server
     restart: always
     ports:
       - "9999:9999"
@@ -123,12 +123,12 @@ services:
       - mongo
       - redis
       - eureka
-      - useraccount
+      - user_account
 
 
-  propertyregister:
-    image: property-register:0.0.1-SNAPSHOT
-    container_name: propertyregister
+  property_signup:
+    image: property-signup:0.0.1-SNAPSHOT
+    container_name: property_signup
     restart: always
     ports:
      - "8003:8003"
@@ -139,11 +139,11 @@ services:
       - wfij
     depends_on: 
       - eureka
-      - configserver
+      - config_server
       
-  mailserver:
+  mail_server:
     image: mail-server:0.0.1-SNAPSHOT
-    container_name: mailserver
+    container_name: mail_server
     restart: always
     ports:
      - "8002:8002"
@@ -154,11 +154,11 @@ services:
       - wfij
     depends_on: 
       - eureka
-      - configserver
+      - config_server
 
-  emailactivate:
+  email_activate:
     image: email-activate:0.0.1-SNAPSHOT
-    container_name: emailactivate
+    container_name: email_activate
     restart: always
     ports:
      - "8004:8004"
@@ -170,11 +170,11 @@ services:
       - wfij
     depends_on: 
       - eureka
-      - configserver
+      - config_server
       
-  passwordreset:
+  password_reset:
     image: password-reset:0.0.1-SNAPSHOT
-    container_name: passwordreset
+    container_name: password_reset
     restart: always
     ports:
      - "8005:8005"
@@ -186,11 +186,11 @@ services:
       - wfij
     depends_on: 
       - eureka
-      - configserver
+      - config_server
 
-  pcgateway:
+  pc_gateway:
     image: pc-gateway:0.0.1-SNAPSHOT
-    container_name: pcgateway
+    container_name: pc_gateway
     restart: always
     domainname: 192.168.1.110
     ports:
@@ -204,10 +204,10 @@ services:
       - mongo
       - redis
       - eureka
-      - configserver
-      - authserver
-      - useraccount
-      - mailserver
+      - config_server
+      - auth_server
+      - user_account
+      - mail_server
 
 networks:
   wfij:
