@@ -50,9 +50,9 @@ public class UserController {
    */
   @RequestMapping(method = RequestMethod.GET, value = "/users/query/isEmailExist")
   public Boolean isEmailExist(@RequestParam("email") String email) {
-
     return userService.emailIsExist(email);
   }
+  
 
 
   /**

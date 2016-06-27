@@ -5,8 +5,11 @@
  */
 
 import { Injectable } from '@angular/core';
+import {hostname} from "os";
 
 @Injectable()
 export class ConstantService{
+
+  public static loginUrl:string=`http://${hostname()}:9999/uaa/login`;
 
 }

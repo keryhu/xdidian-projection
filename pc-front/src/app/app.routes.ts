@@ -6,9 +6,13 @@
 
 import { RouterConfig, provideRouter } from '@angular/router';
 import { HomeRoutes } from './components/home';
-import { NotFoundRoutes } from './components/404';
+import { NotFoundRoutes } from './shared/components/404';
 import { PropertySignupRoute } from './components/signup/property';
 import { PropertyHomeRoute } from './components/property/home';
+import {AUTH_PROVIDERS} from "./shared/services/auth/index";
+
+
+
 
 const APP_ROUTES:RouterConfig = [
   ...HomeRoutes,
@@ -18,5 +22,6 @@ const APP_ROUTES:RouterConfig = [
 ];
 
 export const APP_ROUTER_PROVIDERS = [
-  provideRouter(APP_ROUTES)
+  provideRouter(APP_ROUTES),
+  AUTH_PROVIDERS
 ];

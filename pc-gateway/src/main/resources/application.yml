@@ -41,6 +41,9 @@ zuul:
     email-activate: /email-activate/**
     #password-reset: /recover/**
     
+    
+    
+    
 
 front:
   asset-host: ${domain.name:localhost}:3000

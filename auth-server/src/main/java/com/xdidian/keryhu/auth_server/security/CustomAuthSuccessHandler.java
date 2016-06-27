@@ -58,7 +58,6 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
 
     // 暂时将role 为admin 或 Property 的用户登录成功后的 页面设置为 ／property
     String propertyUrl = new StringBuffer(host.getHostName()).append(":8080/property").toString();
-
      if (isAdminOrProperty) {
      log.info("您是admin或property，将为您跳转property 页面");
     response.sendRedirect(propertyUrl);
@@ -67,3 +66,5 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
   }
 
 }
+
+

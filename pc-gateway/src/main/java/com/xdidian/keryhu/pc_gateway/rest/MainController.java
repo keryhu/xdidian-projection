@@ -21,6 +21,11 @@ public class MainController {
   public String test() {
     return "Hello this is pc-gateway'test  page , it not protected !";
   }
+  
+  @RequestMapping("/api")
+  public String api() {
+    return "get the api info from pc-gateway";
+  }
 
 
 }

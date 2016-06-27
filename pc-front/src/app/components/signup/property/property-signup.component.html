@@ -1,0 +1,50 @@
+<!--
+ * @Description : 物业公司注册页面
+ * @date : 16/6/19 上午10:34
+ * @author : keryHu keryhu@hotmail.com
+ -->
+<div class="container">
+  <h1>物业公司注册</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <input type="text" class="form-control" [class.input-error]="companyNameCtrl.touched&&companyNameCtrl.errors"
+             placeholder="公司名字(营业执照)" formControlName="companyName">
+    </div>
+
+    <h3>负责人资料</h3>
+
+    <div class="form-group">
+      <input type="text" class="form-control" [class.input-error]="emailCtrl.touched&&emailCtrl.errors"
+             placeholder="电子邮箱" formControlName="email">
+
+      <span class="error-message"  *ngIf="emailCtrl.touched&&emailCtrl.errors">
+        <label *ngIf="emailCtrl.errors.required">不能为空</label>
+        <label *ngIf="emailCtrl.errors.emailFormat">邮箱格式不正确</label>
+        <label *ngIf="emailCtrl.errors.emailExist">邮箱已注册</label>
+      </span>
+
+    </div>
+
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="手机号" formControlName="phone">
+    </div>
+
+    <div class="form-group">
+      <input type="password" class="form-control" placeholder="密码(6-20位数字、字母组合)" formControlName="password">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="姓名" formControlName="directName">
+    </div>
+
+    <div class="form-submit">
+      <button type="submit" [disabled]="!form.valid" class="btn btn-primary">注册</button>
+    </div>
+  </form>
+
+  <div>
+    {{form.value|json}}
+  </div>
+
+  <div>{{_emailUnique}}</div>
+
+</div>

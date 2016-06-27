@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(HttpSecurity http) throws Exception {
     String[] notSecuredUrls={
-        "/", "/signup", "/signup/**", "/favicon.ico","/login","/home","/404","/t"
+        "/", "/signup", "/signup/**", "/favicon.ico","/login","/home","/404","/t","/api"
     };
     http.logout().permitAll()
         .and().antMatcher("/**").authorizeRequests()

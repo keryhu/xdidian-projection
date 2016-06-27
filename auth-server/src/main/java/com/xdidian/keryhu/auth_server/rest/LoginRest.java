@@ -13,6 +13,8 @@ import com.xdidian.keryhu.auth_server.service.LoginAttemptUserService;
 import com.xdidian.keryhu.auth_server.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Controller;
