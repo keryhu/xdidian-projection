@@ -5,7 +5,7 @@
  */
 
 import { PropertyHomeComponent } from './property-home.component';
-import {AuthGuard} from "../../../shared/services/auth/auth.guard";
+import { AuthGuard } from "../../../shared/services/auth/auth.guard";
 
 export const PropertyHomeRoute=[
     {

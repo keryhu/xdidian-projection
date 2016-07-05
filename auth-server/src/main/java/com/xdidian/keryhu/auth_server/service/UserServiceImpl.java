@@ -32,6 +32,19 @@ public class UserServiceImpl implements UserService {
 
     return Optional.ofNullable(userClient.ByLoginName(loginName));
   }
+  
+  /**
+   * 根据id，email，phone任何一种来查询user是否存在
+   * @param identity
+   * @return
+   */
+  @Override
+  public Optional<AuthUserDto> findByIdentity(String identity) {
+    // TODO Auto-generated method stub
+    
+    return Optional.ofNullable(userClient.findByIdentity(identity));
+  }
+  
 
   /**
    * 获取当前ip地址
@@ -44,6 +57,10 @@ public class UserServiceImpl implements UserService {
         : xfHeader.split(",")[0];
 
   }
+
+
+
+ 
 
 
 }

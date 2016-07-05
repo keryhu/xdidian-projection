@@ -56,5 +56,12 @@ public class UserClientFallback implements UserClient {
     return null;
   }
 
+  
+  @Override
+  public AuthUserDto findByIdentity(String identity) {
+    // TODO Auto-generated method stub
+    return new AuthUserDto();
+  }
+
 
 }

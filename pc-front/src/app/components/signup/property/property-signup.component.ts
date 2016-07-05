@@ -32,6 +32,13 @@ export class PropertySignupComponent implements OnInit {
   passwordCtrl = new FormControl();
   directNameCtrl = new FormControl();
 
+  now:number ;
+
+  after:number;
+
+  na:number;
+  m:number;
+
   ngOnInit() {
   }
 
@@ -48,14 +55,15 @@ export class PropertySignupComponent implements OnInit {
     });
 
 
+
   }
 
 
 
   onSubmit() {
-    if (this.form.dirty && this.form.valid) {
+
       console.log(JSON.stringify(this.form.value));
-    }
+  
 
 
   }

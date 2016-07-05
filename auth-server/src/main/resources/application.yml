@@ -39,7 +39,6 @@ jwtOfReadAndWrite:
      - read
      - write
   grantTypes: 
-     - authorization_code 
      - refresh_token 
      - password
   resourceIds:

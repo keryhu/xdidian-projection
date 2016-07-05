@@ -5,7 +5,7 @@
  */
 import { Component,OnInit } from  '@angular/core';
 import {PrincipalService} from "../../../shared/services/auth/principal.service";
-import {role} from "../../../shared/interface/role";
+import {Router} from "@angular/router";
 
 
 
@@ -18,30 +18,15 @@ import {role} from "../../../shared/interface/role";
 
 
 export class PropertyHomeComponent implements OnInit {
-  constructor(private principalService:PrincipalService){}
+
+  constructor(private principalService:PrincipalService,private router:Router){}
 
   ngOnInit(){
-    //this.getProfile();
-  }
 
-  getProfile(){
-    this.principalService.currentUser()
-      .subscribe(
-        e=>{
-          if (!!e&&e.isLogged){
-            let roles:role[]=e.authorities;
-            roles.forEach(e=>console.log('权限是 : '+e.authority));
-            console.log('是否验证'+e.authenticated+' , id is : '+e.name);
-            console.log(e);
-          }
-          },
+    }
 
-        error=>console.log('error : '+error),
-        ()=>console.log('completed')
 
-      );
 
-  }
 
 
 }

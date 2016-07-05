@@ -4,11 +4,11 @@ package com.xdidian.keryhu.auth_server.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,14 +20,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author : keryHu keryhu@hotmail.com
  */
 @Configuration
-@Order(-20)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private UserDetailsService userDetailsService;
-  
-  @Autowired
-  private CustomAuthSuccessHandler customAuthSuccessHandler;
 
 
   @Override
@@ -43,14 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     // @formatter:off
-    http.formLogin().loginPage("/login")
-        .failureUrl("/login?error")
-        .successHandler(customAuthSuccessHandler)
-        .permitAll()
-        .and()
-        .requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
-        .and()
-        .authorizeRequests().antMatchers("/login*").permitAll().anyRequest().authenticated();
+    http.httpBasic().and().sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+        .anyRequest().authenticated();
 
     // @formatter:on
   }

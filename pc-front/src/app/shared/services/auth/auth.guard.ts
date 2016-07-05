@@ -4,31 +4,29 @@
  * @author : keryHu keryhu@hotmail.com
  */
 
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
-import {Observable} from "rxjs/Rx";
 
-import {ConstantService} from "../constant.service";
-import {PrincipalService} from "./principal.service";
+import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, Router} from '@angular/router';
+import {Injectable} from '@angular/core';
+import {AuthService} from "./auth.service";
+import tokenExpired from "./token-expired";
 
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private principal:PrincipalService) {
+  constructor( private auth:AuthService, private router:Router) {
 
   }
 
   canActivate(next:ActivatedRouteSnapshot, state:RouterStateSnapshot) {
 
-    return this.principal.currentUser().map(e=> {
-      if (e) {
-        return true;
-      }
-    }).catch(()=> {
-      window.location.href = ConstantService.loginUrl;
-      return Observable.of(false)
-    })
+    if (this.auth.isLoggedIn()) {
+      console.log('没有过期')
+      return true;
+    }
+    this.router.navigate(['login']);
+    return false;
+
   }
 
 }

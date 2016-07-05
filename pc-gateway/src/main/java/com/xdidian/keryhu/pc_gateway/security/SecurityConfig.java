@@ -1,13 +1,16 @@
 package com.xdidian.keryhu.pc_gateway.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
@@ -25,18 +28,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.xdidian.keryhu.util.Constants.READ_AND_WRITE_RESOURCE_ID;
+
 /**
  * @Description : SSO 主方法
  * @date : 2016年6月18日 下午9:12:22
  * @author : keryHu keryhu@hotmail.com
  */
 @Configuration
-@EnableOAuth2Sso
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-  
+@EnableResourceServer
+@EnableWebSecurity
+public class SecurityConfig implements ResourceServerConfigurer {
+
   @Autowired
   private RoleHierarchyImpl roleHierarchy;
-  
+
   /**
    * 调用spring security role 权限大小排序bean
    */
@@ -51,22 +57,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(HttpSecurity http) throws Exception {
-    String[] notSecuredUrls={
-        "/", "/signup", "/signup/**", "/favicon.ico","/login","/home","/404","/t","/api"
-    };
-    http.logout().permitAll()
-        .and().antMatcher("/**").authorizeRequests()
-        .antMatchers(notSecuredUrls).permitAll()
+    String[] notSecuredUrls = {"/", "/signup", "/favicon.ico", "/login", "/home", "/404", "/t",
+      "/property"};
+    http.httpBasic().disable().sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().logout().permitAll().and()
+        .antMatcher("/**").authorizeRequests().antMatchers(notSecuredUrls).permitAll()
         // 只有未登陆用户，才能提交注册。
         .antMatchers(HttpMethod.POST, "/property-signup/register").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/storeRefreshToken").permitAll()
         .antMatchers(HttpMethod.GET, "/user-account/users/query/**").permitAll()
         .antMatchers(HttpMethod.GET, "/email-activate/email/**").permitAll()
         .antMatchers(HttpMethod.GET, "/recover/code").permitAll()
-        .antMatchers(HttpMethod.GET, "/property/**").hasRole("PROPERTY")
-        .and()
-        .authorizeRequests().expressionHandler(webExpressionHandler()) // 权限排序
-        .anyRequest().authenticated().and()
-        .csrf().csrfTokenRepository(csrfTokenRepository()).and()
+        .antMatchers(HttpMethod.GET, "/property/**").hasRole("PROPERTY").and().authorizeRequests()
+        .expressionHandler(webExpressionHandler()) // 权限排序
+        .anyRequest().authenticated().and().csrf().csrfTokenRepository(csrfTokenRepository()).and()
         .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
   }
 
@@ -97,6 +101,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
     repository.setHeaderName("X-XSRF-TOKEN");
     return repository;
+  }
+
+  @Override
+  public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+
+    resources.resourceId(READ_AND_WRITE_RESOURCE_ID);
   }
 
 }

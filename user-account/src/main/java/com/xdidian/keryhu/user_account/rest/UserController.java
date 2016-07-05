@@ -26,6 +26,7 @@ public class UserController {
 
   private final UserService userService;
 
+  
   private final ConverterUtil converterUtil;
 
 
@@ -44,6 +45,21 @@ public class UserController {
     return ResponseEntity.ok(au);
   }
 
+  /**
+   * 根据唯一标志，email、phone，或user中的id，3个里任何一种，来查看数据库的user
+   * @param identity
+   * @return
+   */
+  @RequestMapping(method = RequestMethod.GET, value = "/users/query/findByIdentity")
+  public ResponseEntity<?> findByIdentity(@RequestParam("identity") String identity) {
+
+    // 如果用户不存在，则抛出错误,返回json {"code":404,"message":"您查询的用户不存在！！"}
+    User user = userService.findById(identity)
+        .orElseThrow(() -> new UserNotFoundException("您输入的identity，数据库中不存在！！"));
+    // 将User 转为 AuthUser对象
+    AuthUserDto au = converterUtil.userToAuthUser.apply(user);
+    return ResponseEntity.ok(au);
+  }
 
   /**
    * 对外提供查询email是否存在数据库的api接口，不需要增加spring security验证

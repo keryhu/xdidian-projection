@@ -4,6 +4,7 @@
  * @author : keryHu keryhu@hotmail.com
  */
 import { Component } from  '@angular/core';
+import {Observable, Subscription} from "rxjs/Rx";
 
 @Component({
   selector: 'home',
@@ -13,5 +14,13 @@ import { Component } from  '@angular/core';
 
 
 export class HomeComponent {
+
+
+  constructor(){
+
+
+  }
+
+  
 
 }

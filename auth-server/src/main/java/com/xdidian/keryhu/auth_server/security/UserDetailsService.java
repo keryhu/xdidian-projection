@@ -50,27 +50,24 @@ public class UserDetailsService
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     // TODO Auto-generated method stub
+    
+    log.info("username is : {} ",username);
 
     if (loginAttemptUserService.isBlocked(userService.getIP(request))) {
       log.info("您的IP已经被锁定账户了");
       throw new BlockedException("您的IP已经被锁定账户了");
     }
+    
+    AuthUserDto dto=userService.findByIdentity(username)
+        .orElseThrow(()->new UsernameNotFoundException("您的账户不存在，请先注册！"));
+    
+    if(!dto.isEmailStatus()){
+      throw new EmailNotActivatedException("您的email尚未激活，请查看邮箱，或垃圾邮件，或重新注册！");
+    }
 
-
-    return (UserDetails) userService.findByLoginName(username).map(a -> {
-
-      if (a.getId() == null || a.getId().isEmpty()) {
-        throw new UsernameNotFoundException("您的账户不存在，请先注册！");
-      }
-
-      // email 未激活拦截
-      if (!a.isEmailStatus()) {
-        throw new EmailNotActivatedException("您的email尚未激活，请查看邮箱，或垃圾邮件，或重新注册！");
-      }
-
-      return new org.springframework.security.core.userdetails.User(a.getId(), a.getPassword(),
-          true, true, true, true, getAuthorities(a));
-    }).get();
+    return new org.springframework.security.core.userdetails.User(dto.getId(), dto.getPassword(),
+        true, true, true, true, getAuthorities(dto));
+ 
   }
 
   /**

@@ -14,17 +14,21 @@ spring:
       max-idle: 300        #数据库链接最大空闲数,超过空闲时间，数据库连接将被标记为不可用，然后被释放。设为0表示无限制。
       max-active: 600      #连接池的最大数据库连接数。设为0表示无限制。
       max-wait:   5000     #最大等待毫秒数, 单位为 ms, 超过时间会出错误信息  
-    
+
+  data:
+    mongodb:
+      uri: mongodb://test:123456@${mongo.host:localhost}:27017/test
+      repositories:
+        enabled: true    
     
 security:
+  basic:
+    enabled: false
   user:
     password: none
   oauth2:
-    client:
-      accessTokenUri: http://${domain.name:localhost}:9999/uaa/oauth/token
-      userAuthorizationUri: http://${domain.name:localhost}:9999/uaa/oauth/authorize
-      clientId: kksdi2388wmkwe
-      clientSecret: kksd23isdmsisdi2
+    sso:
+      login-path: /login
     resource:
       jwt:
         keyValue: |

@@ -13,7 +13,6 @@ import com.xdidian.keryhu.auth_server.service.LoginAttemptUserService;
 import com.xdidian.keryhu.auth_server.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -36,15 +35,17 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @EnableConfigurationProperties(LoginAttemptProperties.class)
 public class LoginRest {
-
   private final LoginAttemptUserService loginAttemptService;
   private final UserServiceImpl userService;
   private final LoginAttemptProperties loginAttemptProperties;
 
 
+
   /**
    * 当用户名，密码输入错误的时候，使用的rest ，同时还显示了 剩余的次数.
+   * 
    */
+
   @RequestMapping(value = "/login", method = RequestMethod.GET)
   public String loginError(Model model, HttpServletRequest request,
       @RequestParam(value = "error", required = false) String error) {
@@ -68,5 +69,6 @@ public class LoginRest {
 
     return "login";
   }
+
 
 }

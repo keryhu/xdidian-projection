@@ -22,8 +22,9 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MongoUserLoader {
 
+  
   private final UserRepository repository;
-
+  @Autowired
   private final PasswordEncoder encoder;
 
   @PostConstruct

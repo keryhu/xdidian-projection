@@ -43,6 +43,9 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
   @Autowired // 自定义的jwt属性变量
   private JwtOfReadAndWrite jwtOfReadAndWrite;
 
+  @Autowired
+  private UserDetailsService userDetailsService;
+
   @Bean
   public JwtAccessTokenConverter jwtAccessTokenConverter() {
     JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
@@ -62,19 +65,24 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
         .secret(jwtOfReadAndWrite.getClientSecret()).autoApprove(jwtOfReadAndWrite.isAutoApproval())
         .resourceIds(jwtOfReadAndWrite.getResourceIds())
         .authorizedGrantTypes(jwtOfReadAndWrite.getGrantTypes())
-        .scopes(jwtOfReadAndWrite.getScopes());
+        .scopes(jwtOfReadAndWrite.getScopes()).accessTokenValiditySeconds(60)
+        .refreshTokenValiditySeconds(60 * 6);
   }
 
 
   @Override
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
     endpoints.authenticationManager(authenticationManager)
-        .accessTokenConverter(jwtAccessTokenConverter());
+             .tokenStore(this.tokenStore())
+             .accessTokenConverter(jwtAccessTokenConverter())
+             .userDetailsService(userDetailsService);
   }
 
   @Override
   public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-    oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+    oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()")
+    // .allowFormAuthenticationForClients()
+    ;
   }
 
   @Bean
@@ -88,7 +96,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
   public DefaultTokenServices tokenServices() {
     DefaultTokenServices tokenServices = new DefaultTokenServices();
     tokenServices.setSupportRefreshToken(true);
-    tokenServices.setTokenStore(tokenStore());
+    tokenServices.setTokenStore(this.tokenStore());
     return tokenServices;
   }
 

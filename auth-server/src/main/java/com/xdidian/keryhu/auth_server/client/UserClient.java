@@ -23,6 +23,14 @@ public interface UserClient {
    */
   @RequestMapping(method = RequestMethod.GET, value = "/users/query/findByLoginName")
   public AuthUserDto ByLoginName(@RequestParam("loginName") String loginName);
+  
+  /**
+   * 根据唯一标志，email、phone，或user中的id，3个里任何一种，来查看数据库的user
+   * @param identity
+   * @return
+   */
+  @RequestMapping(method = RequestMethod.GET, value = "/users/query/findByIdentity")
+  public AuthUserDto findByIdentity(@RequestParam("identity") String identity);
 
 
   /**
