@@ -43,6 +43,10 @@ jwtOfReadAndWrite:
      - password
   resourceIds:
      - ReadAndWriteResource
+     # 5 分钟
+  access-token-validity-seconds: 300
+    # 10 days
+  refresh-token-validity-seconds: 864000
    
    #设定固定清零时间为6个小时，最大的尝试失败的次数为10次，10次后，锁定ip 24小时。  
 LoginAttempt:

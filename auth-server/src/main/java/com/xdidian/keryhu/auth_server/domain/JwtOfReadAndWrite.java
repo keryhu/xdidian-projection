@@ -29,6 +29,8 @@ public class JwtOfReadAndWrite implements Serializable {
   private String[] scopes;
   private String[] grantTypes;
   private String[] resourceIds;
+  private int accessTokenValiditySeconds;
+  private int refreshTokenValiditySeconds;
 
 
 

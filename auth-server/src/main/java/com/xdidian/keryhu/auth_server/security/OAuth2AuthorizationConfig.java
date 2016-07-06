@@ -65,17 +65,16 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
         .secret(jwtOfReadAndWrite.getClientSecret()).autoApprove(jwtOfReadAndWrite.isAutoApproval())
         .resourceIds(jwtOfReadAndWrite.getResourceIds())
         .authorizedGrantTypes(jwtOfReadAndWrite.getGrantTypes())
-        .scopes(jwtOfReadAndWrite.getScopes()).accessTokenValiditySeconds(60)
-        .refreshTokenValiditySeconds(60 * 6);
+        .scopes(jwtOfReadAndWrite.getScopes())
+        .accessTokenValiditySeconds(jwtOfReadAndWrite.getAccessTokenValiditySeconds())
+        .refreshTokenValiditySeconds(jwtOfReadAndWrite.getRefreshTokenValiditySeconds());
   }
 
 
   @Override
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-    endpoints.authenticationManager(authenticationManager)
-             .tokenStore(this.tokenStore())
-             .accessTokenConverter(jwtAccessTokenConverter())
-             .userDetailsService(userDetailsService);
+    endpoints.authenticationManager(authenticationManager).tokenStore(this.tokenStore())
+        .accessTokenConverter(jwtAccessTokenConverter()).userDetailsService(userDetailsService);
   }
 
   @Override

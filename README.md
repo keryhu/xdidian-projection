@@ -11,7 +11,9 @@ spring micro－service cloud docker domo
 四 、 增加了在指定限制时间内email激活账户的功能，如果未激活不能登录账户，超时了未激活，自动删除账户。
 
 
-四 、 更新于 2016-5-14: 接下来需要实现的功能： 
+四 、 更新于 2016-7-5: 接下来需要实现的功能： 
+     实现了前台oauth2，前台 password grant功能。
+     短暂的access－token 和 长时间的 refreshtoken功能（并且refreshtoken保存在后台数据库）
      忘记密码，重设密码功能
      
      在下一步是，编辑用户资料的功能
