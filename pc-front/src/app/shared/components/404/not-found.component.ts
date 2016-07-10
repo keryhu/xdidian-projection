@@ -4,8 +4,9 @@
  * @author : keryHu keryhu@hotmail.com
  */
 
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CORE_DIRECTIVES } from '@angular/common';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'not-found',
@@ -14,6 +15,15 @@ import { CORE_DIRECTIVES } from '@angular/common';
   directives: [CORE_DIRECTIVES]
 
 })
-export class NotFoundComponent {
-  constructor(){}
+export class NotFoundComponent implements OnInit{
+  constructor(private titleService:Title){}
+
+  ngOnInit(){
+    this.setTitle();
+  }
+
+  public setTitle(){
+    this.titleService.setTitle('新地点404页面')
+  }
+
 }

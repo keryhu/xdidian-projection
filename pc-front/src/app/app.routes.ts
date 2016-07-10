@@ -11,6 +11,7 @@ import { PropertySignupRoute } from './components/signup/property';
 import { PropertyHomeRoute } from './components/property/home';
 import {AUTH_PROVIDERS} from "./shared/services/auth/index";
 import {LoginRoute} from "./components/login/login.route";
+import {AccessDeniedRoutes} from "./shared/components/access-denied/access-denied.route";
 
 
 
@@ -20,11 +21,11 @@ const APP_ROUTES:RouterConfig = [
   ...PropertySignupRoute,
   ...PropertyHomeRoute,
   ...LoginRoute,
+  ...AccessDeniedRoutes,
   ...NotFoundRoutes
 ];
 
 export const APP_ROUTER_PROVIDERS = [
-  provideRouter(APP_ROUTES),
-  AUTH_PROVIDERS
+  provideRouter(APP_ROUTES)
 ];
 

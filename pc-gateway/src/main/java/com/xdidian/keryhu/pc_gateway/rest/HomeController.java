@@ -29,6 +29,7 @@ public class HomeController {
 
     @RequestMapping({"/**"})
     public String index(Model model) {
+    
         model.addAttribute("assetHost", frontUrl.getAssetHost());
         model.addAttribute("manifest", assetManifestService.fetchAssetManifest());
         return "index";

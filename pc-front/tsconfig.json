@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    //这里的内容 已经比较固定了,无需乱添加
+    "target": "ES5",
     "module": "commonjs",
+    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "noEmitHelpers": true,
-    "moduleResolution": "node"
+    "noEmitHelpers": true
   },
   "exclude": [
     "node_modules"
@@ -25,4 +26,7 @@
   "compileOnSave": false,
   "buildOnSave": false,
   "atom": { "rewriteTsconfig": false }
+
+
+
 }

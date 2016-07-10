@@ -9,7 +9,6 @@ import {CORE_DIRECTIVES} from '@angular/common';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 
 import {AuthService} from "../../services/auth/auth.service";
-import {PrincipalService} from "../../services/auth/principal.service";
 import {Http} from "@angular/http";
 
 
@@ -24,7 +23,7 @@ import {Http} from "@angular/http";
 
 export class NavbarComponent implements OnInit {
 
-  constructor(private authService:AuthService, private principal:PrincipalService, private router:Router,
+  constructor(private authService:AuthService, private router:Router,
               private http:Http) {
   }
 

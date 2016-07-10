@@ -18,7 +18,7 @@ export class TokenRest {
 
   //因为这个方法是在 用户登录时,access-token 还没有保存到本地,所以需要参数的形式传递,异步同时进行的,所以,需要单独引用最新的 access——token
   save(token:RefreshToken,accessToken:string) {
-    let headers = new Headers();
+    const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', `Bearer ${accessToken}`);
     console.log('tokenRest save is runing ...');
@@ -28,7 +28,7 @@ export class TokenRest {
 
   get(loginName:string,accessToken:string) {
     let params:URLSearchParams = new URLSearchParams();
-    let headers = new Headers();
+    const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', `Bearer ${accessToken}`);
     params.set('loginName', loginName);

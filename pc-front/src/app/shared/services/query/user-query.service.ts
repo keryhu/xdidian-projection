@@ -17,7 +17,7 @@ export class UserQueryService {
   private baseUrl = `/user-account/users/query/isEmailExist`;
 
   emailExist(email:string):Observable<string> {
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
     params.set('email', email);
 
     //noinspection TypeScriptUnresolvedFunction

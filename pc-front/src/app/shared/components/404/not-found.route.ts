@@ -13,8 +13,7 @@ export const NotFoundRoutes=[
   //如果找不到页面,那么就是404错误
   {
     path: '**',
-    redirectTo: '/404',
-    terminal: true
+    redirectTo: '/404'
   }
 
 

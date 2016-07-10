@@ -5,12 +5,13 @@
  */
 
 import { PropertyHomeComponent } from './property-home.component';
-import { AuthGuard } from "../../../shared/services/auth/auth.guard";
+import {AuthenticatedGuard} from "../../../shared/services/guard/authenticated.guard";
+import {PropertyGuard} from "../../../shared/services/guard/property.guard";
 
 export const PropertyHomeRoute=[
     {
       path: 'property',
       component: PropertyHomeComponent,
-      canActivate: [AuthGuard]
+      canActivate: [AuthenticatedGuard,PropertyGuard]
     }
 ];

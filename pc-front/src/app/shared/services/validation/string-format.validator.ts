@@ -19,7 +19,7 @@ export class StringFormatValidator{
 
   static emailOfBoolean(email:string):boolean {
     const EMAIL_REG = /^\w[-.\w]*\@[-a-zA-Z0-9]+(\.[-a-zA-Z0-9]+)*\.(com|cn|net|edu|info|xyz|wang|org|top|ren|club|pub|rocks|band|market|software|social|lawyer|engineer|me|tv|cc|co|biz|mobi|name|asia)$/gi;
-    let result = EMAIL_REG.test(email);
+    const result = EMAIL_REG.test(email);
     return result;
   }
 }

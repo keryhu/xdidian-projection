@@ -1,6 +1,11 @@
 server:
   port: 8080
+  error:
+    whitelabel:
+      enabled: false
   
+management:
+  context-path: /adminEnv
     
 spring:
   aop:
@@ -44,6 +49,7 @@ zuul:
     auth-server: /auth-server/**
     email-activate: /email-activate/**
     #password-reset: /recover/**
+  add-proxy-headers: true
     
     
     

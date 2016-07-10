@@ -9,7 +9,7 @@ import {LocalToken} from "../../model/local-token";
 export default function tokenExpired():boolean {
 
 
-  let tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
+  const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
 
   if(tokenObj&&tokenObj.access_token&&tokenObj.expires_in){
 

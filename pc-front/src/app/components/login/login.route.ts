@@ -5,10 +5,12 @@
  */
 
 import {LoginComponent} from "./login.component";
+import {UnauthenticatedGuard} from "../../shared/services/guard/unauthenticated.guard";
 
 export const LoginRoute=[
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate:[UnauthenticatedGuard]
   }
 ]

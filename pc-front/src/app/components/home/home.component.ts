@@ -3,8 +3,9 @@
  * @date : 16/6/19 上午10:19
  * @author : keryHu keryhu@hotmail.com
  */
-import { Component } from  '@angular/core';
+import {Component, OnInit} from  '@angular/core';
 import {Observable, Subscription} from "rxjs/Rx";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'home',
@@ -13,14 +14,18 @@ import {Observable, Subscription} from "rxjs/Rx";
 })
 
 
-export class HomeComponent {
+export class HomeComponent implements OnInit{
 
 
-  constructor(){
+  constructor(private titleService:Title){}
 
-
+  ngOnInit(){
+    this.setTitle();
   }
 
-  
+  public setTitle(){
+    this.titleService.setTitle('新地点首页');
+  }
+
 
 }

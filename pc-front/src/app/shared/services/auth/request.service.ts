@@ -10,26 +10,29 @@ import {ConstantService} from "../constant.service";
 import {LocalToken} from "../../model/local-token";
 
 @Injectable()
-export class RequestService {
+export class RequestService  {
   private tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
   private clientId:string = ConstantService.clientId;
   private clientSecret:string = ConstantService.clientSecret;
   private basicSecret:string;
 
+  //service , contstrctor 中的方法,不能放到 ngOnInit 中
   constructor() {
     this.basicSecret = btoa(`${this.clientId}:${this.clientSecret}`);
   }
 
+
+
   getJsonHeaders() {
-    let headers = new Headers();
+    const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
     return headers;
   }
 
   getAuthHeaders() {
-    let headers = this.getJsonHeaders();
-    let token=this.tokenObj.access_token;
+    const headers = this.getJsonHeaders();
+    const token = this.tokenObj.access_token;
     headers.append('Authorization', `Bearer ${token}`);
     return headers;
   }
@@ -37,7 +40,7 @@ export class RequestService {
 
   getLoginHeaders() {
 
-    let headers = new Headers();
+    const headers = new Headers();
 
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     headers.append('Authorization', 'Basic ' + this.basicSecret);

@@ -7,17 +7,17 @@ import {Component, OnInit} from  '@angular/core';
 import {REACTIVE_FORM_DIRECTIVES, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Http} from '@angular/http';
 
-import { EmailRemoteValidate } from "../../../shared/services/validation/email-remote.validator";
-import { UserQueryService } from "../../../shared/services/query/user-query.service";
-import { StringFormatValidator }  from "../../../shared/services/validation/StringFormatValidator";
-
+import {EmailRemoteValidate} from "../../../shared/services/validation/email-remote.validator";
+import {UserQueryService} from "../../../shared/services/query/user-query.service";
+import {StringFormatValidator}  from "../../../shared/services/validation/string-format.validator";
+import {Title} from "@angular/platform-browser";
 
 
 @Component({
   selector: 'property-signup',
   template: require('./property-signup.component.html'),
   styles: [require('./property-signup.component.css')],
-  providers: [UserQueryService,EmailRemoteValidate],
+  providers: [UserQueryService, EmailRemoteValidate],
   directives: [REACTIVE_FORM_DIRECTIVES]
 })
 
@@ -32,20 +32,19 @@ export class PropertySignupComponent implements OnInit {
   passwordCtrl = new FormControl();
   directNameCtrl = new FormControl();
 
-  now:number ;
+  now:number;
 
   after:number;
 
   na:number;
   m:number;
 
-  ngOnInit() {
+  constructor(private http:Http, private userQueryService:UserQueryService,
+              private emailRemoteValidate:EmailRemoteValidate, private titleService:Title) {
   }
 
-  constructor(private http:Http, private userQueryService:UserQueryService,
-              private emailRemoteValidate:EmailRemoteValidate) {
 
-
+  ngOnInit() {
     this.form = new FormGroup({
       companyName: this.companyNameCtrl,
       email: this.emailCtrl,
@@ -53,17 +52,19 @@ export class PropertySignupComponent implements OnInit {
       password: this.passwordCtrl,
       directName: this.directNameCtrl
     });
+    
+  }
 
 
+  public setTitle() {
+    this.titleService.setTitle('新地点物业公司注册页面')
 
   }
 
 
+  onSubmit(data) {
 
-  onSubmit() {
-
-      console.log(JSON.stringify(this.form.value));
-  
+    console.log(JSON.stringify(data));
 
 
   }

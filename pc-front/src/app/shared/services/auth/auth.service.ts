@@ -4,75 +4,73 @@
  * @author : keryHu keryhu@hotmail.com
  */
 
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 
 import {Router} from "@angular/router";
 import tokenExpired from "./token-expired";
 import {BehaviorSubject, Observable, Subscription} from "rxjs/Rx";
 import {Response, Http} from "@angular/http";
 import {TokenRest} from "./token-rest";
-import {RefreshToken} from "../../model/refresh-token";
 import {ConstantService} from "../constant.service";
 import {RequestService} from "./request.service";
 import {LocalToken} from "../../model/local-token";
-import {max} from "rxjs/operator/max";
+import {RefreshToken} from "../../model/refresh-token";
 
 
 //主动设置一个 按钮用户 前台点击 退出,
 
 @Injectable()
-export class AuthService implements OnInit {
+export class AuthService {
   private refreshSubscription:Subscription;
+  private principalSubsription:Subscription;
   private clientId:string = ConstantService.clientId;
   private _loginedIn = new BehaviorSubject(false);
   private loginUrl:string = ConstantService.authUrl;
   private refreshToken_expired_in:number = ConstantService.refreshToken_expired_in;
+  //还剩多少秒就要刷新access-token
   private leftRefreshTokenSeconds:number = ConstantService.minLeftRefreshTokenSeconds;
-
-  private accessTokenValiditySeconds:number = ConstantService.accessTokenValiditySeconds;
+  //临时记录refreshToken
   private refreshToken:string;
+  //临时记录access-token
   private _access_token = new BehaviorSubject('');
-  public _access_token_expired_in = new BehaviorSubject(0);
+  private _access_token_expired_in = new BehaviorSubject(0);
+  public roles = Array.of();
+  private userData:any=null;
 
+//service , contstrctor 中的方法,不能放到 ngOnInit 中
 
   constructor(private http:Http, private router:Router,
               private tokenRest:TokenRest, private request:RequestService) {
-
     //如果token未过期,那么就执行刷新refreshtoken
     if (!tokenExpired()) {
       this._loginedIn.next(true);
 
-      let tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
+      const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
 
       //将两者的最大值,就是最大的过期时间,保存到本地
       tokenObj.expires_in = Math.max(+tokenObj.expires_in, this._access_token_expired_in.getValue());
       localStorage.setItem('token', JSON.stringify(tokenObj));
 
-      console.log('access-token 过期时间距离当前时间是否只剩下15秒: ' + (+tokenObj.expires_in - this.leftRefreshTokenSeconds * 1000 <= Date.now()));
-
       if (!this.refreshExpired()) {
         console.log('constructor - tokenObj.expires_in is : ' + tokenObj.expires_in);
         //当刷新页面的时候,如果发现过期时间小于  正常过期时间一般的时候,自动刷新 access-token--这个就是提前刷新
         if (+tokenObj.expires_in - this.leftRefreshTokenSeconds * 1000 <= Date.now()) {
-          console.log('距离access-token失效时间小于15秒,现在里面执行刷新!!');
           this.getNewAccessToken();
         }
+
+        this.userData=this.decodeAccessToken(tokenObj.access_token);
+        this.roles=this.userData['authorities'];
+
         //因为页面刷新了,同时更新下次刷新的间隔时间
         this.scheduleRefresh();
       }
     }
-
-
-  }
-
-  ngOnInit() {
-
   }
 
   login(username:string, password:string) {
 
-    let body = "username=" + encodeURI(username) + "&password=" + encodeURI(password) + "&grant_type=password&client_id=" + encodeURI(this.clientId);
-
+    const body = "username=" + encodeURI(username) + "&password=" + encodeURI(password) +
+      "&grant_type=password&client_id=" + encodeURI(this.clientId);
 
     return this.http.post(this.loginUrl, body, {headers: this.request.getLoginHeaders()})
       .map(r=>r.json())
@@ -82,13 +80,16 @@ export class AuthService implements OnInit {
           this.refreshToken = (r['refresh_token']);
           this._access_token.next(r['access_token']);
           this._access_token_expired_in.next(Date.now() + r['expires_in'] * 1000);
-          let refresh_token:RefreshToken = {
+          const refresh_token:RefreshToken = {
             loginName: username,
             refreshToken: r['refresh_token']
           };
 
+          this.userData=this.decodeAccessToken(r['access_token']);
+          this.roles=this.userData['authorities'];
+
           //保存在loginStorage中的信息
-          let token:LocalToken = {
+          const token:LocalToken = {
             loginName: username,
             access_token: r['access_token'],
             expires_in: Date.now() + r['expires_in'] * 1000,
@@ -100,7 +101,6 @@ export class AuthService implements OnInit {
           //因为存储 refreshtoken的时候,异步调用 locastorage里的access_token有可能是过时的,所以在这里  特别引入新的
           this.storeRefreshToken(refresh_token, r['access_token']);
           this.scheduleRefresh();
-          console.log('login完成的时间为:  ' + Date.now())
           return r;
         }
         return r;
@@ -130,13 +130,12 @@ export class AuthService implements OnInit {
   scheduleRefresh() {
     //开始启动refreshToken post的过期时间,这个时间是动态的,因为用户可能中途刷新页面
     // 计算方法---(access-token到期时间 减去当前时间,再减去leftRefreshTokenSeconds备份时间)
-    let tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
+    const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
 
-    let dynamicRefreshInterval:number = +tokenObj.expires_in - Date.now() - 1000 * this.leftRefreshTokenSeconds;
-    console.log('距离下次刷新时间还有多久 ? '+dynamicRefreshInterval/1000);
-    let source = Observable.interval(dynamicRefreshInterval);
+    const dynamicRefreshInterval:number = +tokenObj.expires_in - Date.now() - 1000 * this.leftRefreshTokenSeconds;
+    console.log('距离下次刷新时间还有多久 ? ' + dynamicRefreshInterval / 1000);
+    const source = Observable.interval(dynamicRefreshInterval);
     this.refreshSubscription = source.subscribe(()=> {
-      console.log('准备刷新的时间为:  ' + Date.now())
       this.getNewAccessToken();
     })
 
@@ -170,8 +169,7 @@ export class AuthService implements OnInit {
     if (!this.refreshExpired()) {
       console.log('refreshToken 过期了吗? ' + this.refreshExpired() + '  accessToken 过期了吗? ' + tokenExpired());
 
-      console.log('准备从服务器下载refreshToken');
-      let tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
+      const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
 
       let access_token:string;
 
@@ -182,8 +180,8 @@ export class AuthService implements OnInit {
       }
 
       this.tokenRest.get(tokenObj.loginName, access_token)
-        .flatMap(e=> {
-          let body = "refresh_token=" + e + "&grant_type=refresh_token&client_id=" + (this.clientId);
+        .switchMap(e=> {
+          const body = "refresh_token=" + e + "&grant_type=refresh_token&client_id=" + (this.clientId);
           return this.http.post(this.loginUrl, body, {headers: this.request.getLoginHeaders()})
         })
         .map(e=>e.json())
@@ -191,7 +189,7 @@ export class AuthService implements OnInit {
           e=> {
             if (e.access_token) {
               this._access_token.next(e.access_token);
-              let tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
+              const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
               tokenObj.access_token = e.access_token;
               tokenObj.expires_in = Date.now() + e['expires_in'] * 1000;
               this._access_token_expired_in.next(Date.now() + e['expires_in'] * 1000);
@@ -205,6 +203,7 @@ export class AuthService implements OnInit {
             console.log('更新refreshToken 失败!');
             this.router.navigate(['/login']);
             this.refreshSubscription.unsubscribe();
+            this.principalSubsription.unsubscribe();
             this._loginedIn.next(false);
           }
         )
@@ -215,12 +214,27 @@ export class AuthService implements OnInit {
   }
 
 
+  public hasRole(role:string):boolean {
+    if (!this.refreshExpired()) {
+      return this.roles.includes(role);
+    }
+    return false;
+  }
+
+  public hasAnyRole(roles:string[]):boolean {
+   //当前用户的权限,是否包含有数组中的任何一个role
+    if (!this.refreshExpired()) {
+      return roles.some(role=>this.hasRole(role));
+
+    }
+    return false;
+  }
+
   //refreshToken 过期检查的 方法
   private  refreshExpired():boolean {
-    let tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
+    const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
     if (tokenObj && tokenObj.refreshToken_expires_in) {
-      console.log('refreshtoken expire in : ' + tokenObj.refreshToken_expires_in);
-      let e:boolean = tokenObj.refreshToken_expires_in <= Date.now();
+      const e:boolean = tokenObj.refreshToken_expires_in <= Date.now();
       if (e) {
         this._loginedIn.next(false);
       }
@@ -230,9 +244,16 @@ export class AuthService implements OnInit {
     return true;
   }
 
+  //解析jwt
+
+  private decodeAccessToken(access_token:string) {
+    return JSON.parse(window.atob(access_token.split('.')[1]));
+  }
 
   ngOnDestroy() {
+    this.principalSubsription.unsubscribe();
     this.refreshSubscription.unsubscribe();
+
   }
 
 }

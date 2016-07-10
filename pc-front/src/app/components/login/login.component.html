@@ -4,8 +4,9 @@
  * @author : keryHu keryhu@hotmail.com
  -->
 <div class="container">
+
   <h1>登录</h1>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
     <div class="form-group">
       <input type="text" class="form-control" [class.input-error]="usernameCtrl.touched&&usernameCtrl.errors"
              placeholder="电子邮箱/手机号" formControlName="username">

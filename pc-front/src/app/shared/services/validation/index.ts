@@ -4,6 +4,6 @@
  * @author : keryHu keryhu@hotmail.com
  */
 
-export * from './StringFormatValidator';
+export * from './string-format.validator';
 export * from './email-remote.validator';
-export * from './StringFormatValidator';
+export * from './string-format.validator';

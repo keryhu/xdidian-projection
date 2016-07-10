@@ -1,18 +1,16 @@
 /**
- * @Description : please enter the description
- * @date : 16/6/22 下午3:28
+ * @Description : 如果需要客户登录的路有,但是客户没有登录,就自动跳转到 login页面
+ * @date : 16/7/10 上午11:24
  * @author : keryHu keryhu@hotmail.com
  */
-
-
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, Router} from '@angular/router';
 import {Injectable} from '@angular/core';
-import {AuthService} from "./auth.service";
-import tokenExpired from "./token-expired";
+import {AuthService} from "../auth/auth.service";
 
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthenticatedGuard implements CanActivate {
+
 
   constructor( private auth:AuthService, private router:Router) {
 
@@ -21,7 +19,6 @@ export class AuthGuard implements CanActivate {
   canActivate(next:ActivatedRouteSnapshot, state:RouterStateSnapshot) {
 
     if (this.auth.isLoggedIn()) {
-      console.log('没有过期')
       return true;
     }
     this.router.navigate(['login']);

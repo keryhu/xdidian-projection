@@ -3,30 +3,31 @@
  * @date : 16/6/21 下午3:57
  * @author : keryHu keryhu@hotmail.com
  */
-import { Component,OnInit } from  '@angular/core';
-import {PrincipalService} from "../../../shared/services/auth/principal.service";
+import {Component, OnInit} from  '@angular/core';
 import {Router} from "@angular/router";
-
+import {Title} from "@angular/platform-browser";
 
 
 @Component({
   selector: 'home',
   template: require('./property-home.component.html'),
   styles: [require('./property-home.component.css')],
-  providers: [PrincipalService]
+  providers: []
 })
 
 
 export class PropertyHomeComponent implements OnInit {
 
-  constructor(private principalService:PrincipalService,private router:Router){}
+  constructor(private router:Router, private titleService:Title) {
+  }
 
-  ngOnInit(){
+  ngOnInit() {
+    this.setTitle();
+  }
 
-    }
-
-
-
+  public setTitle() {
+    this.titleService.setTitle('新地点物业公司主页');
+  }
 
 
 }

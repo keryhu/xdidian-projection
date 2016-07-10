@@ -5,24 +5,25 @@ import {HTTP_PROVIDERS} from "@angular/http";
 
 import "rxjs/Rx";
 
-import { OAuthService } from 'angular2-oauth2/oauth-service';
-
 import {AppComponent, appInjector} from "./app";
 import {APP_ROUTER_PROVIDERS} from './app/app.routes';
 import {ENV_PROVIDERS} from './platform/environment';
 import {AUTH_PROVIDERS} from "./app/shared/services/auth/index";
+import {Title} from "@angular/platform-browser";
+import {GUARD_PROVIDERS} from "./app/shared/services/guard/index";
 
 
 
 function main():Promise<any> {
   return bootstrap(<any>AppComponent, [
-    OAuthService,
     disableDeprecatedForms(),
     provideForms(),
+    Title,
     ...HTTP_PROVIDERS,
     ...ENV_PROVIDERS,
     ...APP_ROUTER_PROVIDERS,
-    ...AUTH_PROVIDERS
+    ...AUTH_PROVIDERS,
+    ...GUARD_PROVIDERS
   ]).then((appRef:ComponentRef<any>) => {
     appInjector(appRef.injector);
   }).catch(e => console.error(e));

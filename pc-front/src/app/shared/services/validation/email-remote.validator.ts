@@ -9,9 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 import {FormControl} from '@angular/forms';
 import {UserQueryService} from "../query/user-query.service";
-import {StringFormatValidator} from "./StringFormatValidator";
-import {Http} from "@angular/http";
-
+import {StringFormatValidator} from "./string-format.validator";
 
 @Injectable()
 export  class EmailRemoteValidate {
@@ -24,7 +22,7 @@ export  class EmailRemoteValidate {
 
         control.valueChanges.debounceTime(300)
           .filter(e=>StringFormatValidator.emailOfBoolean(e))
-          .flatMap(e=>this.userQueryService.emailExist(e))
+          .switchMap(e=>this.userQueryService.emailExist(e))
           .subscribe(e=> {
             console.log('正在输入的e is : ' + e);
             if(e){

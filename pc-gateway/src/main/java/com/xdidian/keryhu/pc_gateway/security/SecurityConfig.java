@@ -2,7 +2,6 @@ package com.xdidian.keryhu.pc_gateway.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -56,19 +55,14 @@ public class SecurityConfig implements ResourceServerConfigurer {
 
 
   @Override
-  public void configure(HttpSecurity http) throws Exception {
-    String[] notSecuredUrls = {"/", "/signup", "/favicon.ico", "/login", "/home", "/404", "/t",
-      "/property"};
+  public void configure(HttpSecurity http) throws Exception {  
+    
+    //n内在配置信息在  ／admin 下，到时候加上权限
     http.httpBasic().disable().sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().logout().permitAll().and()
-        .antMatcher("/**").authorizeRequests().antMatchers(notSecuredUrls).permitAll()
-        // 只有未登陆用户，才能提交注册。
-        .antMatchers(HttpMethod.POST, "/property-signup/register").permitAll()
-        .antMatchers(HttpMethod.POST, "/api/storeRefreshToken").permitAll()
-        .antMatchers(HttpMethod.GET, "/user-account/users/query/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/email-activate/email/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/recover/code").permitAll()
-        .antMatchers(HttpMethod.GET, "/property/**").hasRole("PROPERTY").and().authorizeRequests()
+        .authorizeRequests().antMatchers("/**").permitAll()
+        //spring boot admin 配置变量
+        .antMatchers("/adminEnv").hasRole("SERVICE")
         .expressionHandler(webExpressionHandler()) // 权限排序
         .anyRequest().authenticated().and().csrf().csrfTokenRepository(csrfTokenRepository()).and()
         .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);

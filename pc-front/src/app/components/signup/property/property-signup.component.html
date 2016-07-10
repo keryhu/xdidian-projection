@@ -5,7 +5,7 @@
  -->
 <div class="container">
   <h1>物业公司注册</h1>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
     <div class="form-group">
       <input type="text" class="form-control" [class.input-error]="companyNameCtrl.touched&&companyNameCtrl.errors"
              placeholder="公司名字(营业执照)" formControlName="companyName">
