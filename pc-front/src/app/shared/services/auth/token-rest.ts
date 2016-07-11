@@ -36,6 +36,6 @@ export class TokenRest {
       headers:headers}
      )
       .map(e=>e.json())
-      .map(e=><string>e.refreshToken);
+      .map(e=>e.refreshToken);
   }
 }

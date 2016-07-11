@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,13 +31,13 @@ public class RefreshTokenController {
   private final int reFreshTokenValiditySeconds = 130;
 
   @RequestMapping(value = "/api/getRefreshToken", method = RequestMethod.GET)
-  public Map<String, String> getRefreshToken(Principal principal,
+  public ResponseEntity<Map<String, String>> getRefreshToken(Principal principal,
       @RequestParam("loginName") final String loginName) {
     log.info("从服务器下载新的refreshToken");
     Map<String, String> map = new HashMap<String, String>();
     String token = repository.findByLoginName(loginName).map(e -> e.getRefreshToken()).orElse("");
     map.put("refreshToken", token);
-    return map;
+    return ResponseEntity.ok().body(map);
   }
 
   /**

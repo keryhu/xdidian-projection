@@ -6,6 +6,9 @@ server:
   
 management:
   context-path: /adminEnv
+  security:
+    enabled: true
+    
     
 spring:
   aop:

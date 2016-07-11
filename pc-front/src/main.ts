@@ -5,6 +5,10 @@ import {HTTP_PROVIDERS} from "@angular/http";
 
 import "rxjs/Rx";
 
+// AngularClass
+import { provideWebpack } from '@angularclass/webpack-toolkit';
+import { providePrefetchIdleCallbacks } from '@angularclass/request-idle-callback';
+
 import {AppComponent, appInjector} from "./app";
 import {APP_ROUTER_PROVIDERS} from './app/app.routes';
 import {ENV_PROVIDERS} from './platform/environment';

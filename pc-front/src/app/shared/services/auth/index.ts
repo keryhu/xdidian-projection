@@ -15,6 +15,9 @@ export * from './auth.service';
 export * from './token-expired';
 export * from './token-rest';
 export * from './request.service';
+export * from './dynamic-token-refresh-interval';
+export * from './token-expiredAt';
+export * from './current-loginName';
 
 
 export const AUTH_PROVIDERS = [ AuthService, ConstantService,

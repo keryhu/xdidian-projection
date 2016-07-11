@@ -52,7 +52,9 @@ export class PropertySignupComponent implements OnInit {
       password: this.passwordCtrl,
       directName: this.directNameCtrl
     });
-    
+
+    this.setTitle();
+
   }
 
 

@@ -56,7 +56,7 @@ public class SecurityConfig implements ResourceServerConfigurer {
 
   @Override
   public void configure(HttpSecurity http) throws Exception {  
-    
+  
     //n内在配置信息在  ／admin 下，到时候加上权限
     http.httpBasic().disable().sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().logout().permitAll().and()

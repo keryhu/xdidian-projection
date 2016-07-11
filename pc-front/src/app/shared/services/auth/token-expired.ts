@@ -11,16 +11,22 @@ export default function tokenExpired():boolean {
 
   const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
 
-  if(tokenObj&&tokenObj.access_token&&tokenObj.expires_in){
 
-
-    return +tokenObj.expires_in<=Date.now();
+  if (tokenObj) {
+    const token = tokenObj.access_token;
+    if (token) {
+      const userData = JSON.parse(window.atob(token.split('.')[1]));
+      const ex = userData.exp * 1000;
+      return ex <= Date.now();
+    }
+    
   }
+
 
   return true;
 
 
-
 }
+
 
 

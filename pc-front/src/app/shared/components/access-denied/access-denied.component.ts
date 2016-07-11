@@ -19,7 +19,7 @@ export class AccessDeniedComponent implements OnInit{
   constructor(private titleService:Title){}
 
   ngOnInit(){
-
+    this.setTitle();
   }
 
   public setTitle(){
