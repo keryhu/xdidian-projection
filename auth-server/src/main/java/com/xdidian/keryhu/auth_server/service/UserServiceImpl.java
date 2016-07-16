@@ -6,6 +6,8 @@ import com.xdidian.keryhu.auth_server.domain.AuthUserDto;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
   private final UserClient userClient;
+  private final LoginAttemptUserService loginAttemptUserService;
+  private final MessageSource messageSource;
 
   /**
    * 根据User 的 唯一标志符 用户登录的帐号。例如 email ，phone 等查询唯一的数据库用户
@@ -30,7 +34,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public Optional<AuthUserDto> findByLoginName(String loginName) {
 
-    return Optional.ofNullable(userClient.ByLoginName(loginName));
+    return Optional.of(userClient.ByLoginName(loginName));
   }
   
   /**
@@ -42,25 +46,23 @@ public class UserServiceImpl implements UserService {
   public Optional<AuthUserDto> findByIdentity(String identity) {
     // TODO Auto-generated method stub
     
-    return Optional.ofNullable(userClient.findByIdentity(identity));
+    return Optional.of(userClient.findByIdentity(identity));
   }
   
 
+
+
   /**
-   * 获取当前ip地址
+   * 当用户点击登录按钮后，如果用户名不存在，或者用户名，密码不匹配，则报告的错误提示（含有剩余的试错的次数）
    */
+
   @Override
-  public String getIP(HttpServletRequest request) {
+  public String getLoginFailMsg(HttpServletRequest request) {
     // TODO Auto-generated method stub
-    String xfHeader = request.getHeader("X-Forwarded-For");
-    return (xfHeader == null || xfHeader.isEmpty()) ? request.getRemoteAddr()
-        : xfHeader.split(",")[0];
-
+    int leftTimes = loginAttemptUserService.leftLoginTimes(request);
+    Object[] args={leftTimes};
+    return messageSource.getMessage("message.login.fail", args, LocaleContextHolder.getLocale());
   }
-
-
-
- 
 
 
 }

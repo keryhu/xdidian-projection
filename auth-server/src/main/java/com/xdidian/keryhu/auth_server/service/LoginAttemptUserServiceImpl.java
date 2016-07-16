@@ -38,7 +38,7 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 
   private final LoginAttemptProperties loginAttemptProperties;
   private final LoginAttemptUserRepository repository;
-  private final UserService userService;
+  private final Utils utils;
 
 
   /**
@@ -50,6 +50,7 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
   public void loginFail(String ip, String loginName) {
     // TODO Auto-generated method stub
     // 如果IP不存在于数据库
+    log.info(" login fail ");
     if (!repository.findByRemoteIp(ip).isPresent()) {
       LoginAttemptUser loginAttemptUser = new LoginAttemptUser();
       Optional.of(loginAttemptUser).ifPresent(e -> {
@@ -193,8 +194,18 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
   public int leftLoginTimes(HttpServletRequest request) {
     // TODO Auto-generated method stub
 
-    return repository.findByRemoteIp(userService.getIP(request))
+    return repository.findByRemoteIp(utils.getIp(request))
         .map(e -> loginAttemptProperties.getMaxAttemptTimes() - e.getAlreadyAttemptTimes())
         .orElse(loginAttemptProperties.getMaxAttemptTimes());
+  }
+
+
+  @Override
+  public String getBlockMsg() {
+    // TODO Auto-generated method stub
+    return  new StringBuffer("您 ").append(loginAttemptProperties.getTimeOfPerid())
+        .append(" 小时内，登录失败 ").append(loginAttemptProperties.getMaxAttemptTimes())
+        .append(" 次，帐号被冻结 ").append(loginAttemptProperties.getTimeOfLock()).append(" 个小时！")
+        .toString();
   }
 }

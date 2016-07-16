@@ -5,3 +5,4 @@
  */
 
 export * from './user-query.service';
+export * from './ip-block.service';

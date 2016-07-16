@@ -1,13 +1,11 @@
 package com.xdidian.keryhu.auth_server.security;
 
 import com.xdidian.keryhu.auth_server.domain.AuthUserDto;
-import com.xdidian.keryhu.auth_server.exception.BlockedException;
-import com.xdidian.keryhu.auth_server.exception.EmailNotActivatedException;
 import com.xdidian.keryhu.auth_server.service.LoginAttemptUserService;
 import com.xdidian.keryhu.auth_server.service.UserServiceImpl;
+import com.xdidian.keryhu.auth_server.service.Utils;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,10 +13,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 
@@ -28,16 +26,14 @@ import java.util.stream.Collectors;
  */
 @Component("userDetailsService")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Slf4j
 public class UserDetailsService
     implements org.springframework.security.core.userdetails.UserDetailsService {
 
   private final UserServiceImpl userService;
-
+  private final Utils utils;
   private final HttpServletRequest request;
-
   private final LoginAttemptUserService loginAttemptUserService;
-
+  
   /**
    * 根据用户名，查询数据库系统后台(user-account),是否存在此用户,同时增加了两个拦截器 email账户是否验证激活的拦截，如果没有则报错 请注意，block拦截器必须要放在
    * 查询用户系统之前，否则其功能会被spring security 代替。 一个loginAttempt 的拦截限制，一旦用户被冻结，则锁定账户多少小时
@@ -45,28 +41,27 @@ public class UserDetailsService
    * message中 {0} ,{1},{2} 等信息的设置的 数组。 支持 Number Date Time String getMessage,的第二个参数，放上面的
    * Object[],，第三个参数放 默认的 message，意思是如果系统找不到 前面的 Object[] args，第三个参数就是替代品 请注意，spring
    * security里面的所有错误提示，都不能使用 Assert，
+   * 
+   *将 loginAttempt的逻辑，放在CustomAuthenticationProvider里
    */
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     // TODO Auto-generated method stub
+   
     
-    log.info("username is : {} ",username);
-
-    if (loginAttemptUserService.isBlocked(userService.getIP(request))) {
-      log.info("您的IP已经被锁定账户了");
-      throw new BlockedException("您的IP已经被锁定账户了");
-    }
+    //⚠如果username not found ，则出现的是 对应的Id==null，而不是 对象整体为null
     
-    AuthUserDto dto=userService.findByIdentity(username)
-        .orElseThrow(()->new UsernameNotFoundException("您的账户不存在，请先注册！"));
-    
-    if(!dto.isEmailStatus()){
-      throw new EmailNotActivatedException("您的email尚未激活，请查看邮箱，或垃圾邮件，或重新注册！");
-    }
-
-    return new org.springframework.security.core.userdetails.User(dto.getId(), dto.getPassword(),
-        true, true, true, true, getAuthorities(dto));
+    return userService.findByIdentity(username).map(e->{
+      if(e.getId()==null){
+        //这个监控只能写这里，不能放在 CustomAuthenticationProvider里。
+        loginAttemptUserService.loginFail(utils.getIp(request), username);
+        //报错的提示信息是自定义的，含有剩余的次数。
+        throw new UsernameNotFoundException(userService.getLoginFailMsg(request));
+      }
+      return new org.springframework.security.core.userdetails.User(e.getId(), e.getPassword(),
+          true, true, true, true, getAuthorities(e));
+    }).get();
  
   }
 
@@ -78,8 +73,5 @@ public class UserDetailsService
     return (user.getRoles() == null) ? null
         : (user.getRoles().stream().filter(e -> e != null)
             .map(e -> new SimpleGrantedAuthority(e.name())).collect(Collectors.toList()));
-
-
   }
-
 }

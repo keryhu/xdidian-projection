@@ -4,3 +4,4 @@
 
 export  * from './app.component';
 export  * from './app-injector';
+export * from './app.routes';

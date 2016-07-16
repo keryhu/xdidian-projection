@@ -1,7 +1,7 @@
 package com.xdidian.keryhu.user_account.stream;
 
 import org.springframework.cloud.stream.annotation.Input;
-import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.SubscribableChannel;
 
 /**
  * @Description : 用户注册，接受消息的channel
@@ -13,6 +13,6 @@ public interface PropertyRegisterInputChannel {
   String NAME = "propertyRegisterSaveInputChannel";
 
   @Input(NAME)
-  MessageChannel input();
+  SubscribableChannel input();
 
 }

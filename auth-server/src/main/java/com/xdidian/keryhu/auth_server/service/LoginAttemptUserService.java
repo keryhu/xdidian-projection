@@ -39,5 +39,7 @@ public interface LoginAttemptUserService {
    * 查看目前还剩下几次登录错误的次数
    */
   public int leftLoginTimes(HttpServletRequest request);
+  
+  public String getBlockMsg();
 
 }

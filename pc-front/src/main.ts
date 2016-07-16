@@ -10,7 +10,7 @@ import { provideWebpack } from '@angularclass/webpack-toolkit';
 import { providePrefetchIdleCallbacks } from '@angularclass/request-idle-callback';
 
 import {AppComponent, appInjector} from "./app";
-import {APP_ROUTER_PROVIDERS} from './app/app.routes';
+import {APP_ROUTER_PROVIDERS,asyncRoutes, prefetchRouteCallbacks} from './app/app.routes';
 import {ENV_PROVIDERS} from './platform/environment';
 import {AUTH_PROVIDERS} from "./app/shared/services/auth/index";
 import {Title} from "@angular/platform-browser";
@@ -23,6 +23,8 @@ function main():Promise<any> {
     disableDeprecatedForms(),
     provideForms(),
     Title,
+    provideWebpack(asyncRoutes),
+    providePrefetchIdleCallbacks(prefetchRouteCallbacks),
     ...HTTP_PROVIDERS,
     ...ENV_PROVIDERS,
     ...APP_ROUTER_PROVIDERS,

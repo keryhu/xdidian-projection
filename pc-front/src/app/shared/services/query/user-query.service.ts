@@ -14,22 +14,34 @@ export class UserQueryService {
   constructor(private http:Http) {
   }
 
-  private baseUrl = `/user-account/users/query/isEmailExist`;
 
-  emailExist(email:string):Observable<string> {
+
+  emailExist(email:string):Observable<boolean> {
+    const url = '/user-account/users/query/isEmailExist';
     const params = new URLSearchParams();
     params.set('email', email);
 
-    //noinspection TypeScriptUnresolvedFunction
-    return this.http.get(this.baseUrl, {search: params})
+    return this.http.get(url, {search: params})
       .map((res:Response)=>{
-        console.log('被查询的email is : - '+email)
-        console.log(`user-query-service is running ..被查询的email 是: ${email}。。. 结果是: ${res.json()}`);
+         return res.json();
+      } )
+      .catch(this.handleError);
+
+  }
+
+  phoneExist(phone:string):Observable<boolean>{
+    const url='/user-account/users/query/isPhoneExist';
+    const params = new URLSearchParams();
+    params.set('phone', phone);
+
+    return this.http.get(url,{search:params})
+      .map((res:Response)=>{
         return res.json();
       } )
       .catch(this.handleError);
 
   }
+
 
 
   private handleError(error:Response) {

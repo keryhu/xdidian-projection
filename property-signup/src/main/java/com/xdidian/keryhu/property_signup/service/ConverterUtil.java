@@ -52,7 +52,8 @@ public class ConverterUtil {
       dto.setExpireDate(expireDate);
 
     }
-    dto.setEmail(x.getEmail());
+    //将email格式都转为小写。
+    dto.setEmail(x.getEmail().toLowerCase());
     dto.setEmailToken(UUID.randomUUID().toString());
     dto.setReregisterToken(UUID.randomUUID().toString());
     dto.setResendToken(UUID.randomUUID().toString());

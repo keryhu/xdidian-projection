@@ -6,5 +6,5 @@
 import { PropertySignupComponent } from './property-signup.component';
 
 export const PropertySignupRoute=[
-  {path: 'signup', component: PropertySignupComponent}
+  {path: 'signup', component: 'PropertySignupComponent'}
 ];

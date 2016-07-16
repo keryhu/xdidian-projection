@@ -52,7 +52,7 @@ zuul:
     auth-server: /auth-server/**
     email-activate: /email-activate/**
     #password-reset: /recover/**
-  add-proxy-headers: true
+  #add-proxy-headers: true
     
     
     

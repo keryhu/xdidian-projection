@@ -8,7 +8,7 @@ import {Injectable} from '@angular/core';
 
 import {Router} from "@angular/router";
 import tokenExpired from "./token-expired";
-import {BehaviorSubject, Observable, Subscription} from "rxjs/Rx";
+import {BehaviorSubject, Observable} from "rxjs/Rx";
 import {Response, Http} from "@angular/http";
 import {TokenRest} from "./token-rest";
 import {ConstantService} from "../constant.service";
@@ -47,6 +47,8 @@ export class AuthService {
     //如果token未过期,那么就执行刷新refreshtoken
     if (!tokenExpired()) {
       this._loginedIn.next(true);
+
+
 
       if (!RefreshTokenExpired()) {
 
@@ -108,7 +110,7 @@ export class AuthService {
           return r;
         }
         return r;
-      })
+      }).catch(this.handleError);
 
   }
 
@@ -161,7 +163,9 @@ export class AuthService {
 
 
   private handleError(error:Response) {
-    return Observable.throw(error.json() || 'Server error');
+    const m=error.json();
+    const j=m.error_description;
+    return Observable.throw(j|| 'Server error');
   }
 
   /**

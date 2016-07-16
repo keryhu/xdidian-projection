@@ -35,5 +35,7 @@ public class ExceptionControllerAdvice {
     // 每次定义错误的时候，需要手动加上错误的HttpStatus.NOT_FOUND.value() 的类型
     return new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
   }
+  
+  
 
 }

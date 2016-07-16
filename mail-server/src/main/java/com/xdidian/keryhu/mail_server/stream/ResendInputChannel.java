@@ -1,7 +1,7 @@
 package com.xdidian.keryhu.mail_server.stream;
 
 import org.springframework.cloud.stream.annotation.Input;
-import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.SubscribableChannel;
 
 
 
@@ -15,6 +15,6 @@ public interface ResendInputChannel {
   String NAME = "resendInputChannel";
 
   @Input(NAME)
-  MessageChannel input();
+  SubscribableChannel input();
 
 }

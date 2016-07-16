@@ -1,13 +1,13 @@
 package com.xdidian.keryhu.auth_server.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -37,14 +37,26 @@ import java.security.KeyPair;
 public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
   @Autowired
-  @Qualifier("authenticationManagerBean")
   private AuthenticationManager authenticationManager;
 
   @Autowired // 自定义的jwt属性变量
   private JwtOfReadAndWrite jwtOfReadAndWrite;
 
+
   @Autowired
-  private UserDetailsService userDetailsService;
+  private CustomAuthenticationProvider customAuthenticationProvider;
+
+  /**
+   * 针对angular2等其它前台 登录访问 的时候，设计的 访问控制。
+   * 
+   * @param authenticationManager
+   */
+  private void insertHack(AuthenticationManager authenticationManager) {
+    if (authenticationManager instanceof ProviderManager) {
+      ProviderManager pm = (ProviderManager) authenticationManager;
+      pm.getProviders().add(customAuthenticationProvider);
+    }
+  }
 
   @Bean
   public JwtAccessTokenConverter jwtAccessTokenConverter() {
@@ -73,14 +85,17 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
 
   @Override
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    insertHack(authenticationManager);
     endpoints.authenticationManager(authenticationManager).tokenStore(this.tokenStore())
-        .accessTokenConverter(jwtAccessTokenConverter()).userDetailsService(userDetailsService);
+        .accessTokenConverter(jwtAccessTokenConverter())
+    // .userDetailsService(userDetailsService)
+    ;
   }
 
   @Override
   public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
     oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()")
-    // .allowFormAuthenticationForClients()
+    // .allowFormAuthenticationForClients() 客户端提交验证，不能加这个。
     ;
   }
 

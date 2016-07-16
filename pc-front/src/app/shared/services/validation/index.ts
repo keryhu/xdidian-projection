@@ -5,5 +5,3 @@
  */
 
 export * from './string-format.validator';
-export * from './email-remote.validator';
-export * from './string-format.validator';

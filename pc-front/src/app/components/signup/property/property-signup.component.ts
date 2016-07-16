@@ -6,18 +6,19 @@
 import {Component, OnInit} from  '@angular/core';
 import {REACTIVE_FORM_DIRECTIVES, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Http} from '@angular/http';
+import {Title} from "@angular/platform-browser";
 
-import {EmailRemoteValidate} from "../../../shared/services/validation/email-remote.validator";
+
 import {UserQueryService} from "../../../shared/services/query/user-query.service";
 import {StringFormatValidator}  from "../../../shared/services/validation/string-format.validator";
-import {Title} from "@angular/platform-browser";
+import EmailExist from "../../../shared/services/validation/remote/email-exist";
 
 
 @Component({
   selector: 'property-signup',
   template: require('./property-signup.component.html'),
   styles: [require('./property-signup.component.css')],
-  providers: [UserQueryService, EmailRemoteValidate],
+  providers: [UserQueryService],
   directives: [REACTIVE_FORM_DIRECTIVES]
 })
 
@@ -26,7 +27,7 @@ export class PropertySignupComponent implements OnInit {
   form:FormGroup;
   companyNameCtrl = new FormControl();
   emailCtrl = new FormControl('', [Validators.required, StringFormatValidator.email],
-    [(control:FormControl)=>this.emailRemoteValidate.email(control)]);
+    [EmailExist]);
 
   phoneCtrl = new FormControl();
   passwordCtrl = new FormControl();
@@ -39,8 +40,7 @@ export class PropertySignupComponent implements OnInit {
   na:number;
   m:number;
 
-  constructor(private http:Http, private userQueryService:UserQueryService,
-              private emailRemoteValidate:EmailRemoteValidate, private titleService:Title) {
+  constructor(private http:Http, private userQueryService:UserQueryService, private titleService:Title) {
   }
 
 

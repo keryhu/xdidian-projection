@@ -4,11 +4,11 @@
  * @author : keryHu keryhu@hotmail.com
  */
 
-import { RouterConfig, provideRouter } from '@angular/router';
-import { HomeRoutes } from './components/home';
-import { NotFoundRoutes } from './shared/components/404';
-import { PropertySignupRoute } from './components/signup/property';
-import { PropertyHomeRoute } from './components/property/home';
+import {RouterConfig, provideRouter} from '@angular/router';
+import {HomeRoutes} from './components/home';
+import {NotFoundRoutes} from './shared/components/404';
+import {PropertySignupRoute} from './components/signup/property';
+import {PropertyHomeRoute} from './components/property/home';
 import {LoginRoute} from "./components/login/login.route";
 import {AccessDeniedRoutes} from "./shared/components/access-denied/access-denied.route";
 
@@ -28,5 +28,17 @@ export const APP_ROUTER_PROVIDERS = [
 
 ];
 
+//使用异步路由加载
+export const asyncRoutes:AsyncRoutes = {
+
+  'PropertySignupComponent': require('es6-promise-loader!./components/signup/property'),
+  'PropertyHomeComponent': require('es6-promise-loader!./components/property/home')
+};
+
+export const prefetchRouteCallbacks:Array<IdleCallbacks> = [
+
+  asyncRoutes['PropertySignupComponent'],
+  asyncRoutes['PropertyHomeComponent']
+];
 
 
