@@ -7,6 +7,7 @@ import {FormControl} from '@angular/forms';
 
 
 export class StringFormatValidator {
+
   static email(control:FormControl) {
 
     if (!control.value) {
@@ -93,11 +94,32 @@ export class StringFormatValidator {
     return result;
   }
 
+  static companyName(control:FormControl) {
+
+    if (!control.value) {
+      return null;
+    }
+    return StringFormatValidator.companyNameOfBoolean(control.value) ? null : {companyNameFormat: true};
+
+
+  }
+
+
   //姓名匹配,只能由2-20个字母或中文,不能有数字和括号。
   static peopleNameOfBoolean(name:string):boolean {
     const PEOPLE_NAME = /^([\u4e00-\u9fa5]{2,20}|[a-zA-Z\.\s]{2,20})$/;
     const result = PEOPLE_NAME.test(name);
     return result;
+  }
+
+  static peopleName(control:FormControl) {
+
+    if (!control.value) {
+      return null;
+    }
+    return StringFormatValidator.peopleNameOfBoolean(control.value) ? null : {nameFormate: true};
+
+
   }
 
 }

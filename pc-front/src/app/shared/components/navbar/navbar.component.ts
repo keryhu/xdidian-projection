@@ -6,10 +6,9 @@
 
 import {Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy} from '@angular/core';
 import {CORE_DIRECTIVES} from '@angular/common';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {AuthService} from "../../services/auth/auth.service";
-import {Http} from "@angular/http";
 
 
 @Component({
@@ -23,8 +22,7 @@ import {Http} from "@angular/http";
 
 export class NavbarComponent implements OnInit {
 
-  constructor(private authService:AuthService, private router:Router,
-              private http:Http) {
+  constructor(private authService:AuthService) {
   }
 
   @Input() brand:string;

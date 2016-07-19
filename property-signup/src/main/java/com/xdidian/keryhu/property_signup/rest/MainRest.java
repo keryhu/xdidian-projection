@@ -45,7 +45,7 @@ public class MainRest {
    * 2个带有email信息的链接
    */
   @RequestMapping(method = RequestMethod.POST, value = "/signup")
-  public ModelAndView createUser(@RequestBody final PropertyForm propertyForm,
+  public ResponseEntity<?> createUser(@RequestBody final PropertyForm propertyForm,
       final RedirectAttributes attr) {
 
     // 验证输入信息的合法性
@@ -70,49 +70,18 @@ public class MainRest {
     // 重新注册的url
     String reregister = new StringBuffer(hostProperty.getHostName())
         .append(":8080/email-activate/email/reregister?email=").append(propertyForm.getEmail())
-        .append("&token=").append(emailActivatedDto.getReregisterToken()).toString();
+        .append("&token=").append(emailActivatedDto.getResignupToken()).toString();
     // 注册完后，导航到的页面
 
     String redirectUrl = new StringBuffer("redirect:").append(hostProperty.getHostName())
         .append(":8080/register/result").toString();
-    attr.addAttribute("resend", resend);
-    attr.addAttribute("reregister", reregister);
+   
     mav.setViewName(redirectUrl);
-    return mav;
+    //因为接下来，需要前台记住，刚刚注册用户的email和发送的email token，所以注册成功后，返回这个对象
+    return ResponseEntity.ok(emailActivatedDto);
 
   }
 
-
-  /**
-   * 用于前台物业公司注册时，查询登陆的email是否存在于数据库，此为调用的后台接口
-   */
-  @RequestMapping(value = "/query/isEmailExist", method = RequestMethod.GET)
-  public ResponseEntity<?> isEmailExist(@RequestParam("email") final String email) {
-    log.info("查到的email 是否存在于 数据库 ：{} ", userClient.isEmailExist(email));
-    return ResponseEntity.ok(userClient.isEmailExist(email));
-  }
-
-
-  /**
-   * 用于前台物业公司注册时，查询登陆的phone是否存在于数据库，此为调用的后台接口
-   */
-  @RequestMapping(value = "/query/isPhoneExist", method = RequestMethod.GET)
-  public ResponseEntity<?> isPhoneExist(@RequestParam("phone") final String phone) {
-    log.info("查到的手机号是否存在于数据库： {}", userClient.isPhoneExist(phone));
-    return ResponseEntity.ok(userClient.isPhoneExist(phone));
-  }
-
-
-  /**
-   * 查询数据库中是否存在此公司名字
-   */
-  @RequestMapping(method = RequestMethod.GET, value = "/query/isCompanyNameExist")
-  public ResponseEntity<?> isCompanyNameExist(
-      @RequestParam("companyName") final String companyName) {
-
-    log.info("查的公司名字是否在数据库中：{} ", userClient.isCompanyNameExist(companyName));
-    return ResponseEntity.ok(userClient.isCompanyNameExist(companyName));
-  }
 
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")

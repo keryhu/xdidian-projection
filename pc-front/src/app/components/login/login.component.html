@@ -3,13 +3,15 @@
  * @date : 16/6/29 上午10:06
  * @author : keryHu keryhu@hotmail.com
  -->
-<div class="container">
+<div class="container-fluid">
 
   <h1>登录</h1>
   <p class="error-message" *ngIf="getBlockStatus()|async">{{getBlockMsg()|async}}</p>
   <p class="error-message" *ngIf="getAfterLoginMsg()|async">{{getAfterLoginMsg()|async}}</p>
+
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)" autocomplete="off" >
     <div class="form-group">
+      <label class="sr-only" for="username">用户名</label>
       <input type="text" class="form-control" [class.input-error]="username.touched&&username.errors"
              placeholder="电子邮箱/手机号" formControlName="username">
       <span class="error-message"  *ngIf="username.touched&&username.errors">
@@ -22,6 +24,7 @@
 
 
     <div class="form-group">
+      <label class="sr-only" for="password">密码</label>
       <input type="password" class="form-control" [class.input-error]="password.touched&&password.errors"
              placeholder="密码(6-20位数字、字母组合)" formControlName="password">
       <span class="error-message" *ngIf="password.touched&&password.errors">
@@ -33,9 +36,10 @@
 
 
     <div class="form-submit">
-      <button type="submit" [disabled]="(getBlockStatus()|async)||!loginForm.valid" class="btn btn-primary">登录</button>
+      <button type="submit" [disabled]="(getBlockStatus()|async)||!loginForm.valid" class="btn btn-primary btn-block">登录</button>
     </div>
   </form>
+
 
 
 

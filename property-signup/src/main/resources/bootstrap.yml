@@ -1,7 +1,7 @@
 
 spring:
   application:
-    name: property-register
+    name: property-signup
   #从cong-server，获取配置信息
   cloud:  
     config:

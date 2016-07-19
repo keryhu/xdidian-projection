@@ -34,7 +34,7 @@ public class ConverterUtil {
     activatedToken.setExpiryDate(x.getExpireDate());
     activatedToken.setSentTimes(0);
     activatedToken.setEmailToken(x.getEmailToken());
-    activatedToken.setRe_signup_token(x.getReregisterToken());
+    activatedToken.setRe_signup_token(x.getResignupToken());
     activatedToken.setResendToken(x.getResendToken());
     return activatedToken;
   };
@@ -46,7 +46,7 @@ public class ConverterUtil {
     EmailActivatedDto dto = new EmailActivatedDto();
     dto.setEmail(x.getEmail());
     dto.setEmailToken(x.getEmailToken());
-    dto.setReregisterToken(x.getRe_signup_token());
+    dto.setResignupToken(x.getRe_signup_token());
     dto.setResendToken(x.getResendToken());
     dto.setExpireDate(x.getExpiryDate());
     return dto;

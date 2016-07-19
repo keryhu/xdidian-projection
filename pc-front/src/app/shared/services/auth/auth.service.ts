@@ -8,7 +8,7 @@ import {Injectable} from '@angular/core';
 
 import {Router} from "@angular/router";
 import tokenExpired from "./token-expired";
-import {BehaviorSubject, Observable} from "rxjs/Rx";
+import {BehaviorSubject, Observable, Subscription} from "rxjs/Rx";
 import {Response, Http} from "@angular/http";
 import {TokenRest} from "./token-rest";
 import {ConstantService} from "../constant.service";
@@ -25,7 +25,9 @@ import CurrentLoginName from "./current-loginName";
 @Injectable()
 export class AuthService {
   private tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
-  private refreshSubscription:any;
+  private refreshSubscription:Subscription;
+  private getNewTokenSub:Subscription;
+  private saveTokenSub:Subscription;
   private clientId:string = ConstantService.clientId;
   private _loginedIn = new BehaviorSubject(false);
   private loginUrl:string = ConstantService.authUrl;
@@ -49,7 +51,6 @@ export class AuthService {
       this._loginedIn.next(true);
 
 
-
       if (!RefreshTokenExpired()) {
 
         //每次浏览器刷新,都将保存在本地的  access token,更新到 BehaviorSubject里
@@ -57,12 +58,7 @@ export class AuthService {
 
         const inte = DynamicTokenRefreshInterval();
         //当刷新页面的时候,如果发现过期时间小于  正常过期时间一般的时候,自动刷新 access-token--这个就是提前刷新
-        /**
-         *  if (inte <= 0) {
-          console.log('因为小于正常的刷新时间了,所以提前刷新 ! ')
-          this.getNewAccessToken();
-        }
-         */
+
 
         this.userData = this.decodeAccessToken(this.tokenObj.access_token);
         this.roles = this.userData['authorities'];
@@ -71,7 +67,9 @@ export class AuthService {
         this.scheduleRefresh(inte);
 
       }
+
     }
+
   }
 
   login(username:string, password:string) {
@@ -151,7 +149,7 @@ export class AuthService {
 
 
   private storeRefreshToken(token:RefreshToken, accessToken:string) {
-    this.tokenRest.save(token, accessToken).subscribe(
+    this.saveTokenSub = this.tokenRest.save(token, accessToken).subscribe(
       e=> {
         console.log('store refreshToken success !');
       },
@@ -163,9 +161,9 @@ export class AuthService {
 
 
   private handleError(error:Response) {
-    const m=error.json();
-    const j=m.error_description;
-    return Observable.throw(j|| 'Server error');
+    const m = error.json();
+    const j = m.error_description;
+    return Observable.throw(j || 'Server error');
   }
 
   /**
@@ -177,7 +175,7 @@ export class AuthService {
 
     let access_token:string = this._access_token.getValue();
 
-    this.tokenRest.get(CurrentLoginName(), access_token)
+    this.getNewTokenSub = this.tokenRest.get(CurrentLoginName(), access_token)
       .switchMap(e=> {
         let t:string;
         if (this._refresh_token.getValue()) {
@@ -235,9 +233,32 @@ export class AuthService {
   }
 
 
+  //因为要不断的 更新new token,所以,save token 和 getNewTtokenSub ,只要在(refreshToken的时间内)
+  // 不能取消。需要一直运行。
   ngOnDestroy() {
-    this.refreshSubscription.unsubscribe();
 
+    /**
+     *  if (!Object.is(this.getNewTokenSub, undefined)) {
+        this.getNewTokenSub.unsubscribe();
+      }
+     *
+     *
+     *
+     *
+     *
+     */
+
+    if (tokenExpired()) {
+
+      if (!Object.is(this.saveTokenSub, undefined)) {
+        this.saveTokenSub.unsubscribe();
+      }
+
+
+      if (!Object.is(this.refreshSubscription, undefined)) {
+      }
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
 }

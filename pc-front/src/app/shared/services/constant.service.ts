@@ -29,5 +29,7 @@ export class ConstantService{
   //access-token 过期时间为 5分钟
   public static accessTokenValiditySeconds:number=300;
 
+  public static emailActivate:string='resend-emailActivate';
+
 
 }

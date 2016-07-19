@@ -7,4 +7,5 @@
 export * from './username-remote';
 export * from './email-exist';
 export * from './phone-exist';
+export * from './companyName-remote';
 

@@ -1,0 +1,18 @@
+<div>
+  email 激活页面。
+</div>
+
+<div>
+  请查看邮件,激活电子邮箱,如未收到,请点击:
+  <button class="btn btn-link" (click)="resend()"
+          [disabled]="disableClickResend()|async">重新发送
+  </button>
+  <my-countdown [num]=num></my-countdown>
+</div>
+
+<div>
+  或者
+  <button class="btn btn-link" (click)="resignup()">重新注册</button>
+</div>
+
+

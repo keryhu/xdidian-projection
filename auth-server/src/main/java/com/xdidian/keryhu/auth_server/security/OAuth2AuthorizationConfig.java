@@ -41,6 +41,8 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
 
   @Autowired // 自定义的jwt属性变量
   private JwtOfReadAndWrite jwtOfReadAndWrite;
+  @Autowired
+  private UserDetailsService userDetailsService;
 
 
   @Autowired
@@ -88,7 +90,8 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
     insertHack(authenticationManager);
     endpoints.authenticationManager(authenticationManager).tokenStore(this.tokenStore())
         .accessTokenConverter(jwtAccessTokenConverter())
-    // .userDetailsService(userDetailsService)
+        //就算自定义的 authenticationManager，也要加上下面这个 userDetailsService，否则无法 更新 refreshToken
+        .userDetailsService(userDetailsService)
     ;
   }
 

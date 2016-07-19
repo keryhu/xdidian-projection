@@ -59,12 +59,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     UsernamePasswordAuthenticationToken token =
         (UsernamePasswordAuthenticationToken) authentication;
     String name = token.getName();
-
-    UserDetails user = userDetailsService.loadUserByUsername(name);
     
+    UserDetails user = userDetailsService.loadUserByUsername(name);
+        
     //用户点击 登录按钮后，如果email未激活，优先报错处理
     AuthUserDto dto = userService.findByIdentity(name).get();
-
+    
     if (!dto.isEmailStatus()) {
       err=messageSource.getMessage("message.email.notActivated", null, LocaleContextHolder.getLocale());
       throw new EmailNotActivatedException(err);

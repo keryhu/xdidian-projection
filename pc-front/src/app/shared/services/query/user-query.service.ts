@@ -42,6 +42,22 @@ export class UserQueryService {
 
   }
 
+  companyNameExist(name:string):Observable<boolean>{
+
+    const url='/user-account/users/query/isCompanyNameExist';
+    const params = new URLSearchParams();
+    params.set('companyName', name);
+
+    return this.http.get(url,{search:params})
+      .map((res:Response)=>{
+        return res.json();
+      })
+      .catch(this.handleError);
+  }
+
+
+
+
 
 
   private handleError(error:Response) {

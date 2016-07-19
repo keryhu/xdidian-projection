@@ -11,6 +11,7 @@ import {PropertySignupRoute} from './components/signup/property';
 import {PropertyHomeRoute} from './components/property/home';
 import {LoginRoute} from "./components/login/login.route";
 import {AccessDeniedRoutes} from "./shared/components/access-denied/access-denied.route";
+import {EmailActivaRoute} from "./shared/components/email-activate/email-activate.route";
 
 
 const APP_ROUTES:RouterConfig = [
@@ -19,6 +20,7 @@ const APP_ROUTES:RouterConfig = [
   ...PropertyHomeRoute,
   ...LoginRoute,
   ...AccessDeniedRoutes,
+  ...EmailActivaRoute,
   ...NotFoundRoutes
 ];
 

@@ -1,7 +1,9 @@
 const webpack = require('webpack');
 const helpers = require('./helpers');
 
+
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
+
 
 module.exports = {
   entry: {
@@ -28,7 +30,7 @@ module.exports = {
     loaders: [
       {
         test: /\.ts$/,
-        loader: 'awesome-typescript-loader',
+        loaders: ['awesome-typescript-loader', 'angular2-template-loader'],
         exclude: [/\.spec\.ts$/]
       },
       {test: /\.css$/, loader: 'raw-loader'},
@@ -53,7 +55,7 @@ module.exports = {
     new ForkCheckerPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(true),
     new webpack.optimize.CommonsChunkPlugin({
-      name: helpers.reverse(['polyfills', 'vendor'])
+      name: ['polyfills', 'vendor'].reverse()
     })
   ],
 

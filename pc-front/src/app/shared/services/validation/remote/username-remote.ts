@@ -33,6 +33,7 @@ export default function UsernameRemoteValidator(control:FormControl) {
 
     })
   }
+
   //用于登录的时候,验证手机号是否已经注册,如果未注册,则报错。
   else if (StringFormatValidator.phoneOfBoolean(control.value)) {
     return new Observable((obs:any)=> {

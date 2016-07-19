@@ -3,8 +3,6 @@ package com.xdidian.keryhu.pc_gateway.rest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rx.Observable;
-
 /**
  * @Description : 附属的rest设置
  * @date : 2016年6月18日 下午9:10:56

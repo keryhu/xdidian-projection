@@ -8,11 +8,10 @@ import {Injectable} from '@angular/core';
 import {RefreshToken} from "../../model/refresh-token";
 import {ConstantService} from "../constant.service";
 import {URLSearchParams, Http, Headers} from "@angular/http";
-import {RequestService} from "./request.service";
 
 @Injectable()
 export class TokenRest {
-  constructor(private http:Http, private request:RequestService) {
+  constructor(private http:Http) {
 
   }
 

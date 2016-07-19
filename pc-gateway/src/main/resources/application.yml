@@ -47,7 +47,7 @@ security:
   
 zuul:
   routes:
-    property-register: /property-register/**
+    property-signup: /property-signup/**
     user-account: /user-account/**
     auth-server: /auth-server/**
     email-activate: /email-activate/**

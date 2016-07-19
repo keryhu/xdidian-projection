@@ -10,7 +10,7 @@ import {AuthService} from "../../shared/services/auth/auth.service";
 import {Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {IpBlockStatus} from "../../shared/services/query/ip-block.service";
-import {BehaviorSubject} from "rxjs/Rx";
+import {BehaviorSubject, Subscription} from "rxjs/Rx";
 import {StringFormatValidator} from "../../shared/services/validation/string-format.validator";
 import {UserQueryService} from "../../shared/services/query/user-query.service";
 import UsernameRemoteValidator from "../../shared/services/validation/remote/username-remote";
@@ -29,6 +29,8 @@ export class LoginComponent implements OnInit,OnDestroy {
   private _blockMsg = new BehaviorSubject('');
   private _afterLoginMsg = new BehaviorSubject('');
   private loginForm:FormGroup;
+  private loginSub:Subscription;
+  private ipBlockSub:Subscription;
 
   private username = new FormControl('',  [Validators.required, StringFormatValidator.emailOrPhone],
     //异步验证必须单独分开一个数组,多个状态可以合并到一个数组里。
@@ -51,21 +53,14 @@ export class LoginComponent implements OnInit,OnDestroy {
     });
 
     this.setTitle();
-
   }
-
-
-  func() {
-    console.log('现在时间是: ' + Date.now());
-  }
-
 
   public setTitle() {
     this.titileService.setTitle('新地点登录页面');
   }
 
   checkIpBlock() {
-    this.ipBlockStauts.query().subscribe(
+    this.ipBlockSub=this.ipBlockStauts.query().subscribe(
       e=> {
         this._ipBlock.next(e.blockStatus);
         if (e.blockStatus) {
@@ -92,7 +87,7 @@ export class LoginComponent implements OnInit,OnDestroy {
 
   onSubmit(data) {
 
-    this.authService.login(data.username, data.password)
+    this.loginSub=this.authService.login(data.username, data.password)
       .subscribe(
         r=> {
           if (r) {
@@ -109,6 +104,13 @@ export class LoginComponent implements OnInit,OnDestroy {
 
   ngOnDestroy() {
 
+    if(!Object.is(this.loginSub,undefined)){
+      this.loginSub.unsubscribe();
+    }
+
+    if(!Object.is(this.ipBlockSub,undefined)){
+      this.ipBlockSub.unsubscribe();
+    }
   }
 
 }

@@ -10,14 +10,25 @@ import '@angular/router';
 import '@angularclass/webpack-toolkit';
 import '@angularclass/request-idle-callback';
 
+// RxJS
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
 
+import 'rxjs/Rx';
 
-import "rxjs/Rx";
-
+//因为引用的原生的bootstrap,所以必须引入jquery
 require("expose?$!expose?jQuery!jquery");
-require('bootstrap-loader');
-require("!style!css!toastr/build/toastr.css");
+//require("!style!css!toastr/build/toastr.css");
+
+import 'bootstrap-loader';
+import 'ng2-bootstrap';
 
 if ('production' === ENV) {
+  // Production
+
+
 } else {
+  // Development
+  require('angular2-hmr');
+
 }

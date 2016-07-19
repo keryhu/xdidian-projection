@@ -10,10 +10,6 @@ function root(args) {
   return path.join.apply(path, [_root].concat(args));
 }
 
-function reverse(arr) {
-  return arr.reverse();
-}
 
-exports.reverse = reverse;
 exports.hasProcessFlag = hasProcessFlag;
 exports.root = root;

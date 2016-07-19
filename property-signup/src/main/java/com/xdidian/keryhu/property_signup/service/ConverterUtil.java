@@ -55,7 +55,7 @@ public class ConverterUtil {
     //将email格式都转为小写。
     dto.setEmail(x.getEmail().toLowerCase());
     dto.setEmailToken(UUID.randomUUID().toString());
-    dto.setReregisterToken(UUID.randomUUID().toString());
+    dto.setResignupToken(UUID.randomUUID().toString());
     dto.setResendToken(UUID.randomUUID().toString());
 
     return dto;
