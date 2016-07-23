@@ -30,6 +30,10 @@ export class ConstantService{
   public static accessTokenValiditySeconds:number=300;
 
   public static emailActivate:string='resend-emailActivate';
+  public static activateSuccess:string='activateSuccess';
+
+  //点击resend一次后的,冷却时间,单位为秒。
+  public static clickCoolingSeconds:number=140;
 
 
 }

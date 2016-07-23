@@ -1,0 +1,22 @@
+.input-error { border-left:5px solid #f00;}
+.ng-valid  { border-left:5px solid #0f0;}
+
+
+.error-message {
+  color: #F44336;
+  font-weight:900;
+  margin: 10px
+}
+
+.resend-info{
+  margin: 10px 10px ;
+}
+
+.countdown{
+  margin-left: 15px;
+}
+
+.btn{
+  margin-left: 20px;
+}
+

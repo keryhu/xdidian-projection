@@ -40,6 +40,7 @@ public class MongoUserLoader {
       user.addRole(Role.ROLE_ADMIN);
       // 因为是管理员，所以默认设置email已经激活
       user.setEmailStatus(true);
+      user.setPhoneStatus(true);
       repository.save(user);
     }
 

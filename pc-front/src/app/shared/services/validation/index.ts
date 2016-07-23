@@ -5,3 +5,5 @@
  */
 
 export * from './string-format.validator';
+export * from './redirect-byRole';
+export * from './token-validator';

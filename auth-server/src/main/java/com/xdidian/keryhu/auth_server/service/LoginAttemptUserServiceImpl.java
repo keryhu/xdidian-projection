@@ -19,7 +19,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date : 2016年6月18日 下午8:06:44
  * @author : keryHu keryhu@hotmail.com
  */
+
 @Component("loginAttemptUserService")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
@@ -42,14 +42,19 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
 
 
   /**
+   * 
    * 用户登陆失败，促发的事件，并且传递参数用户ip，和userid，此种情况是userId不为空
-   * </p>
+   * 
    * 如果IP不存在于数据库，说明是第一次登陆，那么所有的基本信息都需要新建 如果IP存在于数据库，首先判断清零时间是否到
+   * 
    */
+
+
   @Override
   public void loginFail(String ip, String loginName) {
     // TODO Auto-generated method stub
     // 如果IP不存在于数据库
+
     log.info(" login fail ");
     if (!repository.findByRemoteIp(ip).isPresent()) {
       LoginAttemptUser loginAttemptUser = new LoginAttemptUser();
@@ -66,10 +71,12 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
       });
     }
     // 否则ip存在的情况下
+
     else {
       repository.findByRemoteIp(ip).ifPresent(e -> {
 
         // 如果FirstAttemptTime 为null的话，就设置为当前时间
+
         if (e.getFirstAttemptTime() == null) {
           e.setFirstAttemptTime(LocalDateTime.now());
         }
@@ -78,12 +85,13 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
         // 就可以继续登录平台，过了3个小时，输入次数恢复到0，第一次输错时间恢复为null
 
         boolean isPeriodExpired = LocalDateTime.now()
-            .isAfter(e.getFirstAttemptTime().plusHours(loginAttemptProperties.getTimeOfPerid()));
+            .isAfter(e.getFirstAttemptTime().plusHours(loginAttemptProperties.getHoursOfPerid()));
         if (isPeriodExpired) {
           // 如果已经到了恢复时间，那么就恢复到初始值＋第一次输错的时间和次数
           e.setFirstAttemptTime(LocalDateTime.now());
           e.setAlreadyAttemptTimes(1);
         } else {
+
           // 如果输错次数已经等同于规定的最大次数－1
 
           if (e.getAlreadyAttemptTimes() >= loginAttemptProperties.getMaxAttemptTimes() - 1) {
@@ -131,18 +139,9 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
   public boolean isBlocked(String ip) {
 
     // 锁定的状态下，看是否超时，如果没有超时则直接返回true，如果超时了，且当前处于锁定状态,则执行恢复初始化状态，且返回false，默认返回false
+    
     return repository.findByRemoteIp(ip).filter(e -> e.isLocked()).map(e -> {
-      // 获取用户锁定的时间点
-      LocalDateTime lockedTime = e.getLockedTime();
-      log.info(new StringBuffer("数据库中ip账户锁定的时间点是 : ").append(lockedTime).append(" , 目前的ISO时间是 : ")
-          .append(LocalDateTime.now()).append(" , 预计什么时间点过期 : ")
-          .append(lockedTime.plusHours(loginAttemptProperties.getTimeOfLock()))
-          .append(" , 目前锁定时间是否过期 : ").append(isLockedTimeOut(e)).append(" , 距离上次锁定时间到现在已经过去了多久 : ")
-          .append(Duration.between(lockedTime, LocalDateTime.now()).toMinutes())
-          .append(" , 距离解锁时间，还有多久 ？ ").append(loginAttemptProperties.getTimeOfLock() * 60
-              - Duration.between(lockedTime, LocalDateTime.now()).toMinutes())
-          .toString());
-
+     
       // 如果没有超时，且locded为true，那么直接返回true，不需要做其它任何动作
       if (!isLockedTimeOut(e)) {
         return true;
@@ -167,6 +166,7 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
   /**
    * 将loginName增加到数据库的方法。
    */
+  
   private void addLoginName(String loginName, LoginAttemptUser loginAttemptUser) {
 
     boolean loginNameEmpty = loginName == null || loginName.isEmpty();
@@ -182,7 +182,7 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
   private boolean isLockedTimeOut(LoginAttemptUser loginAttemptUser) {
 
     return LocalDateTime.now().isAfter(
-        loginAttemptUser.getLockedTime().plusHours(loginAttemptProperties.getTimeOfLock()));
+        loginAttemptUser.getLockedTime().plusHours(loginAttemptProperties.getHoursOfLock()));
 
   }
 
@@ -203,9 +203,9 @@ public class LoginAttemptUserServiceImpl implements LoginAttemptUserService {
   @Override
   public String getBlockMsg() {
     // TODO Auto-generated method stub
-    return  new StringBuffer("您 ").append(loginAttemptProperties.getTimeOfPerid())
+    return new StringBuffer("您 ").append(loginAttemptProperties.getHoursOfPerid())
         .append(" 小时内，登录失败 ").append(loginAttemptProperties.getMaxAttemptTimes())
-        .append(" 次，帐号被冻结 ").append(loginAttemptProperties.getTimeOfLock()).append(" 个小时！")
+        .append(" 次，帐号被冻结 ").append(loginAttemptProperties.getHoursOfLock()).append(" 个小时！")
         .toString();
   }
 }

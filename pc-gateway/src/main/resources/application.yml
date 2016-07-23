@@ -50,7 +50,7 @@ zuul:
     property-signup: /property-signup/**
     user-account: /user-account/**
     auth-server: /auth-server/**
-    email-activate: /email-activate/**
+    account-activate: /account-activate/**
     #password-reset: /recover/**
   #add-proxy-headers: true
     

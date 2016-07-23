@@ -60,10 +60,12 @@ public interface UserService {
    */
   public boolean emailStatus(final String loginName);
 
+
   /**
-   * 根据登录账号email或者phone，查找数据库系统中对应的email 用于login 时rest 需求
+   * 根据loginName查看所在的user数据库的phoneStatus状态，
    */
-  public String loginNameToEmail(final String loginName);
+  public boolean phoneStatus(final String loginName);
+
 
 
 }

@@ -20,6 +20,7 @@
 		<java.version>1.8</java.version>
 		<lombok.version>1.16.8</lombok.version>
 		<rxjava.version>1.1.7</rxjava.version>
+		<google.json>2.7</google.json>
 		<jackson.datatype.jsr310>2.7.3</jackson.datatype.jsr310>
 	</properties>
 
@@ -31,7 +32,7 @@
 		<module>property-signup</module>
 		<module>mail-server</module>
 		<module>pc-gateway</module>
-		<module>email-activate</module>
+		<module>account-activate</module>
 		<module>password-reset</module>
 	</modules>
 
@@ -54,6 +55,11 @@
 			<groupId>io.reactivex</groupId>
 			<artifactId>rxjava</artifactId>
 			<version>${rxjava.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${google.json}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

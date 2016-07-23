@@ -51,8 +51,9 @@ jwtOfReadAndWrite:
    #设定固定清零时间为6个小时，最大的尝试失败的次数为10次，10次后，锁定ip 24小时。  
 LoginAttempt:
   maxAttemptTimes: 10
-  timeOfPerid: 6
-  timeOfLock: 24
+  hours-of-lock: 24
+  hours-of-perid: 6
+  
   
   
 

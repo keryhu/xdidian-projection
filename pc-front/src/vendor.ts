@@ -18,7 +18,8 @@ import 'rxjs/Rx';
 
 //因为引用的原生的bootstrap,所以必须引入jquery
 require("expose?$!expose?jQuery!jquery");
-//require("!style!css!toastr/build/toastr.css");
+require('bootstrap-loader');
+require("!style!css!toastr/build/toastr.css");
 
 import 'bootstrap-loader';
 import 'ng2-bootstrap';

@@ -9,3 +9,4 @@ This repository is an example application for angular2 tutorial.
 2 完成了前台login页面的username 远程验证，email未激活和用户名，密码不匹配的验证。
 
 3 前台404，403，401配置。401自动转到login页面。（通过Guard实现）
+4 前台注册，登录，输入验证和后台验证，前台显示错误提示。

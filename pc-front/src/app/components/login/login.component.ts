@@ -14,13 +14,14 @@ import {BehaviorSubject, Subscription} from "rxjs/Rx";
 import {StringFormatValidator} from "../../shared/services/validation/string-format.validator";
 import {UserQueryService} from "../../shared/services/query/user-query.service";
 import UsernameRemoteValidator from "../../shared/services/validation/remote/username-remote";
+import {RedirectByRole} from "../../shared/services/validation/redirect-byRole";
 
 @Component({
   selector: 'login',
   template: require('./login.component.html'),
   styles: [require('./login.component.css')],
   directives: [REACTIVE_FORM_DIRECTIVES],
-  providers: [IpBlockStatus,UserQueryService]
+  providers: [IpBlockStatus, UserQueryService,RedirectByRole]
 })
 
 export class LoginComponent implements OnInit,OnDestroy {
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit,OnDestroy {
   private loginSub:Subscription;
   private ipBlockSub:Subscription;
 
-  private username = new FormControl('',  [Validators.required, StringFormatValidator.emailOrPhone],
+  private username = new FormControl('', [Validators.required, StringFormatValidator.emailOrPhone],
     //异步验证必须单独分开一个数组,多个状态可以合并到一个数组里。
     [UsernameRemoteValidator]);
 
@@ -40,7 +41,7 @@ export class LoginComponent implements OnInit,OnDestroy {
     StringFormatValidator.passwordContainsTwoTypes]);
 
   constructor(private authService:AuthService, private router:Router, private titileService:Title,
-              private ipBlockStauts:IpBlockStatus) {
+              private ipBlockStauts:IpBlockStatus,private redirectByRole:RedirectByRole) {
 
   }
 
@@ -60,7 +61,7 @@ export class LoginComponent implements OnInit,OnDestroy {
   }
 
   checkIpBlock() {
-    this.ipBlockSub=this.ipBlockStauts.query().subscribe(
+    this.ipBlockSub = this.ipBlockStauts.query().subscribe(
       e=> {
         this._ipBlock.next(e.blockStatus);
         if (e.blockStatus) {
@@ -82,12 +83,13 @@ export class LoginComponent implements OnInit,OnDestroy {
 
   getAfterLoginMsg() {
     return this._afterLoginMsg;
+
   }
 
 
   onSubmit(data) {
 
-    this.loginSub=this.authService.login(data.username, data.password)
+    this.loginSub = this.authService.login(data.username, data.password)
       .subscribe(
         r=> {
           if (r) {
@@ -95,20 +97,44 @@ export class LoginComponent implements OnInit,OnDestroy {
           }
         },
         err=> {
+          //如果返回的是 resendToken,那么取出2个token的value
+          if (err.includes('resendToken')) {
+            const m = JSON.parse(err);
+            //转到email激活的页面。
+            this.router.navigate(['/emailActivate'],{
+              queryParams: {
+                email: m.email, resendToken: m.resendToken, resignupToken: m.resignupToken
+              }
+            })
+
+          }
+         else if(err.includes('ROLE_')){
+            const m=JSON.parse(err);
+            console.log(m);
+            //根据role转到相应的注册页面
+            if (Array.isArray(m)) {
+              //分配到登录页面。
+              this.redirectByRole.toSignup(e);
+            }
+
+          }
+
+
           console.log(err);
           this._afterLoginMsg.next(err);
+
         }
-      );
+      )
   }
 
 
   ngOnDestroy() {
 
-    if(!Object.is(this.loginSub,undefined)){
+    if (!Object.is(this.loginSub, undefined)) {
       this.loginSub.unsubscribe();
     }
 
-    if(!Object.is(this.ipBlockSub,undefined)){
+    if (!Object.is(this.ipBlockSub, undefined)) {
       this.ipBlockSub.unsubscribe();
     }
   }

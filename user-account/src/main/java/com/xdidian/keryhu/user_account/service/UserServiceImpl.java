@@ -1,7 +1,6 @@
 package com.xdidian.keryhu.user_account.service;
 
 import com.xdidian.keryhu.user_account.domain.User;
-import com.xdidian.keryhu.user_account.exception.EmailNotFoundException;
 import com.xdidian.keryhu.user_account.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -59,6 +58,7 @@ public class UserServiceImpl implements UserService {
   /**
    * 这里的id指，email、phone，或user中的id，3个里任何一种，来查看数据库的user
    */
+  
   @Override
   public Optional<User> findById(final String id) {
     // TODO Auto-generated method stub
@@ -88,6 +88,7 @@ public class UserServiceImpl implements UserService {
   /**
    * 保存需要被保存的user 对象到mongo数据库 ,因为此方法不对外公开，所以所有的合法性验证都放在上一步的dto处理
    */
+  
   @Override
   @Transactional
   public User save(final User user) {
@@ -99,6 +100,7 @@ public class UserServiceImpl implements UserService {
   /**
    * 查看数据库中是否有此email
    */
+  
   @Override
   public boolean emailIsExist(final String email) {
     // TODO Auto-generated method stub
@@ -108,6 +110,7 @@ public class UserServiceImpl implements UserService {
   /**
    * 查看手机号是否存在
    */
+  
   @Override
   public boolean phoneIsExist(final String phone) {
     // TODO Auto-generated method stub
@@ -117,6 +120,7 @@ public class UserServiceImpl implements UserService {
   /**
    * 查询数据库中是否有此公司名字
    */
+  
   @Override
   public boolean companyNameIsExist(final String companyName) {
     // TODO Auto-generated method stub
@@ -127,6 +131,7 @@ public class UserServiceImpl implements UserService {
   /**
    * 删除传递进来的user对象
    */
+  
   @Transactional
   @Override
   public void deleteUser(final User user) {
@@ -139,6 +144,7 @@ public class UserServiceImpl implements UserService {
   /**
    * 如果loginName找不到对于的user 数据，返回false，否则返回查询到的 emailStatus激活状态
    */
+  
   @Override
   public boolean emailStatus(final String loginName) {
     // TODO Auto-generated method stub
@@ -147,15 +153,14 @@ public class UserServiceImpl implements UserService {
 
 
   /**
-   * 用于login服务器，登录时，根据loginName查询系统中存在的email账户
+   * 如果loginName找不到对于的user 数据，返回false，否则返回查询到的 phoneStatus激活状态
    */
+  
   @Override
-  public String loginNameToEmail(final String loginName) {
+  public boolean phoneStatus(final String loginName) {
     // TODO Auto-generated method stub
-    return findById(loginName).map(e -> e.getEmail())
-        .orElseThrow(() -> new EmailNotFoundException("您要查找的email不存在！"));
-
+    return findByLoginName(loginName).map(e -> e.isPhoneStatus()).orElse(false);
   }
-
+  
 
 }

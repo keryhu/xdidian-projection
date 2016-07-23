@@ -23,9 +23,9 @@ spring:
     stream:
       bindings:   
         emailActivatedInputChannel:
-          destination: emailActivated
-          content-type: application/x-java-object; type=com.xdidian.keryhu.domain.EmailActivatedDto;
-        resendInputChannel:
+          destination: emailActivated                   
+          content-type: application/x-java-object; type=com.xdidian.keryhu.domain.AccountActivatedDto;
+        resendEmailInputChannel:
           destination: resendEmailActivate
-          content-type: application/x-java-object; type=com.xdidian.keryhu.domain.EmailActivatedDto;
+          content-type: application/x-java-object; type=com.xdidian.keryhu.domain.AccountActivatedDto;
           

@@ -73,6 +73,10 @@ public class User implements Serializable {
   // 邮箱是否被激活 ，之所以要加上index索引，方便定时清理未激活的账户
   @Indexed
   private boolean emailStatus;
+  
+  //手机是否被激活，之所以要加上index索引，方便定时清理未激活的账户
+  @Indexed
+  private boolean phoneStatus;
 
 
   // 用户新注册时候的时候，自动生成Id,其它的变量都为null
@@ -85,6 +89,7 @@ public class User implements Serializable {
     this.directName = null;
     this.registerTime = null;
     this.emailStatus = false;
+    this.phoneStatus=false;
     // roles 已经设置了默认值。
   }
 

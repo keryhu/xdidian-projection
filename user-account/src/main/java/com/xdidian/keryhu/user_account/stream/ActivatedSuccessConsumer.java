@@ -6,6 +6,9 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 
 import com.xdidian.keryhu.user_account.service.UserService;
+import static com.xdidian.keryhu.util.StringValidate.isEmail;
+import static com.xdidian.keryhu.util.StringValidate.isPhone;
+
 
 
 /**
@@ -22,13 +25,19 @@ public class ActivatedSuccessConsumer {
   private UserService userService;
 
   @StreamListener(ActivatedSuccessInputChannel.NAME)
-  public void removeUser(final String email) {
+  public void activateSuccess(final String id) {
 
-    if (!(email == null || email.isEmpty())) {
-      userService.findByLoginName(email).ifPresent(e -> {
-        e.setEmailStatus(true);
+    if (!(id == null || id.isEmpty())) {
+      userService.findByLoginName(id).ifPresent(e -> {
+        if(isEmail(id)){
+          e.setEmailStatus(true);
+        }
+        if(isPhone(id)){
+          e.setPhoneStatus(true);
+        }
+        
         userService.save(e);
-        log.info("user-account 成功删除了此user 的 id is ：{} ", e);
+        log.info("user-account 成功激活 {} 的user  ", id);
       });
 
     }

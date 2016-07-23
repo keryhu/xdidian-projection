@@ -35,10 +35,10 @@ public class LoginAttemptProperties implements Serializable {
   private int maxAttemptTimes;
 
   // 设置固定的LoginAttemptTimes 清零时间，单位为：“小时” ，正数倍
-  private int timeOfPerid;
+  private int hoursOfPerid;
 
   // 设置锁定ip，登陆的小时数。
-  private int timeOfLock;
+  private int hoursOfLock;
 
 
 

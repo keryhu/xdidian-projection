@@ -41,7 +41,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
   @Override
   public void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests().and().authorizeRequests().expressionHandler(webExpressionHandler()) // 权限排序
-        .antMatchers("/favicon.ico", "/webjars/**").permitAll().anyRequest().authenticated();
+        .antMatchers("/favicon.ico", "/webjars/**","/css/**","/test").permitAll().anyRequest().authenticated();
 
   }
 

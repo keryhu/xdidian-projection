@@ -3,16 +3,54 @@
 </div>
 
 <div>
-  请查看邮件,激活电子邮箱,如未收到,请点击:
+  请查看邮件,激活电子邮箱.
+</div>
+
+<div>
+  <h3>输入邮箱中验证码,激活邮箱。</h3>
+
+  <form class="form-inline" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+
+    <div class="form-group">
+      <label for="token" class="sr-only">验证码</label>
+      <input type="text" class="form-control" [class.input-error]="token.touched&&token.errors"
+             formControlName="token" placeholder="输入邮箱中验证码">
+      <div class="error-message" *ngIf="token.touched&&token.errors">
+        <label *ngIf="token.errors.required">不能为空</label>
+        <label *ngIf="token.errors.pattern">必须6位数字</label>
+      </div >
+
+      <div class="error-message" *ngIf="getTokenError()|async">{{getTokenError()|async}}</div>
+
+    </div>
+
+    <button type="submit" [disabled]="!form.valid" class="btn btn-primary">提交</button>
+  </form>
+
+</div>
+
+<div>
+
+  <div class="resend-info">
+  如未收到,请点击:
   <button class="btn btn-link" (click)="resend()"
           [disabled]="disableClickResend()|async">重新发送
   </button>
-  <my-countdown [num]=num></my-countdown>
+
+  <my-countdown class="countdown" ></my-countdown>
+
+  </div>
+
+  <div class="error-message" *ngIf="getResendError()|async">{{getResendError()|async}}</div>
+
+
 </div>
 
 <div>
   或者
   <button class="btn btn-link" (click)="resignup()">重新注册</button>
 </div>
+
+<div class="error-message" *ngIf="getResignupError()|async">{{getResignupError()|async}}</div>
 
 

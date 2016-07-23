@@ -22,12 +22,14 @@ public class AuthUserDto implements Serializable {
   private static final long serialVersionUID = -4128086432158731873L;
 
   private String id;
+  private String email;    //之所以要加上email，是因为login的时候，如果emailStatus为false，需要知道具体的eamil
   private String password;
   private List<Role> roles;
   private boolean emailStatus;
 
   public AuthUserDto(){
     this.id=null;
+    this.email=null;
     this.password=null;
     this.roles=null;
     this.emailStatus=false;

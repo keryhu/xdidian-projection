@@ -20,7 +20,7 @@ public class ConverterUtil {
    * 将User 转为 AuthUser 对象。
    */
   public Function<User, AuthUserDto> userToAuthUser =
-      x -> new AuthUserDto(x.getId(), x.getPassword(), x.getRoles(), x.isEmailStatus());
+      x -> new AuthUserDto(x.getId(),x.getEmail(), x.getPassword(), x.getRoles(), x.isEmailStatus());
 
 
   /**

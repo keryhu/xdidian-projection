@@ -118,6 +118,9 @@ export class AuthService {
     localStorage.removeItem('token');
     this.router.navigate(['']);
     this.refreshSubscription.unsubscribe();
+    if (!Object.is(this.saveTokenSub, undefined)) {
+      this.saveTokenSub.unsubscribe();
+    }
 
 
   }
@@ -196,12 +199,21 @@ export class AuthService {
             console.log('stroe new access_token success ! ');
 
           }
+
+          if (!Object.is(this.saveTokenSub, undefined)) {
+            this.saveTokenSub.unsubscribe();
+          }
         },
         err=> {
           //当更新失败后,自动切换到登录页面
           console.log('更新refreshToken 失败!');
           this.router.navigate(['/login']);
           this.refreshSubscription.unsubscribe();
+
+          if (!Object.is(this.saveTokenSub, undefined)) {
+            this.saveTokenSub.unsubscribe();
+          }
+
           this._loginedIn.next(false);
         }
       )
@@ -237,16 +249,6 @@ export class AuthService {
   // 不能取消。需要一直运行。
   ngOnDestroy() {
 
-    /**
-     *  if (!Object.is(this.getNewTokenSub, undefined)) {
-        this.getNewTokenSub.unsubscribe();
-      }
-     *
-     *
-     *
-     *
-     *
-     */
 
     if (tokenExpired()) {
 
@@ -254,6 +256,9 @@ export class AuthService {
         this.saveTokenSub.unsubscribe();
       }
 
+      if (!Object.is(this.getNewTokenSub, undefined)) {
+        this.getNewTokenSub.unsubscribe();
+      }
 
       if (!Object.is(this.refreshSubscription, undefined)) {
       }

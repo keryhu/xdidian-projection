@@ -1,10 +1,9 @@
 package com.xdidian.keryhu.auth_server.security;
 
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Description : TODO(使用自定义的CustomAuthenticationProvider，来判断用户的用户名，密码是否输入的正确，和记录登录失败 和成功的事件。
- * 处理的顺序，用户名是否存在－>email是否激活－>密码是否匹配。)
+ * 处理的顺序，用户名是否存在－>email是否激活－>密码是否匹配。
+ * 因为前期注册的用户，没有硬性加上手机号的验证，所以在登录这一块，手机的验证，不作限制。)
  * @date : 2016年7月14日 下午4:28:50
  * @author : keryHu keryhu@hotmail.com
  */
@@ -41,13 +41,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
   private final UserServiceImpl userService;
   private final HttpServletRequest request;
   private final LoginSuccessProducer sendSource;
-  private final MessageSource messageSource;
   private final Utils utils;
   private final LoginAttemptUserService loginAttemptUserService;
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-    String err="";
+    
 
     String ip=utils.getIp(request);
     // 为了优先检查这个 ，放在这里，而不是 UserDetailsService，因为这个 优先运行。
@@ -65,9 +64,32 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     //用户点击 登录按钮后，如果email未激活，优先报错处理
     AuthUserDto dto = userService.findByIdentity(name).get();
     
+    //当email未激活的时候，发送含有email，resendtoken resignuptoken 的message出去，让account-activate
+    //来处理后台接口，前台收到含有 ，resendtoken resignuptoken 的 Json 出去，页面收到后，导航到相应的页面
+    
+    //前台ajax查询email如果未激活，那么还需要查询account-activate里面，email有没有过期，如果过期了，那么就发出消息，删除
+    // user 数据库里面的该数据 和 account-activate 里面的数据，同时前台不报错。
+    
     if (!dto.isEmailStatus()) {
-      err=messageSource.getMessage("message.email.notActivated", null, LocaleContextHolder.getLocale());
-      throw new EmailNotActivatedException(err);
+      
+      String result=userService.getToken(dto.getEmail());
+      
+      log.info(result);
+      
+      //如果激活没有过期，去的2个token，返回给前台
+            
+      if(result.contains("resendToken")&&result.contains("resignupToken")){
+        throw new EmailNotActivatedException(result);
+      }
+      
+      //如果已经过期，去的之前的roles，返回给前台
+      
+      else if(result.contains("ROLE_")){
+        
+        throw new EmailNotActivatedException(result);
+      }
+      
+     
     }
     
     String password = user.getPassword();

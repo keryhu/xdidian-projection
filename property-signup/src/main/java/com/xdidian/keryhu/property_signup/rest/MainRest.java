@@ -1,9 +1,7 @@
 package com.xdidian.keryhu.property_signup.rest;
 
 
-import com.xdidian.keryhu.domain.EmailActivatedDto;
-import com.xdidian.keryhu.property_signup.client.UserAccountClient;
-import com.xdidian.keryhu.property_signup.domain.HostProperty;
+import com.xdidian.keryhu.domain.AccountActivatedDto;
 import com.xdidian.keryhu.property_signup.domain.PropertyForm;
 import com.xdidian.keryhu.property_signup.service.ConverterUtil;
 import com.xdidian.keryhu.property_signup.service.UserService;
@@ -12,26 +10,25 @@ import com.xdidian.keryhu.property_signup.stream.SaveProducer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
-@EnableConfigurationProperties(HostProperty.class)
 public class MainRest {
 
-  private final HostProperty hostProperty;
 
   private final ConverterUtil converterUtil;
 
-  private final UserAccountClient userClient;
 
   private final UserService userService;
 
@@ -51,34 +48,23 @@ public class MainRest {
     // 验证输入信息的合法性
     userService.vlidateBeforSave(propertyForm);
 
-    EmailActivatedDto emailActivatedDto =
+    AccountActivatedDto dto =
         converterUtil.propertyFormToEmailActivatedDto.apply(propertyForm);
-    // 发送email激活的message出去。
-    emailActivatedProducer.send(emailActivatedDto);
+    // 发送email激活的message出去，包含（6位数字随机码email激活码，uuid的resend token和 resignup token，和email）。
+    emailActivatedProducer.send(dto);
 
 
     // 用户注册完，发送dto具体信息的message 给 user-account,用于保存
     saveproducer.send(converterUtil.propertyFormToRegisterDto.apply(propertyForm));
-
-    ModelAndView mav = new ModelAndView();
-
-    // 重新发送的url
-    String resend = new StringBuffer(hostProperty.getHostName())
-        .append(":8080/email-activate/email/resend?email=").append(propertyForm.getEmail())
-        .append("&token=").append(emailActivatedDto.getResendToken()).toString();
-
-    // 重新注册的url
-    String reregister = new StringBuffer(hostProperty.getHostName())
-        .append(":8080/email-activate/email/reregister?email=").append(propertyForm.getEmail())
-        .append("&token=").append(emailActivatedDto.getResignupToken()).toString();
-    // 注册完后，导航到的页面
-
-    String redirectUrl = new StringBuffer("redirect:").append(hostProperty.getHostName())
-        .append(":8080/register/result").toString();
+    log.info("注册完，发送保存信息给user－account");
    
-    mav.setViewName(redirectUrl);
     //因为接下来，需要前台记住，刚刚注册用户的email和发送的email token，所以注册成功后，返回这个对象
-    return ResponseEntity.ok(emailActivatedDto);
+    Map<String,String> map=new HashMap<String,String>();
+    map.put("email", dto.getId());
+    map.put("resendToken", dto.getResendToken());
+    map.put("resignupToken", dto.getResignupToken());
+    
+    return ResponseEntity.ok(map);
 
   }
 

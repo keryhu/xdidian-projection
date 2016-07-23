@@ -1,7 +1,7 @@
 package com.xdidian.keryhu.property_signup.service;
 
 
-import com.xdidian.keryhu.domain.EmailActivatedDto;
+import com.xdidian.keryhu.domain.AccountActivatedDto;
 import com.xdidian.keryhu.domain.PropertyRegisterDto;
 import com.xdidian.keryhu.property_signup.domain.ActivatedProperties;
 import com.xdidian.keryhu.property_signup.domain.PropertyForm;
@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.function.Function;
 
+import static com.xdidian.keryhu.util.GeneratorRandomNum.get;
 /**
  * @Description : 类型转换 不能使用 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
  * @date : 2016年6月18日 下午9:16:46
@@ -27,7 +28,8 @@ public class ConverterUtil {
 
   @Autowired
   private ActivatedProperties activatedProperties;
-
+  
+  
   /**
    * 将web前端提交的物业公司注册数据，转换为 dto，因为需要远程http，所以在传输之前，就先加密密码。
    */
@@ -35,26 +37,32 @@ public class ConverterUtil {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(11);
 
-    return new PropertyRegisterDto(x.getEmail(), x.getPhone(),
+    //将email格式专为小写。
+    return new PropertyRegisterDto(x.getEmail().toLowerCase(), x.getPhone(),
         passwordEncoder.encode(x.getPassword()), x.getCompanyName(), x.getDirectName());
   };
 
 
   /**
-   * 将注册完的物业公司对象PropertyForm，转为EmailActivatedDto,为了email激活
+   * 将注册完的物业公司对象PropertyForm，转为EmailActivatedDto,为了email激活，这个单独是为了email的激活，
+   * 手机的激活不是这个方法。
    */
 
-  public Function<PropertyForm, EmailActivatedDto> propertyFormToEmailActivatedDto = x -> {
-    EmailActivatedDto dto = new EmailActivatedDto();
+  public Function<PropertyForm, AccountActivatedDto> propertyFormToEmailActivatedDto = x -> {
+    AccountActivatedDto dto = new AccountActivatedDto();
     if (activatedProperties != null && activatedProperties.getExpiredTime() > 0) {
       LocalDateTime expireDate =
           LocalDateTime.now().plusHours(activatedProperties.getExpiredTime());
       dto.setExpireDate(expireDate);
 
     }
+    
+    //因为用的是通用版本的 AccountActivatedDto，所以是id 和token 对于email 和emailtoken，但是这个方法只是email'激活
+ 
     //将email格式都转为小写。
-    dto.setEmail(x.getEmail().toLowerCase());
-    dto.setEmailToken(UUID.randomUUID().toString());
+    dto.setId(x.getEmail().toLowerCase());
+    //只有需要手工输入的验证码，使用自建的6位随即数字组合。
+    dto.setToken(get(6));
     dto.setResignupToken(UUID.randomUUID().toString());
     dto.setResendToken(UUID.randomUUID().toString());
 

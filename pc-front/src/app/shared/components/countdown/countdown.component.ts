@@ -23,9 +23,8 @@ export class CountdownComponent implements OnInit,OnDestroy {
 
   private listenClickSub:Subscription;
   private countdownSub:Subscription;
-  //初始化倒计时的时间。
-  @ Input()
-  num:number;
+  private num:number;
+
 
   //显示倒计时 时间
   timeMsg:string;
@@ -46,6 +45,9 @@ export class CountdownComponent implements OnInit,OnDestroy {
     }
     //只有在click过期的情形下,才监听click事件。
     else {
+      if (!Object.is(this.countdownSub, undefined)) {
+        this.countdownSub.unsubscribe();
+      }
       this._clickStatus.next(false);
       this.listenClick();
     }
@@ -74,10 +76,12 @@ export class CountdownComponent implements OnInit,OnDestroy {
       e=> {
         if (Object.is(e, ConstantService.emailActivate)) {
           this._clickStatus.next(true);
+          localStorage.setItem('num', ConstantService.clickCoolingSeconds.toString());
+          this.num=ConstantService.clickCoolingSeconds;
           this.countdown();
         }
 
-        else{
+        else {
           this.countdownSub.unsubscribe();
         }
       }
@@ -92,8 +96,9 @@ export class CountdownComponent implements OnInit,OnDestroy {
 
   countdown() {
 
-    const source=Observable.interval(1000)
+    const source = Observable.interval(1000)
       .map(e=> {
+        console.log('2')
         this.num--;
         if (this.num >= 0) {
           localStorage.setItem('num', this.num.toString());
@@ -101,13 +106,20 @@ export class CountdownComponent implements OnInit,OnDestroy {
         else {
           localStorage.setItem('num', '-1');
           this._clickStatus.next(false);
+
+
+          //当倒计时结束后,刷新下页面, 让手工停止 这个倒计时运行
+          if (!Object.is(this.countdownSub, undefined)) {
+            this.countdownSub.unsubscribe();
+          }
         }
         return this.num;
       })
+      .share()
       .filter(x=>x >= 0);
 
 
-     this.countdownSub=source
+    this.countdownSub = source
       .subscribe(()=> {
         this.timeMsg = this.ms(this.num);
       })
@@ -117,20 +129,21 @@ export class CountdownComponent implements OnInit,OnDestroy {
   ngOnDestroy() {
 
     //当click时间过期的时候,执行:
-    if(!ClickNotExpired()){
+    if (!ClickNotExpired()) {
 
       //当注销,或者页面跳转的时候,自动将倒计时清零。
       localStorage.setItem('num', '-1');
-      if(!Object.is(this.countdownSub,undefined)){
+      if (!Object.is(this.countdownSub, undefined)) {
+        console.log('停止 countdown ')
         this.countdownSub.unsubscribe();
       }
 
     }
 
-
-    if(!Object.is(this.listenClickSub,undefined)){
+    if (!Object.is(this.listenClickSub, undefined)) {
       this.listenClickSub.unsubscribe();
     }
+
 
   }
 }

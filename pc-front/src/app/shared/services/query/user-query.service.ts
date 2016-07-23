@@ -56,6 +56,18 @@ export class UserQueryService {
   }
 
 
+  //查询email所在的状态有没有激活,如果已经激活,直接跳转login页面。
+  emailStatus(id:string):Observable<boolean>{
+    const url='/user-account/users/query/emailStatus';
+    const params = new URLSearchParams();
+    params.set('loginName', id);
+
+    return this.http.get(url,{search:params})
+      .map((res:Response)=>{
+        return res.json();
+      })
+      .catch(this.handleError);
+  }
 
 
 

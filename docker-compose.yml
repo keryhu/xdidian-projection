@@ -156,9 +156,9 @@ services:
       - eureka
       - config_server
 
-  email_activate:
-    image: email-activate:0.0.1-SNAPSHOT
-    container_name: email_activate
+  account_activate:
+    image: account-activate:0.0.1-SNAPSHOT
+    container_name: account_activate
     restart: always
     ports:
      - "8004:8004"

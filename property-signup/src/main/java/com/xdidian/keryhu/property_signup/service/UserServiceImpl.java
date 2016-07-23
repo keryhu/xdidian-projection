@@ -4,7 +4,6 @@ import com.xdidian.keryhu.property_signup.client.UserAccountClient;
 import com.xdidian.keryhu.property_signup.domain.PropertyForm;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -19,7 +18,6 @@ import static com.xdidian.keryhu.util.StringValidate.*;
  */
 @Component("userService")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Slf4j
 public class UserServiceImpl implements UserService {
 
   private final UserAccountClient userAccountClient;
@@ -30,7 +28,6 @@ public class UserServiceImpl implements UserService {
   @Override
   public void vlidateBeforSave(PropertyForm propertyForm) {
     // TODO Auto-generated method stub
-    log.info("需要验证的propertyForm is ： " + propertyForm);
     Assert.isTrue(isEmail(propertyForm.getEmail()), "email格式不正确！");
     Assert.isTrue(isPhone(propertyForm.getPhone()), "phone格式不正确！");
     Assert.isTrue(isPassword(propertyForm.getPassword()), "密码格式不正确！");
