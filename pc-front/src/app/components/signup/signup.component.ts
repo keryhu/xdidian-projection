@@ -16,6 +16,7 @@ import {Router} from "@angular/router";
 import {Subscription} from "rxjs/Rx";
 import CompanyNameRemote from "../../shared/services/validation/remote/companyName-remote";
 import PhoneRemote from "../../shared/services/validation/remote/phone-remote";
+import {ConstantService} from "../../shared/services/constant.service";
 
 
 @Component({
@@ -78,8 +79,11 @@ export class SignupComponent implements OnInit {
           //转到email激活的页面。
           this.router.navigate(['/emailActivate'],{
             queryParams:{
-              email:email,resendToken:resendToken,resignupToken:resignupToken}});
+              email:email,resendToken:resendToken,resignupToken:resignupToken,first:true}});
         }
+
+        //当注册成功后,自动开启"重新发送的" 倒计时。
+        localStorage.setItem('num', ConstantService.clickCoolingSeconds.toString());
 
 
       }

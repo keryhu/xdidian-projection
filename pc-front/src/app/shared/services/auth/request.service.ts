@@ -11,7 +11,7 @@ import {LocalToken} from "../../model/local-token";
 import {Observable} from "rxjs/Rx";
 
 @Injectable()
-export class RequestService  {
+export class RequestService {
   private tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
   private clientId:string = ConstantService.clientId;
   private clientSecret:string = ConstantService.clientSecret;
@@ -21,7 +21,6 @@ export class RequestService  {
   constructor() {
     this.basicSecret = btoa(`${this.clientId}:${this.clientSecret}`);
   }
-
 
 
   getJsonHeaders() {
@@ -49,31 +48,16 @@ export class RequestService  {
   }
 
   //默认的错误处理,这个指spring 后台报的 RuntimeException
-  //首先从2个eror 对象中取出,自己需要的 error 对象 {"code":404,"message":"sss"}
-  defaultHandlerError(error:Response){
-    console.log(error);
+  //,自己需要的 error 对象 {"code":404,"message":"sss"}
+  defaultHandlerError(error:Response) {
 
     //将错误信息,转为数组,找到'}"开始之后的内容,就是自定义的的内容。
-    const x=error['_body'];
-    //寻找到第一个对象结尾的下标,
-    if(x.startsWith('{')){
+    const x = error['_body'];
 
-      const index:number=x.indexOf('}');
+    const m = JSON.parse(x);
+    console.log(m);
+    return Observable.throw(m.message || 'Server error');
 
-      //如果返回的对象只有一个{},
-      if(index===x.length-1){
-        const m = JSON.parse(x);
-        return Observable.throw(m.message || 'Server error');
-      }
-      //将后面的剩余对象取出来。
-      const newN=x.substring(index+1);
-      const m = JSON.parse(newN);
-      console.log(m);
-      return Observable.throw(m.message || 'Server error');
-    }
-
-    //如果返回的不是 {} 的类型,那么直接返回
-    return Observable.throw(x || 'Server error');
 
   }
 }

@@ -8,12 +8,16 @@
  */
 package com.xdidian.keryhu.account_activate.service;
 
+import com.xdidian.keryhu.account_activate.domain.ActivatedProperties;
 import com.xdidian.keryhu.account_activate.domain.EmailActivatedToken;
 import com.xdidian.keryhu.account_activate.domain.PhoneActivatedToken;
 import com.xdidian.keryhu.domain.AccountActivatedDto;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.function.Function;
 
 
@@ -24,7 +28,11 @@ import java.util.function.Function;
  * @author : keryHu keryhu@hotmail.com
  */
 @Component
+@EnableConfigurationProperties(ActivatedProperties.class)
 public class ConverterUtil {
+	
+	@Autowired
+	private  ActivatedProperties activatedProperties;
 
   /**
    * 将message中传递的AccountActivatedDto转为email激活对象的Dto，转为本地的ActivatedToken，用户本地保存数据库
@@ -36,6 +44,9 @@ public class ConverterUtil {
     activatedToken.setSentTimes(0);
     activatedToken.setEmailToken(x.getToken());
     activatedToken.setRe_signup_token(x.getResignupToken());
+ // 设置下次 点击 “重新发送激活邮件”的冷却时间。
+    activatedToken.setSendExpiryDate(
+        LocalDateTime.now().plusMinutes(activatedProperties.getMinutesOfSendCycle()));
     activatedToken.setResendToken(x.getResendToken());
     return activatedToken;
   };

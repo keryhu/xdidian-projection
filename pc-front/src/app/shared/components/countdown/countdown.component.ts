@@ -35,6 +35,7 @@ export class CountdownComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
 
+
     const n = localStorage.getItem('num');
     //如果click 倒计时未过期,则执行 Observable 刷新。
     if (ClickNotExpired()) {
@@ -43,15 +44,13 @@ export class CountdownComponent implements OnInit,OnDestroy {
       this.countdown();
 
     }
-    //只有在click过期的情形下,才监听click事件。
     else {
-      if (!Object.is(this.countdownSub, undefined)) {
-        this.countdownSub.unsubscribe();
-      }
       this._clickStatus.next(false);
-      this.listenClick();
     }
 
+
+    //如果页面,刷新不管倒计时有没有到期,都需要一直监听click事件。
+    this.listenClick();
 
   }
 
@@ -74,10 +73,12 @@ export class CountdownComponent implements OnInit,OnDestroy {
   listenClick() {
     this.listenClickSub = this.clickResendService.clickResend$.subscribe(
       e=> {
+        console.log('has listenClick running ? ');
         if (Object.is(e, ConstantService.emailActivate)) {
+          console.log('listenClickSub is running ..');
           this._clickStatus.next(true);
           localStorage.setItem('num', ConstantService.clickCoolingSeconds.toString());
-          this.num=ConstantService.clickCoolingSeconds;
+          this.num = ConstantService.clickCoolingSeconds;
           this.countdown();
         }
 

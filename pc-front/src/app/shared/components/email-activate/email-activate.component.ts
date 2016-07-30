@@ -8,7 +8,7 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
 import {Title} from "@angular/platform-browser";
 import {Router} from "@angular/router";
-import {BehaviorSubject} from "rxjs/Rx";
+import {BehaviorSubject, Observable} from "rxjs/Rx";
 import {CountdownComponent} from "../countdown/countdown.component";
 import {ClickResendService} from "./click-resend.service";
 import ClickNotExpired from "./click-expired";
@@ -121,6 +121,7 @@ export class EmailActivateComponent implements OnInit,OnDestroy {
 
           }
 
+
           //将 点击 消息 传递给 对应的service。
           this.clickResendService.click(ConstantService.emailActivate);
 
@@ -162,8 +163,14 @@ export class EmailActivateComponent implements OnInit,OnDestroy {
           this._resignupErrorMsg.next('');
           console.log(e);
 
-          //分配到不同的注册页面
-          this.router.navigate(['/signup']);
+          //导航到注册页面
+          if(Object.is(e,ConstantService.emailActivateExpired)){
+            this.router.navigate(['/signup']);
+            localStorage.setItem('num', '-1');
+            if (!Object.is(this.emailStatusSub, undefined)) {
+              this.emailStatusSub.unsubscribe();
+            }
+          }
 
         },
         err=> {

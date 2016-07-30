@@ -13,7 +13,8 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 
 
 /**
- * @Description : email激活service 接收到传递过来的，需要被激活的数据后的处理办法， 先进行类型转换，然后设置默认的发送次数为0，再保存数据库
+ * @Description : email激活service 接收到传递过来的，需要被激活的数据后的处理办法， 先进行类型转换，
+ * 然后设置默认的发送次数为0，设置resend的冷却时间，再保存数据库
  * @date : 2016年6月18日 下午9:01:42
  * @author : keryHu keryhu@hotmail.com
  */
@@ -25,12 +26,12 @@ public class EmailActivatedConsumer {
   private ConverterUtil converterUtil;
 
   @Autowired
-  private TokenService activatedTokenService;
+  private TokenService tokenService;
 
   @StreamListener(EmailActivatedInputChannel.NAME)
   public void receive(AccountActivatedDto dto) {
 
-    activatedTokenService.saveEmailActivatedToken(converterUtil.AccountActivatedDtoToEmailActivatedToken.apply(dto));
+    tokenService.saveEmailActivatedToken(converterUtil.AccountActivatedDtoToEmailActivatedToken.apply(dto));
     log.info("email激活服务器，接受到刚刚注册的 dto is ： {}", dto);
 
   }

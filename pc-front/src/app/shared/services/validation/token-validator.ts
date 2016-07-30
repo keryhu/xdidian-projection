@@ -20,7 +20,7 @@ export class TokenValidator {
 
   email(data) {
 
-    const url:string = '/account-activate/accountActivate/emailOrPhone';
+    const url:string = '/api-account-activate/accountActivate/emailOrPhone';
     return this.http.post(url, JSON.stringify(data),
       {headers: this.request.getJsonHeaders()})
       .map((res:Response)=> {
@@ -38,24 +38,34 @@ export class TokenValidator {
   }
 
   emailResend(data) {
-    const url = '/account-activate/email/resend';
+    const url = '/api-account-activate/email/resend';
     return this.http.post(url,JSON.stringify(data),
       {headers: this.request.getJsonHeaders()})
       .map(res=>{
 
-        return res.json();
+        if (res.status==200) {
+          return res['_body'];
+        }
+        else{
+          return res.json()
+        }
       })
       .catch(this.request.defaultHandlerError)
   }
 
   emailResignup(data){
-    const url='/account-activate/email/resignup';
+    const url='/api-account-activate/email/resignup';
 
     return this.http.post(url,JSON.stringify(data),
       {headers: this.request.getJsonHeaders()})
       .map(res=>{
 
-        return res.json();
+        if (res.status==200) {
+          return res['_body'];
+        }
+        else{
+          return res.json()
+        }
       })
       .catch(this.request.defaultHandlerError)
   }

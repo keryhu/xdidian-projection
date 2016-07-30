@@ -222,14 +222,14 @@ export class AuthService {
   }
 
 
-  public hasRole(role:roleEnum):boolean {
+  public hasRole(role:string):boolean {
     if (!tokenExpired()) {
       return this.roles.includes(role);
     }
     return false;
   }
 
-  public hasAnyRole(roles:roleEnum[]):boolean {
+  public hasAnyRole(roles:string[]):boolean {
     //当前用户的权限,是否包含有数组中的任何一个role
     if (!tokenExpired()) {
       return roles.some(role=>this.hasRole(role));
