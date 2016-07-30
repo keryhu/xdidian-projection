@@ -1,7 +1,7 @@
 package com.xdidian.keryhu.user_account.service;
 
-import com.xdidian.keryhu.domain.PropertyRegisterDto;
 import com.xdidian.keryhu.domain.Role;
+import com.xdidian.keryhu.domain.SignupDto;
 import com.xdidian.keryhu.user_account.domain.AuthUserDto;
 import com.xdidian.keryhu.user_account.domain.User;
 
@@ -24,19 +24,19 @@ public class ConverterUtil {
 
 
   /**
-   * 将物业公司注册数据转为User对象。此时将用户注册时间和权限加进去。
+   * 将用户注册数据转为User对象。此时将用户注册时间和权限加进去,注册用户加上默认的权限，只有等到有公司了，有了读取整个部门
+   * 的权限后，才会加上其他权限。
    */
-  public Function<PropertyRegisterDto, User> propertyRegisterDtoToUser = x -> {
+  public Function<SignupDto, User> signupDtoToUser = x -> {
 
     User user = new User();
     user.setEmail(x.getEmail());
     user.setPhone(x.getPhone());
     user.setPassword(x.getPassword());
-    user.setCompanyName(x.getCompanyName());
-    user.setDirectName(x.getDirectName());
-    user.setRoles(Arrays.asList(Role.ROLE_PROPERTY));
+    user.setRoles(Arrays.asList(Role.ROLE_DEFAULT));
     user.setRegisterTime(LocalDateTime.now());
     user.setEmailStatus(false);
+    user.setInCompany(false);
     return user;
   };
 

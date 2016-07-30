@@ -43,11 +43,6 @@ public interface UserService {
   public boolean phoneIsExist(final String phone);
 
 
-  /**
-   * 查看公司名字是否存在于数据库
-   */
-  public boolean companyNameIsExist(final String companyName);
-
 
   /**
    * 删除传递进来的user对象

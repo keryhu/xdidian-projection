@@ -47,10 +47,11 @@ security:
   
 zuul:
   routes:
-    property-signup: /property-signup/**
-    user-account: /user-account/**
-    auth-server: /auth-server/**
-    account-activate: /account-activate/**
+    signup-server: /api-signup/**
+    user-account: /api-user-account/**
+    auth-server: /api-auth-server/**
+    account-activate: /api-account-activate/**
+    company-info: /api-company-info/**
     #password-reset: /recover/**
   #add-proxy-headers: true
     

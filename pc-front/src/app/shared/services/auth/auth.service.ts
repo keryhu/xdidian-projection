@@ -18,6 +18,7 @@ import {RefreshToken} from "../../model/refresh-token";
 import DynamicTokenRefreshInterval from "./dynamic-token-refresh-interval";
 import RefreshTokenExpired from "./refreshToken-expired";
 import CurrentLoginName from "./current-loginName";
+import { roleEnum} from "../../model/roleEnum";
 
 
 //主动设置一个 按钮用户 前台点击 退出,
@@ -221,14 +222,14 @@ export class AuthService {
   }
 
 
-  public hasRole(role:string):boolean {
+  public hasRole(role:roleEnum):boolean {
     if (!tokenExpired()) {
       return this.roles.includes(role);
     }
     return false;
   }
 
-  public hasAnyRole(roles:string[]):boolean {
+  public hasAnyRole(roles:roleEnum[]):boolean {
     //当前用户的权限,是否包含有数组中的任何一个role
     if (!tokenExpired()) {
       return roles.some(role=>this.hasRole(role));

@@ -87,7 +87,7 @@ class ResendServiceImpl implements ResendService {
           e.setFirstTime(LocalDateTime.now());
         } else {
           // 如果发送次数大于等于最低最大的发送限制－1
-          if (e.getSentTimes() >= activatedProperties.getMax_send_times()-1) {
+          if (e.getSentTimes() >= activatedProperties.getMaxSendTimes()-1) {
             e.setLocked(true);
             e.setLockedTime(LocalDateTime.now());
 
@@ -149,7 +149,7 @@ class ResendServiceImpl implements ResendService {
           e.setFirstTime(LocalDateTime.now());
         } else {
           // 如果发送次数大于等于最低最大的发送限制－1
-          if (e.getSentTimes() >= activatedProperties.getMax_send_times()-1) {
+          if (e.getSentTimes() >= activatedProperties.getMaxSendTimes()-1) {
             e.setLocked(true);
             e.setLockedTime(LocalDateTime.now());
 

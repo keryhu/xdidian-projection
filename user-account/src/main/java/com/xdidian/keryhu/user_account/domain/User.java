@@ -60,13 +60,6 @@ public class User implements Serializable {
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime lastLoginTime; // 记录上次登录时间
 
-  private String directName; // 负责人姓名,物业公司更换负责人姓名，手机号，email必须上传公司证明（盖章）
-
-  // 公司名字，不需要设成独立的，只需要在物业公司注册时候，强制检查这个公司名字没有注册过
-  // 后续，可以在公司名字已经注册的情况下，由公司负责人添加 公司的抄表员账户，这个账户附在这个公司名下
-  @Indexed
-  private String companyName; // 公司名字,必须和营业执照一致，否则无法通过（如需更换，必须提供营业执照，书面申请盖章证明）
-
 
   private List<Role> roles = new ArrayList<Role>(); // 权限
 
@@ -77,19 +70,21 @@ public class User implements Serializable {
   //手机是否被激活，之所以要加上index索引，方便定时清理未激活的账户
   @Indexed
   private boolean phoneStatus;
+  
+  //目前是否已经在公司，注册的时候，默认是没有公司的，等以后有公司了，会申请加入。
+  private boolean inCompany;
 
 
   // 用户新注册时候的时候，自动生成Id,其它的变量都为null
   public User() {
     this.id = UUID.randomUUID().toString();
-    this.companyName = null;
     this.email = null;
     this.password = null;
     this.phone = null;
-    this.directName = null;
     this.registerTime = null;
     this.emailStatus = false;
     this.phoneStatus=false;
+    this.inCompany=false;
     // roles 已经设置了默认值。
   }
 

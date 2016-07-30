@@ -18,9 +18,9 @@ spring:
           destination: loginSuccess
         removeUserInputChannel:
           destination: removeUser
-        propertyRegisterSaveInputChannel: 
-          destination: propertyRegisterSave
-          content-type: application/x-java-object; type=com.xdidian.keryhu.domain.PropertyRegisterDto
+        signupInputChannel: 
+          destination: signup
+          content-type: application/x-java-object; type=com.xdidian.keryhu.domain.SignupDto
         activatedSuccessInputChannel:
           destination: activatedSuccess
            

@@ -1,10 +1,7 @@
 package com.xdidian.keryhu.account_activate.client;
 
-import com.xdidian.keryhu.domain.Role;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -41,15 +38,7 @@ public class UserClientFallback implements UserClient {
     return false;
   }
 
-  /**
-   * 根据登录名查询用户所拥有的role权限
-   */
-  @Override
-  public List<Role> findRolesByLoginName(String loginName) {
-    // TODO Auto-generated method stub
-    return new ArrayList<Role>();
 
-  }
 
   @Override
   public Boolean isPhoneExist(String phone) {

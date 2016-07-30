@@ -126,9 +126,9 @@ services:
       - user_account
 
 
-  property_signup:
-    image: property-signup:0.0.1-SNAPSHOT
-    container_name: property_signup
+  signup:
+    image: signup:0.0.1-SNAPSHOT
+    container_name: signup
     restart: always
     ports:
      - "8003:8003"
@@ -187,6 +187,24 @@ services:
     depends_on: 
       - eureka
       - config_server
+      
+  company_info:
+    image: company-info:0.0.1-SNAPSHOT
+    container_name: company_info
+    restart: always
+    ports:
+     - "8006:8006"
+    environment:
+      MONGO_HOST: mongo
+      RABBIT_HOST: rabbitmq
+      DOMAIN_NAME: 192.168.1.110
+    networks:
+      - wfij
+    depends_on: 
+      - eureka
+      - config_server
+      
+      
 
   pc_gateway:
     image: pc-gateway:0.0.1-SNAPSHOT

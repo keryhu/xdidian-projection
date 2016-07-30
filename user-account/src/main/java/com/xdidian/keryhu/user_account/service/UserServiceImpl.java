@@ -117,15 +117,7 @@ public class UserServiceImpl implements UserService {
     return repository.findByPhone(phone).isPresent();
   }
 
-  /**
-   * 查询数据库中是否有此公司名字
-   */
   
-  @Override
-  public boolean companyNameIsExist(final String companyName) {
-    // TODO Auto-generated method stub
-    return repository.findByCompanyName(companyName).isPresent();
-  }
 
 
   /**

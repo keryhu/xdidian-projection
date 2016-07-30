@@ -24,6 +24,8 @@ import com.xdidian.keryhu.auth_server.stream.LoginSuccessProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.xdidian.keryhu.util.Constants.EMAIL_ACTIVATE_EXPIRED; 
+
 /**
  * @Description : TODO(使用自定义的CustomAuthenticationProvider，来判断用户的用户名，密码是否输入的正确，和记录登录失败 和成功的事件。
  * 处理的顺序，用户名是否存在－>email是否激活－>密码是否匹配。
@@ -82,9 +84,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         throw new EmailNotActivatedException(result);
       }
       
-      //如果已经过期，去的之前的roles，返回给前台
+      //如果已经过期，返回的是特定的字符串，让前台知道，并且转到 注册页面。
       
-      else if(result.contains("ROLE_")){
+      else if(result.equals(EMAIL_ACTIVATE_EXPIRED)){
         
         throw new EmailNotActivatedException(result);
       }

@@ -1,0 +1,17 @@
+{
+        "name": "111", 
+        "department": [
+            {
+            	"name":"222",
+            	"department":[
+            	              {"name":"555"},
+            	              {"name":"666"}
+            	              ]
+            }, 
+            {"name":"333" }, 
+            { "name":"444",
+            	"department":[{
+            		"name":"777"
+            	}]}
+        ]
+    }

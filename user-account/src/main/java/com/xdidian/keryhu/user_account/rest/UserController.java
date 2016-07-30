@@ -1,6 +1,5 @@
 package com.xdidian.keryhu.user_account.rest;
 
-import com.xdidian.keryhu.domain.Role;
 import com.xdidian.keryhu.user_account.domain.AuthUserDto;
 import com.xdidian.keryhu.user_account.domain.User;
 import com.xdidian.keryhu.user_account.exception.UserNotFoundException;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -71,17 +68,6 @@ public class UserController {
 
 
   /**
-   * 查询数据库中是否存在此公司名字
-   */
-  
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/isCompanyNameExist")
-  public Boolean isCompanyNameExist(@RequestParam("companyName") String companyName) {
-    log.info("查询公司名字是否存在，公司名字是 ：{} , 查到的 结果 为 ： {}", companyName,
-        userService.companyNameIsExist(companyName));
-    return userService.companyNameIsExist(companyName);
-  }
-
-  /**
    * rest 接口查询当前loginName所在的用户，邮箱是否已经激活，如果激活，返回ture，默认是false
    */
   
@@ -99,22 +85,7 @@ public class UserController {
     return userService.phoneStatus(loginName);
   }
   
-  
-
-  /**
-   * 根据提供的loginName，查询到数据库中此用户拥有的roles 如果email或phone
-   * 不存在于数据库，返回空的roles，否则返回roles 的String 类型的List
-   */
-  
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/roles")
-  public List<Role> findRolesByLoginName(@RequestParam("loginName") String loginName) {
-
-
-    return userService.findByLoginName(loginName).filter(e -> e.getRoles() != null)
-        .map(e -> e.getRoles()).orElse(new ArrayList<Role>());
-
-
-  }
+ 
 
  
 }

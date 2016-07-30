@@ -17,7 +17,7 @@ export class UserQueryService {
 
 
   emailExist(email:string):Observable<boolean> {
-    const url = '/user-account/users/query/isEmailExist';
+    const url = '/api-user-account/users/query/isEmailExist';
     const params = new URLSearchParams();
     params.set('email', email);
 
@@ -30,7 +30,7 @@ export class UserQueryService {
   }
 
   phoneExist(phone:string):Observable<boolean>{
-    const url='/user-account/users/query/isPhoneExist';
+    const url='/api-user-account/users/query/isPhoneExist';
     const params = new URLSearchParams();
     params.set('phone', phone);
 
@@ -44,7 +44,7 @@ export class UserQueryService {
 
   companyNameExist(name:string):Observable<boolean>{
 
-    const url='/user-account/users/query/isCompanyNameExist';
+    const url='/api-user-account/users/query/isCompanyNameExist';
     const params = new URLSearchParams();
     params.set('companyName', name);
 
@@ -58,7 +58,7 @@ export class UserQueryService {
 
   //查询email所在的状态有没有激活,如果已经激活,直接跳转login页面。
   emailStatus(id:string):Observable<boolean>{
-    const url='/user-account/users/query/emailStatus';
+    const url='/api-user-account/users/query/emailStatus';
     const params = new URLSearchParams();
     params.set('loginName', id);
 

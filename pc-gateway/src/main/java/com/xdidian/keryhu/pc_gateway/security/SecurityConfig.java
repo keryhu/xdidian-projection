@@ -63,6 +63,7 @@ public class SecurityConfig implements ResourceServerConfigurer {
         .authorizeRequests().antMatchers("/**").permitAll()
         //spring boot admin 配置变量
         .antMatchers("/adminEnv").hasRole("SERVICE")
+       
         .expressionHandler(webExpressionHandler()) // 权限排序
         .anyRequest().authenticated().and().csrf().csrfTokenRepository(csrfTokenRepository()).and()
         .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);

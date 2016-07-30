@@ -14,14 +14,14 @@ import {BehaviorSubject, Subscription} from "rxjs/Rx";
 import {StringFormatValidator} from "../../shared/services/validation/string-format.validator";
 import {UserQueryService} from "../../shared/services/query/user-query.service";
 import UsernameRemoteValidator from "../../shared/services/validation/remote/username-remote";
-import {RedirectByRole} from "../../shared/services/validation/redirect-byRole";
+import {ConstantService} from "../../shared/services/constant.service";
 
 @Component({
   selector: 'login',
   template: require('./login.component.html'),
   styles: [require('./login.component.css')],
   directives: [REACTIVE_FORM_DIRECTIVES],
-  providers: [IpBlockStatus, UserQueryService,RedirectByRole]
+  providers: [IpBlockStatus, UserQueryService]
 })
 
 export class LoginComponent implements OnInit,OnDestroy {
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit,OnDestroy {
     StringFormatValidator.passwordContainsTwoTypes]);
 
   constructor(private authService:AuthService, private router:Router, private titileService:Title,
-              private ipBlockStauts:IpBlockStatus,private redirectByRole:RedirectByRole) {
+              private ipBlockStauts:IpBlockStatus) {
 
   }
 
@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit,OnDestroy {
       .subscribe(
         r=> {
           if (r) {
-            this.router.navigate(['/property']);
+            this.router.navigate(['/profile']);
           }
         },
         err=> {
@@ -108,16 +108,12 @@ export class LoginComponent implements OnInit,OnDestroy {
             })
 
           }
-         else if(err.includes('ROLE_')){
-            const m=JSON.parse(err);
-            console.log(m);
-            //根据role转到相应的注册页面
-            if (Array.isArray(m)) {
-              //分配到登录页面。
-              this.redirectByRole.toSignup(e);
-            }
+
+          else if(Object.is(err,ConstantService.emailActivateExpired)){
+            this.router.navigate(['/signup']);
 
           }
+
 
 
           console.log(err);

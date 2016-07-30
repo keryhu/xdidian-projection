@@ -3,8 +3,10 @@
 这是自行开发企业项目的的github代码库
 spring micro－service cloud docker domo
 
-二 、 目前启动顺序是： eureka －> config server ->user account-> auth server
--> property-register -> mail-activation-> pc gateway 等其他的
+二 、 目前启动顺序是： eureka －> config server(10s) ->user account(20s)-> auth server(30s)
+-> mail-server(40s)-> account-activation(50s)->signup (60s)->password-reset(70s)
+->company-info(80s)-> pc gateway(80s)
+ 等其他的
 
 三 、 目前是每一个service单独的数据库，相互之间没有实现message broker。
 

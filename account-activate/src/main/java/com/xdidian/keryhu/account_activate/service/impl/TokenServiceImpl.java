@@ -10,7 +10,6 @@ import com.xdidian.keryhu.account_activate.repository.PhoneActivatedTokenReposit
 import com.xdidian.keryhu.account_activate.service.ActivatedExpired;
 import com.xdidian.keryhu.account_activate.service.TokenService;
 import com.xdidian.keryhu.account_activate.service.VerifyToken;
-import com.xdidian.keryhu.domain.Role;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,6 @@ import static com.xdidian.keryhu.util.StringValidate.isEmail;
 import static com.xdidian.keryhu.util.StringValidate.isPhone;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -123,14 +121,14 @@ public class TokenServiceImpl implements TokenService {
     /**
      * 如果token 已经过期。那么执行
      * 
-     * 1 account-activated中删除此user的数据记录 2 前台根据role导航到该用户的注册页面（前台做），如果token过期了，返回role值。然后前台再导航。 3
+     * 1 account-activated中删除此user的数据记录 2 前台根据string 提示信息 导航到该用户的注册页面（前台做）。 3
      * account-activate 发送包含email的message 出去。user-account接受到消息，删除对应的email所在的user。
      */
     
     if (tokenExpired(dto.getEmail())) {
       log.info("email为 {} 激活时间已经过期", dto.getEmail());
-      List<Role> roles = activatedExpired.executeExpired(dto.getEmail());
-      return ResponseEntity.ok(roles);
+      String expire = activatedExpired.executeExpired(dto.getEmail());
+      return ResponseEntity.ok(expire);
     }
     // 如果其它情形，暂时返回null，留作后面的程序执行。
     return null;
@@ -168,8 +166,8 @@ public class TokenServiceImpl implements TokenService {
     
     if (tokenExpired(dto.getPhone())) {
       log.info("email为 {} 激活时间已经过期", dto.getPhone());
-      List<Role> roles = activatedExpired.executeExpired(dto.getPhone());
-      return ResponseEntity.ok(roles);
+      String expire = activatedExpired.executeExpired(dto.getPhone());
+      return ResponseEntity.ok(expire);
     }
     // 如果其它情形，暂时返回null，留作后面的程序执行。
     return null;

@@ -30,7 +30,7 @@ public class ActivatedProperties implements Serializable {
 
   private static final long serialVersionUID = 6219341996080208763L;
 
-  private int max_send_times;      // 允许最多的重复发送的次数
+  private int maxSendTimes;      // 允许最多的重复发送的次数
   private int minutesOfSendCycle;  // 点击“再次发送激活邮件的 间隔时间 单位分钟数
   private int hoursOfResetSendTimes;         //隔多久，sentTimes自动为0，单位为小时。
   private int hoursOfLocked;        //一旦被冻结，冻结多少个小时，单位为小时。

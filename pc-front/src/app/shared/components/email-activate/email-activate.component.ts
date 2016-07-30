@@ -16,14 +16,13 @@ import {ConstantService} from "../../services/constant.service";
 import {FormGroup, Validators, REACTIVE_FORM_DIRECTIVES, FormControl} from "@angular/forms";
 import {TokenValidator} from "../../services/validation/token-validator";
 import {UserQueryService} from "../../services/query/user-query.service";
-import {RedirectByRole} from "../../services/validation/redirect-byRole";
 
 
 @Component({
   selector: 'email-activate',
   template: require('./email-activate.component.html'),
   styles: [require('./email-activate.component.css')],
-  providers: [ClickResendService, TokenValidator, UserQueryService, RedirectByRole],
+  providers: [ClickResendService, TokenValidator, UserQueryService],
   directives: [CountdownComponent, REACTIVE_FORM_DIRECTIVES]
 })
 
@@ -57,8 +56,7 @@ export class EmailActivateComponent implements OnInit,OnDestroy {
 
 
   constructor(private titleService:Title, private router:Router, private clickResendService:ClickResendService,
-              private tokenValidator:TokenValidator, private userQuery:UserQueryService,
-              private redirectByRole:RedirectByRole) {
+              private tokenValidator:TokenValidator, private userQuery:UserQueryService) {
   }
 
   ngOnInit() {
@@ -127,11 +125,9 @@ export class EmailActivateComponent implements OnInit,OnDestroy {
           this.clickResendService.click(ConstantService.emailActivate);
 
           //如果验证码过期,   那么根据之前的role分配到不同的注册页面
-          if (Array.isArray(e)) {
-            //分配到登录页面。
-            this.redirectByRole.toSignup(e);
+          if(Object.is(e,ConstantService.emailActivateExpired)){
+            this.router.navigate(['/signup']);
             localStorage.setItem('num', '-1');
-
             if (!Object.is(this.emailStatusSub, undefined)) {
               this.emailStatusSub.unsubscribe();
             }
@@ -144,7 +140,6 @@ export class EmailActivateComponent implements OnInit,OnDestroy {
           if(err){
             localStorage.setItem('num','-1');
           }
-          console.log(err);
         });
 
 
@@ -167,16 +162,12 @@ export class EmailActivateComponent implements OnInit,OnDestroy {
           this._resignupErrorMsg.next('');
           console.log(e);
 
-          //根据用户注册过的role,分配到不同的注册页面
-          if (Array.isArray(e)) {
-            //分配到登录页面。
-            this.redirectByRole.toSignup(e);
-            localStorage.setItem('num', '-1');
-          }
+          //分配到不同的注册页面
+          this.router.navigate(['/signup']);
+
         },
         err=> {
           this._resignupErrorMsg.next(err);
-          console.log(err);
         }
       );
 
@@ -222,15 +213,15 @@ export class EmailActivateComponent implements OnInit,OnDestroy {
           this._tokenErrorMsg.next('');
           console.log(e);
 
-          //如果验证码过期,   那么根据之前的role分配到不同的注册页面
-          if (Array.isArray(e)) {
-            //分配到登录页面。
-            this.redirectByRole.toSignup(e);
+          //如果验证码过期, 导航到注册页面,且设置  num 为 -1
+
+          if(Object.is(e,ConstantService.emailActivateExpired)){
+            this.router.navigate(['/signup']);
             localStorage.setItem('num', '-1');
           }
 
           //如果激活成功,那么转到login页面
-          if (Object.is(e, ConstantService.activateSuccess)) {
+          if (Object.is(e, ConstantService.emailActivateSuccess)) {
             //既然登录成功了,那么就设置 '重新发送'的冷却时间失效
             localStorage.setItem('num', '-1');
 

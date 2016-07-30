@@ -14,7 +14,7 @@ import com.xdidian.keryhu.account_activate.service.ActivatedConfirm;
 import com.xdidian.keryhu.account_activate.service.TokenService;
 
 import lombok.RequiredArgsConstructor;
-import static com.xdidian.keryhu.account_activate.domain.Constants.ACTIVATE_SUCCESS;
+import static com.xdidian.keryhu.account_activate.domain.Constants.EMAIL_ACTIVATE_SUCCESS;;
 
 
 @Controller
@@ -56,7 +56,7 @@ public class TokenConfirmRest {
 
 
         activatedConfirm.exec(dto.getEmail());
-        return ResponseEntity.ok(ACTIVATE_SUCCESS);
+        return ResponseEntity.ok(EMAIL_ACTIVATE_SUCCESS);
 
       }
       // 这里是email激活的情况，当然这个时候 前台已经实现了，跳转login页面

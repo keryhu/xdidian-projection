@@ -1,19 +1,4 @@
-/**
- * @Title: ActivatedExpired.java
- * @Package com.xdidian.keryhu.emailActivate.service
- * @Description: TODO(用一句话描述该文件做什么)
- * @author keryhu keryhu@hotmail.com
- * @date 2016年5月17日 下午3:36:46
- * @version V1.0
- */
 package com.xdidian.keryhu.account_activate.service;
-
-import java.util.List;
-
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.xdidian.keryhu.domain.Role;
 
 
 /**
@@ -31,7 +16,7 @@ public interface ActivatedExpired {
   /**
    * 当激活时间过期时，需要执行的动作，可以是email过期，也可以是phone过期。
    */
-  List<Role> executeExpired(final String id);
+  String executeExpired(final String id);
   
   
 }

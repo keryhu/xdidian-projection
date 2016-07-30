@@ -11,7 +11,7 @@ import {RequestService} from "../auth/request.service";
 
 @Injectable()
 export class IpBlockStatus{
-  private url='/auth-server/uaa/query/blockStatus';
+  private url='/api-auth-server/uaa/query/blockStatus';
   constructor(private http:Http,private request:RequestService){}
 
   query():Observable<any>{

@@ -47,8 +47,9 @@ public class ForLoginRest {
     //查看当前email激活有没有过期，取出这个判断值，默认是true，也就是假如email不存在于数据库，那么就是激活过期。
     boolean expired=tokenService.tokenExpired(email);
     
+     // 如果过期，那么返回这个 string
     if(expired){
-      return gson.toJson(activatedExpired.executeExpired(email));
+      return activatedExpired.executeExpired(email);
     }
     else {
       

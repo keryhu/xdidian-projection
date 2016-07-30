@@ -1,6 +1,5 @@
 package com.xdidian.keryhu.account_activate.rest;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import com.xdidian.keryhu.account_activate.domain.ActivateType;
 import com.xdidian.keryhu.account_activate.domain.TokenType;
 import com.xdidian.keryhu.account_activate.service.ActivatedExpired;
 import com.xdidian.keryhu.account_activate.service.TokenService;
-import com.xdidian.keryhu.domain.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -52,15 +50,13 @@ public class ResignupRest {
 
         Object obj = tokenService.checkTokenAndEmail(dto, TokenType.RESIGNUP);
 
-        // 如果obj返回的是需要 status＝200，那么就返回它。
-
         if (obj instanceof ResponseEntity<?>) {
           return (ResponseEntity<?>) obj;
         }
 
         //和 激活过期的执行任务是一样的。
-        List<Role> roles = activatedExpired.executeExpired(dto.getEmail());
-        return ResponseEntity.ok(roles);
+       
+        return ResponseEntity.ok(activatedExpired.executeExpired(dto.getEmail()));
       
       }
 

@@ -12,7 +12,8 @@ public final class Constants {
   private Constants() {}
 
    
-  //表示前台输入的验证码，验证成功。
-  public static final String ACTIVATE_SUCCESS="activateSuccess";
+  //表示前台输入的email验证码，验证成功。
+  public static final String EMAIL_ACTIVATE_SUCCESS="emailActivateSuccess";
+  
 
 }

@@ -7,17 +7,17 @@
 import {RouterConfig, provideRouter} from '@angular/router';
 import {HomeRoutes} from './components/home';
 import {NotFoundRoutes} from './shared/components/404';
-import {PropertySignupRoute} from './components/signup/property';
-import {PropertyHomeRoute} from './components/property/home';
 import {LoginRoute} from "./components/login/login.route";
 import {AccessDeniedRoutes} from "./shared/components/access-denied/access-denied.route";
 import {EmailActivaRoute} from "./shared/components/email-activate/email-activate.route";
+import {SignupRoute} from "./components/signup/signup.route";
+import {ProfileHomeRoute} from "./components/profile/home/profile-home.route";
 
 
 const APP_ROUTES:RouterConfig = [
   ...HomeRoutes,
-  ...PropertySignupRoute,
-  ...PropertyHomeRoute,
+  ...SignupRoute,
+  ...ProfileHomeRoute,
   ...LoginRoute,
   ...AccessDeniedRoutes,
   ...EmailActivaRoute,
@@ -33,14 +33,14 @@ export const APP_ROUTER_PROVIDERS = [
 //使用异步路由加载
 export const asyncRoutes:AsyncRoutes = {
 
-  'PropertySignupComponent': require('es6-promise-loader!./components/signup/property'),
-  'PropertyHomeComponent': require('es6-promise-loader!./components/property/home')
+  'SignupComponent': require('es6-promise-loader!./components/signup'),
+  'ProfileHomeComponent': require('es6-promise-loader!./components/profile/home')
 };
 
 export const prefetchRouteCallbacks:Array<IdleCallbacks> = [
 
-  asyncRoutes['PropertySignupComponent'],
-  asyncRoutes['PropertyHomeComponent']
+  asyncRoutes['SignupComponent'],
+  asyncRoutes['ProfileHomeComponent']
 ];
 
 

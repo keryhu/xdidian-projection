@@ -37,7 +37,7 @@ public class MongoUserLoader {
       user.setPassword(encoder.encode("skdjf7782c"));
       user.setPhone("15900455491");
       user.setRegisterTime(LocalDateTime.now());
-      user.addRole(Role.ROLE_ADMIN);
+      user.addRole(Role.ROLE_XDIDIAN_ADMIN);
       // 因为是管理员，所以默认设置email已经激活
       user.setEmailStatus(true);
       user.setPhoneStatus(true);

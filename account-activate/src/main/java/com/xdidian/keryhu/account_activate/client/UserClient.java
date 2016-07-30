@@ -1,12 +1,10 @@
 package com.xdidian.keryhu.account_activate.client;
 
-import com.xdidian.keryhu.domain.Role;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 
 /**
  * 
@@ -44,12 +42,6 @@ public interface UserClient {
   public Boolean phoneStatus(@RequestParam("loginName") String loginName);
 
 
-
-  /**
-   * 根据当前的email，查询user拥有的权限，返回的是 String 类型的数组。)
-   */
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/roles")
-  public List<Role> findRolesByLoginName(@RequestParam("loginName") String loginName);
 }
 
 
