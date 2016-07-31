@@ -125,7 +125,7 @@ export class EmailActivateComponent implements OnInit,OnDestroy {
           //将 点击 消息 传递给 对应的service。
           this.clickResendService.click(ConstantService.emailActivate);
 
-          //如果验证码过期,   那么根据之前的role分配到不同的注册页面
+          //如果验证码过期,   那么导航到注册页面
           if(Object.is(e,ConstantService.emailActivateExpired)){
             this.router.navigate(['/signup']);
             localStorage.setItem('num', '-1');
