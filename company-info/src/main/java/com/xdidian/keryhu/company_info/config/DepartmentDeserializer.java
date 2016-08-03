@@ -36,7 +36,7 @@ public class DepartmentDeserializer extends JsonDeserializer<TreeNode<Department
 
   private TreeNode<Department> parseDepartment(JsonNode node)
       throws JsonProcessingException, IOException {
-    if (node.has("name")) {
+    if (node.has("name")&&node.has("id")) {
       String name = node.get("name").asText();
       TreeNode<Department> n1 = new LinkedMultiTreeNode<Department>(new Department(name));
       if (node.has("department") && node.get("department").isArray()) {

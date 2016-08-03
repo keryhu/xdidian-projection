@@ -35,8 +35,11 @@ public class DepartmentSerializer extends JsonSerializer<TreeNode<Department>> {
 		Department department = node.data();
 		if (department == null) {
 			jgen.writeNullField("name");
+			jgen.writeNullField("id");		
 		} else {
 			jgen.writeStringField("name", department.getName());
+			jgen.writeStringField("id", department.getId());
+			
 		}
 		// 写他的下代，
 

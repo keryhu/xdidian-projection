@@ -20,7 +20,6 @@ export class ClickResendService{
   constructor(){}
 
   click(message:string){
-    console.log('clickResendService click method is running ...');
     this.clickResendSource.next(message);
   }
 

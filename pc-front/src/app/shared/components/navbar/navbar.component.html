@@ -19,6 +19,7 @@
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         <li><a [routerLink]="['/']">首页</a></li>
+        <li><a [routerLink]="['/tree']">tree</a></li>
         <li><a *ngIf="!(getLoggedIn() | async)" [routerLink]="['/signup']">注册</a></li>
         <li><a [routerLink]="['/profile']">会员登录</a></li>
         <li><a *ngIf="!(getLoggedIn() | async)" [routerLink]="['/login']">登录</a></li>

@@ -12,12 +12,14 @@ import {AccessDeniedRoutes} from "./shared/components/access-denied/access-denie
 import {EmailActivaRoute} from "./shared/components/email-activate/email-activate.route";
 import {SignupRoute} from "./components/signup/signup.route";
 import {ProfileHomeRoute} from "./components/profile/home/profile-home.route";
+import {TreeViewRoute} from "./components/profile/company/organizational-structure/tree-view.route";
 
 
 const APP_ROUTES:RouterConfig = [
   ...HomeRoutes,
   ...SignupRoute,
   ...ProfileHomeRoute,
+  ...TreeViewRoute,
   ...LoginRoute,
   ...AccessDeniedRoutes,
   ...EmailActivaRoute,

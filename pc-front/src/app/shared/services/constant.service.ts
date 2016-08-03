@@ -37,4 +37,8 @@ export class ConstantService{
   public static clickCoolingSeconds:number=140;
 
 
+  //鼠标悬浮nodeTree上面
+  public static nodeSelected:string='nodeSelected';
+
+
 }

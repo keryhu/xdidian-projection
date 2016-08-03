@@ -1,0 +1,41 @@
+ul {
+  list-style-type: none;
+}
+
+
+
+.tree-name{
+  padding: 5px 10%;
+  background-color: #3e8f3e;
+  border:2px solid;
+  border-radius:5px;
+}
+
+.tree-name .external-tool{
+  display: inline-block;
+  padding-right: 2px;
+  margin-left: 10%;
+  margin-right: 1%;
+  cursor: pointer;
+}
+
+/*  padding 和margin 调整 各个部门直接的距离 */
+.treeNode {
+  font-size: larger;
+  width: 25px;
+  display: inline-block;
+  padding: 5px 0;
+  margin: 8px 0;
+  cursor: pointer;
+
+}
+
+/*  padding 和margin 调整 各个部门直接的距离 */
+.leafNode {
+  font-size: larger;
+  width: 25px;
+  display: inline-block;
+  padding: 5px 0;
+  margin: 8px 0;
+}
+
