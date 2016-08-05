@@ -1,6 +1,7 @@
 package com.xdidian.keryhu.company_info.domain;
 
 import java.io.Serializable;
+import java.util.Set;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -26,6 +27,8 @@ public class Department implements Serializable{
 	@Setter
 	@Getter
 	private String name;   //部门的名字
+	
+	private Set<Office> offices; //职位，，此部门由哪些职位组成，这里不能有重复的出现
 	 
 	
 	public Department(){

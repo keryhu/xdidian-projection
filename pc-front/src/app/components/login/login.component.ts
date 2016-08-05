@@ -15,6 +15,7 @@ import {StringFormatValidator} from "../../shared/services/validation/string-for
 import {UserQueryService} from "../../shared/services/query/user-query.service";
 import UsernameRemoteValidator from "../../shared/services/validation/remote/username-remote";
 import {ConstantService} from "../../shared/services/constant.service";
+import {LocalToken} from "../../shared/model/local-token";
 
 @Component({
   selector: 'login',
@@ -93,7 +94,9 @@ export class LoginComponent implements OnInit,OnDestroy {
       .subscribe(
         r=> {
           if (r) {
-            this.router.navigate(['/profile']);
+            const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
+
+            this.router.navigate(['/profile',tokenObj.userId]);
           }
         },
         err=> {

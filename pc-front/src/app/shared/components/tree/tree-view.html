@@ -6,7 +6,7 @@
 
     </span>
     <!--首先读取最顶层的root的value,然后进行递归操作。 -->
-    <span [myHover]="tree" class="tree-name" *ngIf="!isEditInProgress()">
+    <span [myHover]="tree" class="tree-name" *ngIf="!(getEditMode()|async)" >
       {{tree.value}}
       <!-- 这里存放,编辑,删除,新建按钮 -->
       <span class="external-tool" *ngIf="isSelected()|async">
@@ -17,7 +17,8 @@
 
     </span>
 
-    <input type="text" class="tree-name" *ngIf="isEditInProgress()" tractorFocusOn/>
+    <input type="text" class="tree-name" *ngIf="getEditMode()|async"
+           (blur)="saveTree(tree)"  [(ngModel)]="tree.value" tractorFocusOn>
 
     <!-- 这里是一个递归操作,可以读取tree children,无限极读取-->
 

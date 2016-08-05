@@ -23,7 +23,7 @@ import {TreeComponent} from "../../../../shared/components/tree/tree-component";
 
 export class TreeDemo {
   f:TreeModel={
-    value: 'ffff',
+    value: '总经办',
     children:[
       {
         value:'ddd',

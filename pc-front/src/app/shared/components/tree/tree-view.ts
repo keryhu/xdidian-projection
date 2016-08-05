@@ -9,14 +9,14 @@ import {CORE_DIRECTIVES, NgClass} from "@angular/common";
 import {TreeService} from "../../services/tree/tree.service";
 import {MouseDirective} from "../../directive/mouse-tree.directive";
 import {BehaviorSubject} from "rxjs/Rx";
-import {ConstantService} from "../../services/constant.service";
+import {FocusOnDirective} from "../../directive/focus-on.directive";
 
 @Component({
   selector: 'tree-view',
   template: require('./tree-view.html'),
   styles: [require('./tree-view.css')],
   providers:[TreeService],
-  directives: [TreeView,CORE_DIRECTIVES,NgClass,MouseDirective]
+  directives: [TreeView,CORE_DIRECTIVES,NgClass,MouseDirective,FocusOnDirective]
   //这里之所以要引用本身的 treeView directives,因为tree是一个递归算法展示,无限级的
 })
 
@@ -25,6 +25,8 @@ export class TreeView implements OnInit,OnDestroy{
   private isLeaf: boolean;
   //表示当前的node有没有被选中,这个是一个异步操作事件
   private _isSelected=new BehaviorSubject(false);
+
+  private _isEditMode=new BehaviorSubject(false);
 
   private nodeSelectedSub:any;
 
@@ -74,6 +76,10 @@ export class TreeView implements OnInit,OnDestroy{
     }
 
     return node._treeNodeType.cssClass;
+  }
+
+  private getEditMode(){
+    return this._isEditMode;
   }
 
   private isEditInProgress() {
@@ -145,12 +151,15 @@ export class TreeView implements OnInit,OnDestroy{
   // 先选择,后编辑/新建/移除,操作--------------------------------------
   externalEdit(node: TreeModel){
 
+    this._isEditMode.next(true);
     this.tree._status=TreeStatus.EditInProgress;
+
     console.log(node);
   }
 
   externalNew(node: TreeModel){
     if(node.children){
+      this._isEditMode.next(true);
       //到时候这里通过下拉菜单,选择下,是要建立部门,还是要建立最终的部门
       const newNode:TreeModel={
         value:'新部门',
@@ -173,6 +182,27 @@ export class TreeView implements OnInit,OnDestroy{
       const myIndex:number=this.parentTree.children.findIndex(n=>n===node);
       this.parentTree.children.splice(myIndex,1);
 
+    }
+
+  }
+
+  //当鼠标离开的时候,切换当时的treeNode,为非编辑状态。
+  saveTree(node: TreeModel){
+    //表示修改好了
+    this._isEditMode.next(false);
+    let result=false;
+    if(!this.parentTree.children){
+      result=true;
+    }
+    else if(this.parentTree.children&&this.parentTree.children.includes(node)){
+      result=false;
+    }
+    else {
+      result=true;
+    }
+
+    if(!result){
+      console.log('不能保存相同的名字 ');
     }
 
   }

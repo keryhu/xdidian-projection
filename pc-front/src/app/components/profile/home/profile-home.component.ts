@@ -6,13 +6,15 @@
 import {Component, OnInit} from  '@angular/core';
 import {Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
+import {SideNavComponent} from "../../../shared/components/side-nav/side-nav.component";
 
 
 @Component({
   selector: 'profile-home',
   template: require('./profile-home.component.html'),
   styles: [require('./profile-home.component.css')],
-  providers: []
+  providers: [],
+  directives: [SideNavComponent]
 })
 
 

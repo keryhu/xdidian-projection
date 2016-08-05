@@ -43,7 +43,9 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
   private JwtOfReadAndWrite jwtOfReadAndWrite;
   @Autowired
   private UserDetailsService userDetailsService;
-
+  
+  @Autowired
+  private CustomTokenEnhancer customTokenEnhancer;
 
   @Autowired
   private CustomAuthenticationProvider customAuthenticationProvider;
@@ -61,16 +63,16 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
   }
 
   @Bean
-  public JwtAccessTokenConverter jwtAccessTokenConverter() {
-    JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+  public JwtAccessTokenConverter tokenEnhancer() {
     KeyPair keyPair = new KeyStoreKeyFactory(
         // Storepass jsk8iiu2e
         new ClassPathResource("microserver.jks"), "jsk8iiu2e".toCharArray())
             // keypass jsdk88sk
             .getKeyPair("serverconfig", "jsk8iiu2e".toCharArray());
 
-    converter.setKeyPair(keyPair);
-    return converter;
+    //使用自定义的accessToken converter
+    customTokenEnhancer.setKeyPair(keyPair);
+    return customTokenEnhancer;
   }
 
   @Override
@@ -89,9 +91,10 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
     insertHack(authenticationManager);
     endpoints.authenticationManager(authenticationManager).tokenStore(this.tokenStore())
-        .accessTokenConverter(jwtAccessTokenConverter())
+        .accessTokenConverter(tokenEnhancer())
         //就算自定义的 authenticationManager，也要加上下面这个 userDetailsService，否则无法 更新 refreshToken
         .userDetailsService(userDetailsService)
+        
     ;
   }
 
@@ -104,7 +107,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
 
   @Bean
   public TokenStore tokenStore() {
-    return new JwtTokenStore(jwtAccessTokenConverter());
+    return new JwtTokenStore(tokenEnhancer());
   }
 
 
@@ -114,6 +117,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
     DefaultTokenServices tokenServices = new DefaultTokenServices();
     tokenServices.setSupportRefreshToken(true);
     tokenServices.setTokenStore(this.tokenStore());
+    tokenServices.setTokenEnhancer(tokenEnhancer());
     return tokenServices;
   }
 

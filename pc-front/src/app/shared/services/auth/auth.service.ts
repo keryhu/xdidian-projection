@@ -97,6 +97,7 @@ export class AuthService {
           //保存在loginStorage中的信息
           const token:LocalToken = {
             loginName: username,
+            userId: r['userId'],
             access_token: r['access_token'],
             refreshToken_expires_in: Date.now() + this.refreshToken_expired_in * 1000
 

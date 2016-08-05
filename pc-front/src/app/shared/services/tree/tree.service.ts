@@ -15,7 +15,7 @@ export class TreeService{
 
 
   //用户鼠标悬浮  node 上面的 订阅。
-  private nodeSelectedSource=new Subject<String>();
+  private nodeSelectedSource=new Subject<boolean>();
 
   nodeSelected$=this.nodeSelectedSource.asObservable();
 

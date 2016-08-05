@@ -6,6 +6,7 @@
 
 export class LocalToken{
   loginName:string;
+  userId:string;
   access_token:string;
   refreshToken_expires_in:number;
 
