@@ -19,6 +19,25 @@
   left: 0;
 }
 
+p{
+  font-weight: bolder;
+  font-size: 300%;
+  text-align: center;
+}
+
+
+hr{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: solid thin grey;
+  margin-left: -50px;
+  margin-right: -20px;
+}
+
+
+
+
+
 
 
 

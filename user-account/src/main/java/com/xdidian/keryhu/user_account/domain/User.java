@@ -73,6 +73,10 @@ public class User implements Serializable {
   
   //目前是否已经在公司，注册的时候，默认是没有公司的，等以后有公司了，会申请加入。
   private boolean inCompany;
+  
+  //增加用户头像。
+  
+  private String name; // 对外公布的名字。
 
 
   // 用户新注册时候的时候，自动生成Id,其它的变量都为null
@@ -85,6 +89,7 @@ public class User implements Serializable {
     this.emailStatus = false;
     this.phoneStatus=false;
     this.inCompany=false;
+    this.name=null;
     // roles 已经设置了默认值。
   }
 

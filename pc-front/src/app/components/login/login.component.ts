@@ -95,7 +95,6 @@ export class LoginComponent implements OnInit,OnDestroy {
         r=> {
           if (r) {
             const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
-
             this.router.navigate(['/profile',tokenObj.userId]);
           }
         },

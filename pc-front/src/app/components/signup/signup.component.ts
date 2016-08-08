@@ -20,7 +20,7 @@ import {ConstantService} from "../../shared/services/constant.service";
 
 
 @Component({
-  selector: 'property-signup',
+  selector: 'signup',
   template: require('./signup.component.html'),
   styles: [require('./signup.component.css')],
   providers: [UserQueryService,SignupService],

@@ -9,6 +9,8 @@ import {CORE_DIRECTIVES} from '@angular/common';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {AuthService} from "../../services/auth/auth.service";
+import {LocalToken} from "../../model/local-token";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -22,12 +24,14 @@ import {AuthService} from "../../services/auth/auth.service";
 
 export class NavbarComponent implements OnInit {
 
-  constructor(private authService:AuthService) {
+
+  constructor(private authService:AuthService,private router:Router) {
   }
 
   @Input() brand:string;
 
   ngOnInit() {
+
   }
 
 
@@ -41,5 +45,10 @@ export class NavbarComponent implements OnInit {
     return this.authService.getLoggedIn();
   }
 
+  // 已经登录的,导航到个人会员首页
+  gotoPersonalHome(){
+    const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
+    this.router.navigate(['/profile',tokenObj.userId]);
+  }
 
 }

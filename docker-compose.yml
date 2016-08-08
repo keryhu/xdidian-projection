@@ -204,6 +204,22 @@ services:
       - eureka
       - config_server
       
+  personal_menu:
+    image: personal-menu:0.0.1-SNAPSHOT
+    container_name: personal_menu
+    restart: always
+    ports:
+     - "8007:8007"
+    environment:
+      MONGO_HOST: mongo
+      RABBIT_HOST: rabbitmq
+      DOMAIN_NAME: 192.168.1.110
+    networks:
+      - wfij
+    depends_on: 
+      - eureka
+      - config_server
+      
       
 
   pc_gateway:

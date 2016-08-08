@@ -1,0 +1,30 @@
+<ul [ngClass]="setBackground(tree)">
+
+  <li  >
+
+
+    <!--首先读取最顶层的root的value,然后进行递归操作。 -->
+    <div (click)="switchTreeNodeType(tree)" class="menu-name">
+      <span [ngClass]="getIcon(tree)"></span>
+      <span class="tree-value">
+      {{tree.value}}
+    </span>
+
+    </div>
+    <hr>
+    <!-- 这里是一个递归操作,可以读取tree children,无限极读取-->
+
+    <div *ngIf="showChildMenu(tree)" [ngClass]="setBackground(tree)">
+
+      <side-menu  *ngFor="let child of tree.children; let position = index"
+                    [parentTree]="tree"
+                    [indexInParent]="position"
+                    [tree]="child">
+
+      </side-menu>
+    </div>
+
+
+  </li>
+
+</ul>

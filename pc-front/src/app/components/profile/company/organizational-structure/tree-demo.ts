@@ -17,30 +17,35 @@ import {TreeComponent} from "../../../../shared/components/tree/tree-component";
              <h4>右键编辑/新建/删除</h4>
              <tree  class="structure-tree" [tree]="f"></tree>`
   ,
-  styles:[require('./tree-demo.css')],
+  styles: [require('./tree-demo.css')],
   directives: [TreeComponent]
 })
 
 export class TreeDemo {
-  f:TreeModel={
+  f: TreeModel = {
     value: '总经办',
-    children:[
+    children: [
       {
-        value:'ddd',
-        children:[
-          {value:'aaa'},
-          {value:'bbb'}
+        value: 'ddd',
+        children: [
+          {
+            value: 'aaa',
+            expanded: false,
+          },
+          {
+            value: 'bbb',
+          }
         ]
       }
     ]
   }
 
 
-  constructor(){
+  constructor() {
 
   }
 
-  loadDirectories(){
+  loadDirectories() {
 
 
   }

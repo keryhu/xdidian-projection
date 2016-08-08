@@ -36,5 +36,6 @@ export class MouseDirective{
   }
   private highlight(color: string) {
     this.el.style.backgroundColor = color;
+
   }
 }

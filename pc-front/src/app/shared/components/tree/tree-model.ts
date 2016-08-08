@@ -7,23 +7,20 @@
 
 export interface TreeModel{
 
-  value:string|RenamableNode;
+  value:string;
+  url?:string;          //之所以要加上url,方便侧边栏的导航使用
   children?:Array<TreeModel>;
+  expanded?:boolean;
   _status?:TreeStatus;
   _treeNodeType?:TreeNodeType;
   _indexInParent?:number;
 }
 
 
-export interface RenamableNode{
 
-  setName(name:string):void;
-  toString():string;
-}
 
 export enum TreeStatus{
   New,
-  Modified,
   EditInProgress
 }
 
@@ -35,17 +32,9 @@ export class TreeNodeType{
 
   constructor(private _cssClass:string){}
 
-  public get cssClass():string{
-    return this._cssClass;
-  }
+
 
 }
 
-// node 操作事件,传递的对象是属于TreeModel类型。
-export interface NodeEvent{
-  node:TreeModel;
-}
 
-export interface NodeSelectedEvent extends NodeEvent{
 
-}

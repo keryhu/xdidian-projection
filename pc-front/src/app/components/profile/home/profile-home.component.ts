@@ -3,10 +3,11 @@
  * @date : 16/6/21 下午3:57
  * @author : keryHu keryhu@hotmail.com
  */
-import {Component, OnInit} from  '@angular/core';
-import {Router} from "@angular/router";
+import {Component, OnInit, OnDestroy} from  '@angular/core';
+import {Router, ROUTER_DIRECTIVES} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {SideNavComponent} from "../../../shared/components/side-nav/side-nav.component";
+import {LocalToken} from "../../../shared/model/local-token";
 
 
 @Component({
@@ -14,22 +15,30 @@ import {SideNavComponent} from "../../../shared/components/side-nav/side-nav.com
   template: require('./profile-home.component.html'),
   styles: [require('./profile-home.component.css')],
   providers: [],
-  directives: [SideNavComponent]
+  directives: [SideNavComponent,ROUTER_DIRECTIVES]
 })
 
 
-export class ProfileHomeComponent implements OnInit {
+export class ProfileHomeComponent implements OnInit,OnDestroy {
+  private userId:string;
 
   constructor(private router:Router, private titleService:Title) {
   }
 
   ngOnInit() {
+
+    const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
+    this.userId=tokenObj.userId;
+
     this.setTitle();
   }
 
   public setTitle() {
-    this.titleService.setTitle('新地点会员主页');
+    this.titleService.setTitle('新地点个人主页');
   }
 
+  ngOnDestroy(){
+
+  }
 
 }

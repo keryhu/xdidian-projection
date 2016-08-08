@@ -1,8 +1,8 @@
-<!--
+/**
  * @Description : please enter the description
- * @date : 16/8/5 下午8:00
+ * @date : 16/8/7 下午2:53
  * @author : keryHu keryhu@hotmail.com
- -->
-<div>
-  ...111
-</div>
+ */
+
+
+export * from './side-menu.component';

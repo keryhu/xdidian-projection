@@ -52,7 +52,7 @@ export class TreeView implements OnInit,OnDestroy{
   ngOnInit(){
     this.indexInParent = 0;
 
-    this.getTreeNodeTypeCssClass(this.tree);
+    this.setDefaultTreeNodeType(this.tree);
 
     this.isLeaf = !Array.isArray(this.tree.children);
     this.tree._indexInParent = this.indexInParent;
@@ -66,7 +66,7 @@ export class TreeView implements OnInit,OnDestroy{
 
   //如果未设置treeModel是展开,还是折叠,还是leaf,那么就判断该treeNode是否有children,如果有那么
   //就将children展开,否则,就设置他们为最终的枝叶。---这个方法,也就是默认的展示方法。,尽量展开children
-  private getTreeNodeTypeCssClass(node: TreeModel): string {
+  private setDefaultTreeNodeType(node: TreeModel) {
     if (!node._treeNodeType) {
       if (node.children) {
         node._treeNodeType = TreeNodeType.Expanded;
@@ -75,7 +75,6 @@ export class TreeView implements OnInit,OnDestroy{
       }
     }
 
-    return node._treeNodeType.cssClass;
   }
 
   private getEditMode(){
@@ -110,7 +109,7 @@ export class TreeView implements OnInit,OnDestroy{
     return TreeNodeType.Expanded;
   }
 
-  private  getIcon(node: TreeModel){
+  private  getIcon(node: TreeModel):string{
 
   const expanded='treeNode glyphicon glyphicon-expand';
 
@@ -132,7 +131,6 @@ export class TreeView implements OnInit,OnDestroy{
 
     this.nodeSelectedSub=this.treeService.nodeSelected$
       .subscribe(e=>{
-        console.log('has listenNodeSelected running ? ');
 
         if (Object.is(e, true)){
           this._isSelected.next(true);
