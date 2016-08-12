@@ -1,5 +1,7 @@
 package com.xdidian.keryhu.user_account.service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import com.xdidian.keryhu.user_account.domain.User;
@@ -62,5 +64,27 @@ public interface UserService {
   public boolean phoneStatus(final String loginName);
 
 
-
+  /**
+   * 
+  * @Title: findByBirthday
+  * @Description: TODO(找出生日是某个时间的user)
+  * @param @param date
+  * @param @return    设定文件
+  * @return List<User>    返回类型
+  * @throws
+   */
+  public List<User> findByBirthdayAndCompanyId(final LocalDate date,final String companyId);
+  
+  
+  /**
+   * 
+  * @Title: isInComopany
+  * @Description: TODO(查看制定的user id的用户，是否已经在公司组织里)
+  * @param @param id
+  * @param @return    设定文件
+  * @return boolean    返回类型
+  * @throws
+   */
+  
+  public boolean isInComopany( final String id);
 }

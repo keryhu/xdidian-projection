@@ -9,6 +9,7 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  * @date : 2016年6月18日 下午9:03:42
  * @author : keryHu keryhu@hotmail.com
  */
+
 @SpringBootApplication
 @EnableEurekaServer
 public class Application {

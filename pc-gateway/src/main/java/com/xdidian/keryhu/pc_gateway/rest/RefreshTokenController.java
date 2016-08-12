@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +30,7 @@ public class RefreshTokenController {
   private final RefreshTokenService tokenService;
   private final int reFreshTokenValiditySeconds = 130;
 
-  @RequestMapping(value = "/api/getRefreshToken", method = RequestMethod.GET)
+  @GetMapping("/api/getRefreshToken")
   public ResponseEntity<Map<String, String>> getRefreshToken(Principal principal,
       @RequestParam("loginName") final String loginName) {
     log.info("从服务器下载新的refreshToken");
@@ -46,7 +46,7 @@ public class RefreshTokenController {
    * @param principal
    */
   
-  @RequestMapping(value = "/api/storeRefreshToken", method = RequestMethod.POST)
+  @PostMapping("/api/storeRefreshToken")
   public void storeRefreshToken(@RequestBody final RefreshToken token, Principal principal) {
     log.info("store refreshToken 0-- {} ",token);
     tokenService.validate(token);

@@ -7,7 +7,7 @@ import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {TreeModel, TreeNodeType, TreeStatus} from "./tree-model";
 import {CORE_DIRECTIVES, NgClass} from "@angular/common";
 import {TreeService} from "../../services/tree/tree.service";
-import {MouseDirective} from "../../directive/mouse-tree.directive";
+import {MouseDirective} from "../../directive/mouse.directive";
 import {BehaviorSubject} from "rxjs/Rx";
 import {FocusOnDirective} from "../../directive/focus-on.directive";
 

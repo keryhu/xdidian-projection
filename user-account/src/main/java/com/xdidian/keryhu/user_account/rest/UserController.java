@@ -8,10 +8,15 @@ import com.xdidian.keryhu.user_account.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +39,7 @@ public class UserController {
    * @return
    */
   
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/findByIdentity")
+  @GetMapping("/users/query/findByIdentity")
   public ResponseEntity<?> findByIdentity(@RequestParam("identity") String identity) {
 
     // 如果用户不存在，则抛出错误,返回json {"code":404,"message":"您查询的用户不存在！！"}
@@ -49,7 +54,7 @@ public class UserController {
    * 对外提供查询email是否存在数据库的api接口，不需要增加spring security验证
    */
   
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/isEmailExist")
+  @GetMapping("/users/query/isEmailExist")
   public Boolean isEmailExist(@RequestParam("email") String email) {
     return userService.emailIsExist(email);
   }
@@ -60,7 +65,7 @@ public class UserController {
    * 对外提供查询phone是否存在与数据库，不需要增加spring security验证
    */
   
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/isPhoneExist")
+  @GetMapping("/users/query/isPhoneExist")
   public Boolean isPhoneExist(@RequestParam("phone") String phone) {
     log.info("需要被查询的phone是： {} , phone  是否存在于数据库 ：{} ", phone, userService.phoneIsExist(phone));
     return userService.phoneIsExist(phone);
@@ -71,7 +76,7 @@ public class UserController {
    * rest 接口查询当前loginName所在的用户，邮箱是否已经激活，如果激活，返回ture，默认是false
    */
   
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/emailStatus")
+  @GetMapping("/users/query/emailStatus")
   public Boolean emailStatus(@RequestParam("loginName") String loginName) {
     return userService.emailStatus(loginName);
   }
@@ -80,12 +85,41 @@ public class UserController {
    * rest 接口查询当前loginName所在的用户，手机是否已经激活，如果激活，返回ture，默认是false
    */
   
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/phoneStatus")
+  @GetMapping("/users/query/phoneStatus")
   public Boolean phoneStatus(@RequestParam("loginName") String loginName) {
     return userService.phoneStatus(loginName);
   }
   
+ /**
+  * 
+ * @Title: findByBirthday
+ * @Description: TODO(根据当前用户的companyId，然后进入数据库查询满足companyId和生日为指定日期的user
+ * 然后他们的name 的 list)
+ * @param @param month
+ * @param @param day
+ * @param @return    设定文件
+ * @return List<User>    返回类型
+ * @throws
+  */
+  
+  
+  @GetMapping("/users/query/birthday")
+  public ResponseEntity<?> findByBirthday(@AuthenticationPrincipal User user,@RequestParam("month") int month,@RequestParam("day") int day){
+    String companyId=user.getCompanyId();
+    LocalDate date=LocalDate.of(0, month, day);
+    List<String> names= userService.findByBirthdayAndCompanyId(date, companyId)
+         .stream()
+         .filter(e->e.getName()!=null)
+         .map(e->e.getName())
+         .collect(Collectors.toList());
+    
+    return ResponseEntity.ok(names);
+  }
  
-
- 
+  
+  @GetMapping("/users/query/isInCompany")
+  public boolean isInComopany(@RequestParam("id") String id){
+    return userService.isInComopany(id);
+  }
+  
 }

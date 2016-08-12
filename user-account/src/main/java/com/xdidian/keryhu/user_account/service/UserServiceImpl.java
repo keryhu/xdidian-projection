@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static com.xdidian.keryhu.util.StringValidate.checkType;
@@ -153,6 +155,30 @@ public class UserServiceImpl implements UserService {
     // TODO Auto-generated method stub
     return findByLoginName(loginName).map(e -> e.isPhoneStatus()).orElse(false);
   }
+
+
+  @Override
+  public List<User> findByBirthdayAndCompanyId(LocalDate date,String companyId) {
+    return repository.findByBirthdayAndCompanyId(date, companyId);
+  }
+
+
+  /**
+   * 
+  * <p>Title: isInComopany</p>
+  * <p>Description: 如果指定id的用户的 companyId，不为null，说明他现在有公司。 </p>
+  * @param id
+  * @return
+  * @see com.xdidian.keryhu.user_account.service.UserService#isInComopany(java.lang.String)
+   */
+  @Override
+  public boolean isInComopany(String id) {
+    // TODO Auto-generated method stub
+    return repository.findById(id).map(e->
+      e.getCompanyId()!=null
+    ).orElse(false);
+  }
   
+ 
 
 }

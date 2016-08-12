@@ -3,7 +3,9 @@ package com.xdidian.keryhu.user_account.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.xdidian.keryhu.domain.Role;
 import lombok.Data;
@@ -15,6 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,12 +74,19 @@ public class User implements Serializable {
   @Indexed
   private boolean phoneStatus;
   
-  //目前是否已经在公司，注册的时候，默认是没有公司的，等以后有公司了，会申请加入。
-  private boolean inCompany;
+  //user 对应的company 的id，如果这个id为null或 "",那么就证明他目前没有公司。如果companyId为uuid，那么就证明现在有公司
+  private String companyId;
   
   //增加用户头像。
   
   private String name; // 对外公布的名字。
+  
+  // 用户的生日，只需要月份－日期，其中年份统一为0000
+  @DateTimeFormat(iso = ISO.DATE_TIME)
+  @JsonDeserialize(using = LocalDateDeserializer.class)
+  @JsonSerialize(using = LocalDateSerializer.class)
+  @Indexed
+  private LocalDate birthday;
 
 
   // 用户新注册时候的时候，自动生成Id,其它的变量都为null
@@ -88,8 +98,9 @@ public class User implements Serializable {
     this.registerTime = null;
     this.emailStatus = false;
     this.phoneStatus=false;
-    this.inCompany=false;
+    this.companyId=null;
     this.name=null;
+    this.birthday=null;
     // roles 已经设置了默认值。
   }
 

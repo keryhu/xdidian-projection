@@ -52,6 +52,7 @@ zuul:
     auth-server: /api-auth-server/**
     account-activate: /api-account-activate/**
     company-info: /api-company-info/**
+    personal-menu: /api-personal-menu/**
     #password-reset: /recover/**
   #add-proxy-headers: true
     

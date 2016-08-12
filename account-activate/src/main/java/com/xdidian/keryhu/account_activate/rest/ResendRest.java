@@ -5,10 +5,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.xdidian.keryhu.account_activate.client.UserClient;
 import com.xdidian.keryhu.account_activate.domain.LocalActivateDto;
 import com.xdidian.keryhu.account_activate.domain.ActivateType;
@@ -41,7 +39,7 @@ public class ResendRest {
   * 另外一段是： 如果没有过期，前台页面不跳转页面 tokenService.doWhenNotExpired )
   */
 
- @RequestMapping(method = RequestMethod.POST, value = "/email/resend")
+ @PostMapping("/email/resend")
  public ResponseEntity<?> emailResend(@RequestBody final LocalActivateDto dto) {
 
    if (dto.getType().equals(ActivateType.EMAIL)) {

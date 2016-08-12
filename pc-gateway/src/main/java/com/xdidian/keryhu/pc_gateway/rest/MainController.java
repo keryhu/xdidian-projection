@@ -1,6 +1,6 @@
 package com.xdidian.keryhu.pc_gateway.rest;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainController {
 
 
-  @RequestMapping("/hello")
+  @GetMapping("/hello")
   public String hello() {
     return "Hello this is pc-gateway'hello page!";
   }
 
-  @RequestMapping("/test")
+  @GetMapping("/test")
   public String test() {
     return "Hello this is pc-gateway'test  page , it not protected !";
   }

@@ -1,0 +1,16 @@
+<!--左边菜单栏 -->
+<div class="col-xs-5 col-sm-2 col-md-2 sidebar sidebar-left sidebar-animate sidebar-md-show">
+
+  <hr>
+  <div href class="menu" *ngFor="let menu of menus|async" (click)="nav(menu)">{{menu.name}}</div>
+
+</div>
+
+
+
+
+
+
+
+
+

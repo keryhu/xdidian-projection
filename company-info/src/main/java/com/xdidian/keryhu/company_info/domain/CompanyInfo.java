@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.gson.Gson;
 import com.xdidian.keryhu.company_info.config.DepartmentDeserializer;
 import com.xdidian.keryhu.company_info.config.DepartmentSerializer;
 import com.xdidian.keryhu.tree.LinkedMultiTreeNode;
@@ -30,7 +29,7 @@ public class CompanyInfo implements Serializable{
 
 	private static final long serialVersionUID = -1554578596908142213L;
 	
-	private String id="123";
+	private String id="123";        //本身的id，用来区分不同的company
 	private String companyName="上海利好公司";
 	private String address="an ting ";
 	private String adminId="11";   //平台，客户管理员

@@ -15,6 +15,8 @@ import com.xdidian.keryhu.auth_server.domain.AuthUserDto;
  * @author : keryHu keryhu@hotmail.com
  */
 
+// 这里不能使用 @GetMapping ，暂时feign 不支持
+
 @FeignClient(name = "user-account", fallback = UserClientFallback.class)
 public interface UserClient {
 
@@ -24,7 +26,8 @@ public interface UserClient {
    * @param identity
    * @return
    */
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/findByIdentity")
+  
+  @RequestMapping(value = "/users/query/findByIdentity", method = RequestMethod.GET)
   public AuthUserDto findByIdentity(@RequestParam("identity") String identity);
 
  

@@ -20,8 +20,6 @@ import com.xdidian.keryhu.auth_server.service.LoginAttemptUserService;
 import com.xdidian.keryhu.auth_server.service.UserServiceImpl;
 import com.xdidian.keryhu.auth_server.service.Utils;
 import com.xdidian.keryhu.auth_server.stream.LoginSuccessProducer;
-
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.xdidian.keryhu.util.Constants.EMAIL_ACTIVATE_EXPIRED; 
@@ -35,16 +33,23 @@ import static com.xdidian.keryhu.util.Constants.EMAIL_ACTIVATE_EXPIRED;
  */
 @Component("customAuthenticationProvider")
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-  private final PasswordEncoder passwordEncoder;
-  private final UserDetailsService userDetailsService;
-  private final UserServiceImpl userService;
-  private final HttpServletRequest request;
-  private final LoginSuccessProducer sendSource;
-  private final Utils utils;
-  private final LoginAttemptUserService loginAttemptUserService;
+  // 这里 不能使用 @RequiredArgsConstructor(onConstructor = @__(@Autowired)) ，否则会出错，形成依赖循环
+  @Autowired
+  private  PasswordEncoder passwordEncoder;
+  @Autowired
+  private  UserDetailsService userDetailsService;
+  @Autowired
+  private UserServiceImpl userService;
+  @Autowired
+  private HttpServletRequest request;
+  @Autowired
+  private  LoginSuccessProducer sendSource;
+  @Autowired
+  private Utils  utils;
+  @Autowired
+  private  LoginAttemptUserService loginAttemptUserService;
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {

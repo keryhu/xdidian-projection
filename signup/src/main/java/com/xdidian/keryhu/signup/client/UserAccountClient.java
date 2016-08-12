@@ -19,13 +19,15 @@ public interface UserAccountClient {
   /**
    * 远程查询email是否存在于数据库
    */
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/isEmailExist")
+  
+  @RequestMapping(value = "/users/query/isEmailExist", method = RequestMethod.GET)
   public Boolean isEmailExist(@RequestParam("email") String email);
 
   /**
    * 远程查询phone是否存在于数据库
    */
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/isPhoneExist")
+
+  @RequestMapping(value = "/users/query/isPhoneExist", method = RequestMethod.GET)
   public Boolean isPhoneExist(@RequestParam("phone") String phone);
 
   

@@ -41,7 +41,7 @@ public class MainRest {
    * 那么他也做不了什么事情，因为接下来需要邮件验证，手机验证，营业执照验证等，而且admin会定期检测账户 在注册完后，页面自动导航到 result 页面，并且附带了
    * 2个带有email信息的链接
    */
-  @RequestMapping(method = RequestMethod.POST, value = "/signup")
+  @PostMapping("/signup")
   public ResponseEntity<?> createUser(@RequestBody final SignupForm propertyForm,
       final RedirectAttributes attr) {
 
@@ -71,7 +71,7 @@ public class MainRest {
 
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  @RequestMapping("/admin")
+  @GetMapping("/admin")
   public String admin() {
     return "property-register this is admin role page ";
   }

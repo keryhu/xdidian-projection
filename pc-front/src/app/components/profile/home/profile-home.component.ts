@@ -6,8 +6,7 @@
 import {Component, OnInit, OnDestroy} from  '@angular/core';
 import {Router, ROUTER_DIRECTIVES} from "@angular/router";
 import {Title} from "@angular/platform-browser";
-import {SideNavComponent} from "../../../shared/components/side-nav/side-nav.component";
-import {LocalToken} from "../../../shared/model/local-token";
+import {SideMenuComponent} from "../../../shared/components/side-menu/side-menu.component";
 
 
 @Component({
@@ -15,20 +14,16 @@ import {LocalToken} from "../../../shared/model/local-token";
   template: require('./profile-home.component.html'),
   styles: [require('./profile-home.component.css')],
   providers: [],
-  directives: [SideNavComponent,ROUTER_DIRECTIVES]
+  directives: [SideMenuComponent,ROUTER_DIRECTIVES]
 })
 
 
 export class ProfileHomeComponent implements OnInit,OnDestroy {
-  private userId:string;
 
-  constructor(private router:Router, private titleService:Title) {
+  constructor(private titleService:Title) {
   }
 
   ngOnInit() {
-
-    const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
-    this.userId=tokenObj.userId;
 
     this.setTitle();
   }

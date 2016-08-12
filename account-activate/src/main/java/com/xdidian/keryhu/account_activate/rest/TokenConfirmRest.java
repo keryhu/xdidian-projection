@@ -4,10 +4,8 @@ package com.xdidian.keryhu.account_activate.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.xdidian.keryhu.account_activate.client.UserClient;
 import com.xdidian.keryhu.account_activate.domain.*;
 import com.xdidian.keryhu.account_activate.service.ActivatedConfirm;
@@ -31,7 +29,7 @@ public class TokenConfirmRest {
    */
 
 
-  @RequestMapping(method = RequestMethod.POST, value = "/accountActivate/emailOrPhone")
+  @PostMapping("/accountActivate/emailOrPhone")
   public ResponseEntity<?> tokenConfirm(@RequestBody final LocalActivateDto dto) {
 
     if (dto.getType().equals(ActivateType.EMAIL)) {

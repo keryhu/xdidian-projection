@@ -4,8 +4,7 @@ package com.xdidian.keryhu.account_activate.rest;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +37,7 @@ public class ForLoginRest {
    */
   
   
-  @RequestMapping(value = "/query/emailActivate", method = RequestMethod.GET)
+  @GetMapping(value = "/query/emailActivate")
   
   public String doWithEmailActivate(@RequestParam String email){
             

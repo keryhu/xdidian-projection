@@ -36,7 +36,7 @@ public class ConverterUtil {
     user.setRoles(Arrays.asList(Role.ROLE_DEFAULT));
     user.setRegisterTime(LocalDateTime.now());
     user.setEmailStatus(false);
-    user.setInCompany(false);
+    user.setCompanyId(null);;
     return user;
   };
 

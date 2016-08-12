@@ -11,12 +11,7 @@
 		<artifactId>xdidian-micro-docker</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<properties>
-		<webjars.jquery>2.2.4</webjars.jquery>
-		<webjars.bootstrap>3.3.6</webjars.bootstrap>
-	</properties>
-
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -38,11 +33,6 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
@@ -75,19 +65,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-stream-rabbit</artifactId>
-		</dependency>
-
-		<!-- webjars -->
-
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery</artifactId>
-			<version>${webjars.jquery}</version><!--$NO-MVN-MAN-VER$-->
-		</dependency>
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>bootstrap</artifactId>
-			<version>${webjars.bootstrap}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 
 	</dependencies>

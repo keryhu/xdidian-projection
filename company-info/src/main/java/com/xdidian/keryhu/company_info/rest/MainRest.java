@@ -2,8 +2,7 @@ package com.xdidian.keryhu.company_info.rest;
 
 import java.io.IOException;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -19,7 +18,7 @@ import com.xdidian.keryhu.tree.TreeNode;
 public class MainRest {
 
 
-  @RequestMapping(method = RequestMethod.GET, value = "/query/1")
+  @GetMapping("/query/1")
   public CompanyInfo hello() {
     CompanyInfo c = new CompanyInfo();
 

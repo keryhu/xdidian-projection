@@ -54,6 +54,8 @@ export class LoginComponent implements OnInit,OnDestroy {
       password: this.password
     });
 
+
+
     this.setTitle();
   }
 
@@ -95,6 +97,7 @@ export class LoginComponent implements OnInit,OnDestroy {
         r=> {
           if (r) {
             const tokenObj:LocalToken = JSON.parse(localStorage.getItem('token'));
+            console.log(tokenObj.userId);
             this.router.navigate(['/profile',tokenObj.userId]);
           }
         },
@@ -135,6 +138,8 @@ export class LoginComponent implements OnInit,OnDestroy {
     if (!Object.is(this.ipBlockSub, undefined)) {
       this.ipBlockSub.unsubscribe();
     }
+
+
   }
 
 }

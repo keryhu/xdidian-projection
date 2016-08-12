@@ -19,26 +19,31 @@ public interface UserClient {
   /**
    * 用于email激活时，查询email是否存在于user数据库
    */
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/isEmailExist")
+  
+  @RequestMapping(value = "/users/query/isEmailExist", method = RequestMethod.GET)
   public Boolean isEmailExist(@RequestParam("email") String email);
   
   /**
    * 用于phone激活时，查询phone是否存在于user数据库
    */
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/isPhoneExist")
+  
+  @RequestMapping(value = "/users/query/isPhoneExist", method = RequestMethod.GET)
   public Boolean isPhoneExist(@RequestParam("phone") String phone);
 
   /**
    * 当局登录名loginName，前台web，ajax查询当前loginName所在的数据库，email是否激活)
    */
 
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/emailStatus")
+  
+  @RequestMapping(value = "/users/query/emailStatus", method = RequestMethod.GET)
+
   public Boolean emailStatus(@RequestParam("loginName") String loginName);
   
   /**
    * 当局登录名loginName，前台web，ajax查询当前loginName所在的数据库，phone是否激活)
    */
-  @RequestMapping(method = RequestMethod.GET, value = "/users/query/phoneStatus")
+
+  @RequestMapping(value = "/users/query/phoneStatus", method = RequestMethod.GET)
   public Boolean phoneStatus(@RequestParam("loginName") String loginName);
 
 

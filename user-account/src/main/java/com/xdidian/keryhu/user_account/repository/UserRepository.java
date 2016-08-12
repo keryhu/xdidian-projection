@@ -4,6 +4,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.xdidian.keryhu.user_account.domain.User;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -52,6 +54,8 @@ public interface UserRepository extends MongoRepository<User, String> {
   public Optional<User> findById(String id);
 
   public Optional<User> deleteById(String id);
+  
+  public List<User> findByBirthdayAndCompanyId(LocalDate date,String companyId);
 
 
 

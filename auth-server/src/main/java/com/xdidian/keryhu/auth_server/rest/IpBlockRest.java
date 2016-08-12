@@ -34,7 +34,7 @@ public class IpBlockRest {
    * @return
    */
 
-  @RequestMapping(value = "/query/blockStatus", method = RequestMethod.GET)
+  @GetMapping(value = "/query/blockStatus")
   public ResponseEntity<?> queryBlockStatus(HttpServletRequest request){
     int leftTimes = loginAttemptService.leftLoginTimes(request);
     

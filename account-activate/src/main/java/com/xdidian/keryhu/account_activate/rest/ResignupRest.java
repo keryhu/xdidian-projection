@@ -4,10 +4,8 @@ package com.xdidian.keryhu.account_activate.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.xdidian.keryhu.account_activate.client.UserClient;
 import com.xdidian.keryhu.account_activate.domain.LocalActivateDto;
 import com.xdidian.keryhu.account_activate.domain.ActivateType;
@@ -37,7 +35,7 @@ public class ResignupRest {
    *
    * 当用户点击“重新注册”时候，调用的此方法，执行的方法和激活过期一样的
    */
-  @RequestMapping(method = RequestMethod.POST, value = "/email/resignup")
+  @PostMapping("/email/resignup")
   public ResponseEntity<?> emailResignup(@RequestBody final LocalActivateDto dto) {
     if (dto.getType().equals(ActivateType.EMAIL)) {
       

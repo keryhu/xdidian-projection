@@ -1,8 +1,7 @@
 package com.xdidian.keryhu.user_account.rest;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -12,20 +11,20 @@ public class MainRest {
 
   // @PreAuthorize("isAuthenticated()")
   @PreAuthorize("hasAuthority('ROLE_PROPERTY')")
-  @RequestMapping(method = RequestMethod.GET, value = "/property")
+  @GetMapping("/property")
   public String hello() {
     return "this is hello page , it should be ROLE_PROPERTY ";
   }
 
 
-  @RequestMapping(method = RequestMethod.GET, value = "/admin")
+  @GetMapping("/admin")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String test() {
     return "this is test page , it should be ROLE_ADMIN ";
   }
 
   @PreAuthorize("hasAuthority('ROLE_TENANT')")
-  @RequestMapping(method = RequestMethod.GET, value = "/tenant")
+  @GetMapping("/tenant")
   public String tenant() {
     return "this is test page , it should be ROLE_TENANT ";
   }

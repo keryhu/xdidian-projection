@@ -20,7 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TokenRest {
 
-  @RequestMapping(method = RequestMethod.POST, value = "/password/uploadEmail")
+  @PostMapping("/password/uploadEmail")
   public void uploadEmail(@RequestBody final String email) {
 
   }
